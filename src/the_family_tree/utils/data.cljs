@@ -1,6 +1,8 @@
-(def family
-  [{:id 1    :first-name "Andre"           :last-name "Troncy"     :generation 1 :sex "male"   :birth 1859 :death 1931 :partners #{2} :children #{}}
-   {:id 2    :first-name "Francine"        :last-name "Valli"      :generation 1 :sex "female" :birth 1872 :death 1954 :partners #{1} :children #{}}
+(ns the-family-tree.utils.data)
+
+(def data
+  [{:id 1    :first-name "Andre"           :last-name "Troncy"     :generation 1 :sex "male"   :birth 1859 :death 1931 :partners #{2} :children #{3 4}}
+   {:id 2    :first-name "Francine"        :last-name "Valli"      :generation 1 :sex "female" :birth 1872 :death 1954 :partners #{1} :children #{3 4}}
 
    {:id 3    :first-name "Maurice"         :last-name "Troncy"     :generation 2 :sex "male"   :birth 1896 :death 1942 :parents #{1 2} :partners #{4} :children #{5 6 18 50}}
    {:id 4    :first-name "Marcelle"        :last-name "Desrayaud"  :generation 2 :sex "female" :birth 1901 :death 1966 :partners #{3} :children #{5 6 18 50}}
@@ -38,7 +40,7 @@
    {:id 29    :first-name "Marie-Delphine" :last-name "Muzelli"    :generation 4 :sex "female" :birth 1958 :partners #{28} :children #{30}}
    {:id 30    :first-name "Thibault"       :last-name "Dieterlé"   :generation 5 :sex "male"   :birth 1984 :parents #{28 29} :partners #{31}}
    {:id 31    :first-name "Johanna"        :last-name "Viosi"      :generation 5 :sex "female" :birth 1986 :partners #{30}}
-   {:id 32    :first-name "x"              :last-name "Dieterlé"   :generation 6 :sex "male"   :birth 2014 :parents #{30 31}}
+   {:id 32    :first-name "Lenni"          :last-name "Dieterlé"   :generation 6 :sex "male"   :birth 2014 :parents #{30 31}}
 
    {:id 33    :first-name "Cécile"         :last-name "Dieterlé"   :generation 4 :sex "female" :birth 1955 :parents #{18 19} :partners #{34} :children #{35 36 40 44}}
    {:id 34    :first-name "Francois"       :last-name "Beaudin"    :generation 4 :sex "male"   :birth 1947 :death 1998 :partners #{33} :children #{35 36 40 44}}
@@ -50,7 +52,7 @@
    {:id 40    :first-name "Alice"          :last-name "Beaudin"    :generation 5 :sex "female" :birth 1982 :parents #{33 34} :partners #{41} :children #{42 43}}
    {:id 41    :first-name "Mathieu"        :last-name "Maria"      :generation 5 :sex "male"   :birth 1974 :partners #{40} :children #{42 43}}
    {:id 42    :first-name "Loïse"          :last-name "Maria"      :generation 6 :sex "female" :birth 2011 :parents #{38 39}}
-   {:id 43    :first-name "x"              :last-name "Maria"      :generation 6 :sex "male"   :birth 2014 :parents #{38 39}}
+   {:id 43    :first-name "Gaspard"        :last-name "Maria"      :generation 6 :sex "male"   :birth 2014 :parents #{38 39}}
    {:id 44    :first-name "Clément"        :last-name "Beaudin"    :generation 5 :sex "male"   :birth 1986 :parents #{33 34}}
 
    {:id 45    :first-name "Anies"          :last-name "Dieterlé"   :generation 4 :sex "female" :birth 1958 :parents #{18 19} :partners #{46} :children #{47 48 49}}

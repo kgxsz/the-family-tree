@@ -1,0 +1,2 @@
+{:require  [the-family-tree.core]
+ :init-fns [the-family-tree.core/main]}
