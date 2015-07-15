@@ -10,13 +10,11 @@
     [_ _]
     (println "Rendering slate-1 component with state:" state)
     (slate :slate-1
-      (divider)
       (dom/div
         {:id "heading"}
-        (dom/h1 "SLATES")
-        (dom/h1 "IN A")
-        (dom/h1 "PILE"))
+        (dom/h1 "LA ")
+        (dom/h1 "FAMILLE"))
       (divider)
       (dom/div
         {:id "directions"}
-        (dom/p "( press") (down-arrow) (dom/p ")")))))
+        (dom/p "( appuyez le") (down-arrow) (dom/p ")")))))

@@ -5,7 +5,7 @@
   []
   (dom/svg
     {:class "divider"}
-    (dom/line {:x1 0 :x2 465 :y1 2 :y2 2})))
+    (dom/line {:x1 0 :x2 700 :y1 2 :y2 2})))
 
 (defn down-arrow
   []

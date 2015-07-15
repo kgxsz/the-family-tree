@@ -4,22 +4,21 @@
             [the-family-tree.styles.utils.helpers :refer :all]))
 
 (defstyles slate-1
-  [:#slate-1 {:color (:hard-green colours)}
-   [:.backdrop {:background-color (:soft-green colours)}
+  [:#slate-1 {:color (:hard-yellow colours)}
+   [:.backdrop {:background-color (:soft-yellow colours)}
     [:.content
-     [:#heading {:margin "23px auto 27px auto"}
+     [:#heading {:margin "40px auto 10px auto"}
       [:h1 {:line-height "0.7em"}
         (nth-child
           "1" {:display "inline"
-               :font-size "6.6em"}
+               :font-size "3em"}
           "2" {:display "inline"
-               :font-size "3em"
-               :padding "0 8px"}
-          "3" {:font-size "15em"})]]
+               :font-size "10em"
+               :padding "0 8px"})]]
      [:.divider {:margin "auto"
-                 :width "460px"
+                 :width "700px"
                  :height "5px"}
-      [:line {:stroke (:faded-green colours)
+      [:line {:stroke (:faded-yellow colours)
               :stroke-width "3"}]]
      [:#directions {:margin "60px auto 0 auto"}
       [:p {:display "inline"}]
@@ -28,7 +27,7 @@
                 :width "24px"
                 :height "24px"
                 :top "7px"}]
-       [:line {:stroke (:hard-green colours)
+       [:line {:stroke (:hard-yellow colours)
                :stroke-width "2"}]
-       [:polygon {:stroke (:hard-green colours)
-                  :fill (:hard-green colours)}]]]]])
+       [:polygon {:stroke (:hard-yellow colours)
+                  :fill (:hard-yellow colours)}]]]]])
