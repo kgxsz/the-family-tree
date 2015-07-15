@@ -31,7 +31,7 @@
                  :vertical-align "middle"}
      [:.content {:overflow "hidden"
                  :margin "60px auto"
-                 :width "1000px"
+                 :width "1400px"
                  :text-align "center"}]]]])
 
 (defstyles base

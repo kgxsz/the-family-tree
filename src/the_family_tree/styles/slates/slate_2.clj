@@ -8,9 +8,10 @@
    [:.backdrop {:background-color (:soft-blue colours)}
     [:.content
      (slate-title (:faded-blue colours))
-     [:.blurb {:float "left"
-               :text-align "left"
-               :width "700px"
-               :margin "60px 0 25px 0"}
-      (pointer (:hard-blue colours))
-      [:p {:float "left"}]]]]])
+     [:#canvas {:width "1400px"
+                :height "700px"
+                :float "left"}
+      [:.link {:stroke (:faded-blue colours)}]
+      [:.node {:stroke (:soft-blue colours)
+               :stroke-width 1
+               :fill (:hard-blue colours)}]]]]])
