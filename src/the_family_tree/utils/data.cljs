@@ -1,6 +1,10 @@
 (ns the-family-tree.utils.data)
 
 (def data
+  [{:id 1 :partner 2}
+   {:id 2 :partner 1}])
+
+#_(def data
   [{:id 1    :first-name "Andre"           :last-name "Troncy"     :generation 1 :sex "male"   :birth 1859 :death 1931 :partners #{2} :children #{3 4}}
    {:id 2    :first-name "Francine"        :last-name "Valli"      :generation 1 :sex "female" :birth 1872 :death 1954 :partners #{1} :children #{3 4}}
 
