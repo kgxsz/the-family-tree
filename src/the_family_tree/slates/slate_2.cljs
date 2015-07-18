@@ -13,7 +13,11 @@
 
 (defn update-entities
   [node data]
-  (-> data (.forEach (fn [o i] (set! (.-y o) (.sqrt js/Math (- 9000 (* (mod (.-x o) 300) (mod (.-x o) 9000))))))))
+  (-> data (.forEach (fn [o i]
+                       (set! (.-y o)
+                             (max 200 (min 500 (.-y o))))
+                       (set! (.-x o)
+                             (max 400 (min 1000 (.-x o)))))))
   (-> node
       (.attr "cx" (fn [d] (.-x d)))
       (.attr "cy" (fn [d] (.-y d)))))
