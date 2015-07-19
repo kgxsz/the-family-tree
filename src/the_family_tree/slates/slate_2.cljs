@@ -13,20 +13,16 @@
 
 (defn update-entities
   [node data]
-  (.forEach data
+  (.forEach (.-nodes data)
     (fn [o i]
-      (let [quadrant (if (< (.-x o) 700)
-                       (if (< (.-y o) 350) :top-left :bottom-left)
-                       (if (< (.-y o) 350) :top-right :bottom-right))]
-        (case quadrant
-          :top-left     (do (set! (.-x o) (if (> (.-y o) 250) (min 600 (.-x o)) (.-x o)))
-                            (set! (.-y o) (if (> (.-x o) 600) (min 250 (.-y o)) (.-y o))))
-          :top-right    (do (set! (.-x o) (if (> (.-y o) 250) (max 800 (.-x o)) (.-x o)))
-                            (set! (.-y o) (if (< (.-x o) 800) (min 250 (.-y o)) (.-y o))))
-          :bottom-left  (do (set! (.-x o) (if (< (.-y o) 450) (min 600 (.-x o)) (.-x o)))
-                            (set! (.-y o) (if (> (.-x o) 600) (max 450 (.-y o)) (.-y o))))
-          :bottom-right (do (set! (.-x o) (if (< (.-y o) 450) (max 800 (.-x o)) (.-x o)))
-                            (set! (.-y o) (if (< (.-x o) 800) (max 450 (.-y o)) (.-y o))))))))
+      (let [vx    (- (.-x o) 700)
+            vy    (- (.-y o) 350)
+            v-mag (.sqrt js/Math (+ (* vx vx) (* vy vy)))
+            ax    (+ 700 (* 20 (/ vx v-mag)))
+            ay    (+ 350 (* 20 (/ vy v-mag)))]
+        (when-not (zero? v-mag)
+          (set! (.-x o) ax)
+          (set! (.-y o) ay)))))
   (-> node
       (.attr "cx" (fn [d] (.-x d)))
       (.attr "cy" (fn [d] (.-y d)))))
@@ -35,11 +31,12 @@
   [data]
   (let [canvas (.select js/d3 "#slate-2 #canvas")
         node (-> canvas (.selectAll "circle")
-                  (.data data) .enter (.append "circle")
-                  (.attr "r" 6)
+                  (.data (.-nodes data)) .enter (.append "circle")
+                  (.attr "r" 4)
                   (.call (.-drag force-field)))]
     (-> force-field
-        (.nodes data)
+        (.nodes (.-nodes data))
+        (.links (.-links data))
         .start)
     (-> force-field
         (.on "tick" #(update-entities node data)))))
