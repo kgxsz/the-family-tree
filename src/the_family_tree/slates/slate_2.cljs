@@ -18,8 +18,8 @@
   (* 2 (- year 1849)))
 
 (def force-field (-> js/d3 .-layout .force
-                     (.charge -120)
-                     (.linkDistance 20)
+                     (.charge -220)
+                     (.linkDistance 40)
                      (.gravity 0)
                      (.size (clj->js canvas-dimensions))))
 

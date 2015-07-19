@@ -1,9 +1,27 @@
 (ns the-family-tree.utils.data)
 
 (def data
-  {:nodes [{:id 1 :birth 1859}
-           {:id 2 :birth 1872}]
-   :links [{:source 1 :target 0 :relation :partner}]})
+  {:nodes [{:id 0 :birth 1859}
+           {:id 1 :birth 1872}
+           {:id 2 :birth 1896}
+           {:id 3 :birth 1901}
+           {:id 4 :birth 1923}
+           {:id 5 :birth 1926}
+           {:id 6 :birth 1929}
+           {:id 7 :birth 1940}]
+   :links [{:source 1 :target 0 :relation :partner}
+           {:source 2 :target 0 :relation :parent}
+           {:source 2 :target 1 :relation :parent}
+           {:source 3 :target 2 :relation :partner}
+           {:source 4 :target 2 :relation :parent}
+           {:source 4 :target 3 :relation :parent}
+           {:source 5 :target 2 :relation :parent}
+           {:source 5 :target 3 :relation :parent}
+           {:source 6 :target 2 :relation :parent}
+           {:source 6 :target 3 :relation :parent}
+           {:source 7 :target 2 :relation :parent}
+           {:source 7 :target 3 :relation :parent}
+           ]})
 
 #_(def data
   [{:id 1    :first-name "Andre"           :last-name "Troncy"     :generation 1 :sex "male"   :birth 1859 :death 1931 :partners #{2} :children #{3 4}}
