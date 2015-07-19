@@ -35,24 +35,30 @@
   (doseq [{:keys [attr data-korks]} relations]
     (.attr entity attr (fn [d] (apply (partial aget d) data-korks)))))
 
+
 (defn update-entities
-  [node link data]
-  (.forEach (.-nodes data)
-    (fn [d _]
-      (let [vx    (- (.-x d) (:x origin))
-            vy    (- (.-y d) (:y origin))
-            |v|   (.sqrt js/Math (+ (* vx vx) (* vy vy)))
-            ax    (+ (:x origin) (* (year-to-radius (.-birth d)) (/ vx |v|)))
-            ay    (+ (:y origin) (* (year-to-radius (.-birth d)) (/ vy |v|)))]
-        (when-not (zero? |v|)
-          (set! (.-x d) ax)
-          (set! (.-y d) ay)))))
+  [node link]
   (datarize-attributes link [{:attr "x1" :data-korks ["source" "x"]}
                              {:attr "y1" :data-korks ["source" "y"]}
                              {:attr "x2" :data-korks ["target" "x"]}
                              {:attr "y2" :data-korks ["target" "y"]}])
   (datarize-attributes node [{:attr "cx" :data-korks "x"}
                              {:attr "cy" :data-korks "y"}]))
+
+(defn constrain-positions-radially
+  "Take the positional attributes from the
+   node data and constrain it radially."
+  [data]
+  (.forEach (.-nodes data)
+    (fn [d _]
+      (let [vx    (- (.-x d) (:x origin))
+            vy    (- (.-y d) (:y origin))
+            |v|   (.sqrt js/Math (+ (* vx vx) (* vy vy)))
+            x     (+ (:x origin) (* (year-to-radius (.-birth d)) (/ vx |v|)))
+            y     (+ (:y origin) (* (year-to-radius (.-birth d)) (/ vy |v|)))]
+        (when-not (zero? |v|)
+          (set! (.-x d) x)
+          (set! (.-y d) y))))))
 
 (defn graphify
   [data]
@@ -66,8 +72,9 @@
         (.nodes (.-nodes data))
         (.links (.-links data))
         .start)
-    (-> force-field
-        (.on "tick" #(update-entities node link data)))))
+    (-> force-field (.on "tick"
+                       #(do (constrain-positions-radially data)
+                            (update-entities node link))))))
 
 (defcomponent slate-2
   [state owner]
