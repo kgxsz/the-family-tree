@@ -6,40 +6,68 @@
             [the-family-tree.utils.objects :refer [pointer]]
             [cljsjs.d3 :as d3]))
 
+(def canvas-dimensions [1400 700])
+(def origin {:x 700 :y 350})
+
+(defn year-to-radius
+  "The passage of time is represented in a radially
+   increasing manner, at a rate of two pixels per year,
+   starting at 1849. This function converts a given year
+   to it's radial value."
+  [year]
+  (* 2 (- year 1849)))
+
 (def force-field (-> js/d3 .-layout .force
-                      (.charge -100)
-                      (.linkDistance 20)
-                      (.size (clj->js [1400 700]))))
+                     (.charge -120)
+                     (.linkDistance 20)
+                     (.gravity 0)
+                     (.size (clj->js canvas-dimensions))))
+
+(defn enterfy-data
+  [canvas data class svg-type]
+  (-> (.selectAll canvas (str "." class))
+      (.data data) .enter
+      (.append svg-type)
+      (.attr "class" class)))
+
+(defn datarize-attributes
+  [entity relations]
+  (doseq [{:keys [attr data-korks]} relations]
+    (.attr entity attr (fn [d] (apply (partial aget d) data-korks)))))
 
 (defn update-entities
-  [node data]
+  [node link data]
   (.forEach (.-nodes data)
-    (fn [o i]
-      (let [vx    (- (.-x o) 700)
-            vy    (- (.-y o) 350)
-            v-mag (.sqrt js/Math (+ (* vx vx) (* vy vy)))
-            ax    (+ 700 (* 20 (/ vx v-mag)))
-            ay    (+ 350 (* 20 (/ vy v-mag)))]
-        (when-not (zero? v-mag)
-          (set! (.-x o) ax)
-          (set! (.-y o) ay)))))
-  (-> node
-      (.attr "cx" (fn [d] (.-x d)))
-      (.attr "cy" (fn [d] (.-y d)))))
+    (fn [d _]
+      (let [vx    (- (.-x d) (:x origin))
+            vy    (- (.-y d) (:y origin))
+            |v|   (.sqrt js/Math (+ (* vx vx) (* vy vy)))
+            ax    (+ (:x origin) (* (year-to-radius (.-birth d)) (/ vx |v|)))
+            ay    (+ (:y origin) (* (year-to-radius (.-birth d)) (/ vy |v|)))]
+        (when-not (zero? |v|)
+          (set! (.-x d) ax)
+          (set! (.-y d) ay)))))
+  (datarize-attributes link [{:attr "x1" :data-korks ["source" "x"]}
+                             {:attr "y1" :data-korks ["source" "y"]}
+                             {:attr "x2" :data-korks ["target" "x"]}
+                             {:attr "y2" :data-korks ["target" "y"]}])
+  (datarize-attributes node [{:attr "cx" :data-korks "x"}
+                             {:attr "cy" :data-korks "y"}]))
 
 (defn graphify
   [data]
   (let [canvas (.select js/d3 "#slate-2 #canvas")
-        node (-> canvas (.selectAll "circle")
-                  (.data (.-nodes data)) .enter (.append "circle")
-                  (.attr "r" 4)
-                  (.call (.-drag force-field)))]
+        link (-> (enterfy-data canvas (.-links data) "link" "line")
+                 (.style "stroke-width" 2))
+        node (-> (enterfy-data canvas (.-nodes data) "node" "circle")
+                 (.attr "r" 6)
+                 (.call (.-drag force-field)))]
     (-> force-field
         (.nodes (.-nodes data))
         (.links (.-links data))
         .start)
     (-> force-field
-        (.on "tick" #(update-entities node data)))))
+        (.on "tick" #(update-entities node link data)))))
 
 (defcomponent slate-2
   [state owner]

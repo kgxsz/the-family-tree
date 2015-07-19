@@ -1,9 +1,9 @@
 (ns the-family-tree.utils.data)
 
 (def data
-  {:nodes [{:id 1}
-           {:id 2}]
-   :links [{:source 0 :target 1 :relation :partner}]})
+  {:nodes [{:id 1 :birth 1859}
+           {:id 2 :birth 1872}]
+   :links [{:source 1 :target 0 :relation :partner}]})
 
 #_(def data
   [{:id 1    :first-name "Andre"           :last-name "Troncy"     :generation 1 :sex "male"   :birth 1859 :death 1931 :partners #{2} :children #{3 4}}
