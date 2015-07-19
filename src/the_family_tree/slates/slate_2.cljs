@@ -13,11 +13,20 @@
 
 (defn update-entities
   [node data]
-  (-> data (.forEach (fn [o i]
-                       (set! (.-y o)
-                             (max 200 (min 500 (.-y o))))
-                       (set! (.-x o)
-                             (max 400 (min 1000 (.-x o)))))))
+  (.forEach data
+    (fn [o i]
+      (let [quadrant (if (< (.-x o) 700)
+                       (if (< (.-y o) 350) :top-left :bottom-left)
+                       (if (< (.-y o) 350) :top-right :bottom-right))]
+        (case quadrant
+          :top-left     (do (set! (.-x o) (if (> (.-y o) 250) (min 600 (.-x o)) (.-x o)))
+                            (set! (.-y o) (if (> (.-x o) 600) (min 250 (.-y o)) (.-y o))))
+          :top-right    (do (set! (.-x o) (if (> (.-y o) 250) (max 800 (.-x o)) (.-x o)))
+                            (set! (.-y o) (if (< (.-x o) 800) (min 250 (.-y o)) (.-y o))))
+          :bottom-left  (do (set! (.-x o) (if (< (.-y o) 450) (min 600 (.-x o)) (.-x o)))
+                            (set! (.-y o) (if (> (.-x o) 600) (max 450 (.-y o)) (.-y o))))
+          :bottom-right (do (set! (.-x o) (if (< (.-y o) 450) (max 800 (.-x o)) (.-x o)))
+                            (set! (.-y o) (if (< (.-x o) 800) (max 450 (.-y o)) (.-y o))))))))
   (-> node
       (.attr "cx" (fn [d] (.-x d)))
       (.attr "cy" (fn [d] (.-y d)))))
