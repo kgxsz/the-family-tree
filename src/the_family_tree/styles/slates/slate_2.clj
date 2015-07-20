@@ -15,4 +15,10 @@
                :stroke-width 1}]
       [:.node {:stroke-width 1
                :fill (:hard-blue colours)}]
-      [:.ring {:stroke "#D7F2FC"}]]]]])
+      [:.ring {:stroke (:light-blue colours)
+               :stroke-width 6
+               :fill "none"}]
+      [:.label-backing {:fill (:soft-blue colours)}]
+      [:.label {:font-size "1em"
+                :fill (:offset-blue colours)
+                :stroke (:offset-blue colours)}]]]]])

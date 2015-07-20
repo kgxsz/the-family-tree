@@ -77,33 +77,26 @@
 
 (defn scalerize
   []
-  (let [rings  (reverse (range 1860 2021 20))
+  (let [data   (range 1860 2040 20)
         canvas (.select js/d3 "#slate-2 #canvas")
-        ring   (-> (enterfy-data canvas (clj->js rings) "ring" "circle")
+        ring   (-> (enterfy-data canvas (clj->js data) "ring" "circle")
                    (.attr "cx" (:x origin))
                    (.attr "cy" (:y origin))
-                   (.attr "r" (fn [d] (year-to-radius d)))
-                   (.style "fill" (fn [d i] (if (odd? i) "#E5F7FD" "#D7F2FC"))))]))
-
-(defn labelize
-  []
-  (let [labels ["2000 - 2020" "1980 - 2000" "1960 - 1980" "1940 - 1960" "1920 - 1940" "1900 - 1920" "1880 - 1900" "1860 - 1880"]
-        canvas (.select js/d3 "#slate-2 #canvas")
-        label  (-> (enterfy-data canvas (clj->js labels) "label" "text")
-                   (.attr "x" (:x origin))
-                   (.attr "y" (fn [_ i] (+ 73 (* 54 i))))
-                   (.attr "text-anchor" "middle")
-                   (.style "font-size" "0.8em")
-                   (.style "opacity" 0.2)
-                   (.text (fn [d] d)))]))
+                   (.attr "r" (fn [d] (year-to-radius d))))
+        label-backing (-> canvas (.append "rect") (.attr "class" "label-backing")
+                          (.attr "x" (:x origin)) (.attr "y" (- (:y origin) 13))
+                          (.attr "width" "500px") (.attr "height" "26px"))
+        label  (-> (enterfy-data canvas (clj->js data) "label" "text")
+                   (.text (fn [d] d))
+                   (.attr "x" (fn [_ i] (+ 14 (:x origin) (* 54 i))))
+                   (.attr "y" (+ 5 (:y origin))))]))
 
 (defcomponent slate-2
   [state owner]
   (did-mount
     [_]
     (scalerize)
-    (graphify (clj->js data))
-    (labelize))
+    (graphify (clj->js data)))
   (render-state
     [_ _]
     (println "Rendering slate-2 component with state:" state)
