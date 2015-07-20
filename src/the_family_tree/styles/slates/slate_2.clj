@@ -9,9 +9,10 @@
     [:.content
      (slate-title (:faded-blue colours))
      [:#canvas {:width "1400px"
-                :height "700px"
+                :height "1000px"
                 :float "left"}
-      [:.link {:stroke (:faded-blue colours)}]
-      [:.node {:stroke (:soft-blue colours)
-               :stroke-width 1
-               :fill (:hard-blue colours)}]]]]])
+      [:.link {:stroke (:faded-blue colours)
+               :stroke-width 1}]
+      [:.node {:stroke-width 1
+               :fill (:hard-blue colours)}]
+      [:.ring {:stroke "#D7F2FC"}]]]]])
