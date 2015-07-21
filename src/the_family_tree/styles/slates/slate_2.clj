@@ -11,8 +11,10 @@
      [:#canvas {:width "1400px"
                 :height "1000px"
                 :float "left"}
-      [:.link {:stroke (:faded-yellow colours)
-               :stroke-width 1}]
+      [:.link {:stroke (:faded-yellow colours)}
+       [:&.partner {:stroke-width 4
+                    :stroke-dasharray "3 3"}]
+       [:&.child {:stroke-width 2}]]
       [:.node {:stroke-width 1
                :fill (:hard-yellow colours)}]
       [:.ring {:stroke (:light-blue colours)

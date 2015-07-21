@@ -10,17 +10,17 @@
            {:id 6 :birth 1929}
            {:id 7 :birth 1940}]
    :links [{:source 1 :target 0 :relation :partner}
-           {:source 2 :target 0 :relation :parent}
-           {:source 2 :target 1 :relation :parent}
+           {:source 2 :target 0 :relation :child}
+           {:source 2 :target 1 :relation :child}
            {:source 3 :target 2 :relation :partner}
-           {:source 4 :target 2 :relation :parent}
-           {:source 4 :target 3 :relation :parent}
-           {:source 5 :target 2 :relation :parent}
-           {:source 5 :target 3 :relation :parent}
-           {:source 6 :target 2 :relation :parent}
-           {:source 6 :target 3 :relation :parent}
-           {:source 7 :target 2 :relation :parent}
-           {:source 7 :target 3 :relation :parent}
+           {:source 4 :target 2 :relation :child}
+           {:source 4 :target 3 :relation :child}
+           {:source 5 :target 2 :relation :child}
+           {:source 5 :target 3 :relation :child}
+           {:source 6 :target 2 :relation :child}
+           {:source 6 :target 3 :relation :child}
+           {:source 7 :target 2 :relation :child}
+           {:source 7 :target 3 :relation :child}
            ]})
 
 #_(def data

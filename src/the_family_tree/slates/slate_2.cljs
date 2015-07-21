@@ -24,11 +24,10 @@
                      (.size (clj->js canvas-dimensions))))
 
 (defn enterfy-data
-  [parent-element data class svg-type]
-  (-> (.selectAll parent-element (str "." class))
+  [parent-element data svg-type selector]
+  (-> (.selectAll parent-element (str "." selector))
       (.data data) .enter
-      (.append svg-type)
-      (.attr "class" class)))
+      (.append svg-type)))
 
 (defn datarize-attributes
   [entity relations]
@@ -63,8 +62,10 @@
 (defn graphify
   [data]
   (let [canvas (.select js/d3 "#slate-2 #canvas")
-        link   (enterfy-data canvas (.-links data) "link" "line")
-        node   (-> (enterfy-data canvas (.-nodes data) "node" "circle")
+        link   (-> (enterfy-data canvas (.-links data) "line" "link")
+                   (.attr "class" (fn [d] (str "link " (.-relation d)))))
+        node   (-> (enterfy-data canvas (.-nodes data) "circle" "node")
+                   (.attr "class" "node")
                    (.attr "r" 6)
                    (.call (.-drag force-field)))]
     (-> force-field
@@ -75,22 +76,25 @@
                        #(do (constrain-positions-radially data)
                             (update-entities node link))))))
 
-(defn scalerize
+(defn draw-scale
   [data]
   (let [canvas (.select js/d3 "#slate-2 #canvas")
-        ring   (-> (enterfy-data canvas data "ring" "circle")
+        ring   (-> (enterfy-data canvas data "circle" "ring")
+                   (.attr "class" "ring")
                    (.attr "cx" (:x origin))
                    (.attr "cy" (:y origin))
                    (.attr "r" (fn [d] (year-to-radius d))))
-        mask   (-> (enterfy-data canvas (clj->js data) "mask" "rect")
+        mask   (-> (enterfy-data canvas (clj->js data) "rect" "mask")
+                   (.attr "class" "mask")
                    (.attr "width" 10) (.attr "height" 20)
                    (.attr "x" (fn [_ i] (+ 25 (:x origin) (* 54 i))))
                    (.attr "y" (- (:y origin) 8)))]))
 
-(defn labelize
+(defn draw-label
   [data]
   (let [canvas (.select js/d3 "#slate-2 #canvas")
-        label  (-> (enterfy-data canvas data "label" "text")
+        label  (-> (enterfy-data canvas data "text" "label")
+                   (.attr "class" "label")
                    (.text (fn [d] d))
                    (.attr "x" (fn [_ i] (+ 13 (:x origin) (* 54 i))))
                    (.attr "y" (+ 7 (:y origin))))]))
@@ -100,9 +104,9 @@
   (did-mount
     [_]
     (let [scale-data (range 1860 2040 20)]
-      (scalerize (clj->js scale-data))
+      (draw-scale (clj->js scale-data))
       (graphify (clj->js family-data))
-      (labelize (clj->js scale-data))))
+      (draw-label (clj->js scale-data))))
   (render-state
     [_ _]
     (println "Rendering slate-2 component with state:" state)
