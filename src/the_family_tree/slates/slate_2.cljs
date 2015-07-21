@@ -24,8 +24,8 @@
                      (.size (clj->js canvas-dimensions))))
 
 (defn enterfy-data
-  [canvas data class svg-type]
-  (-> (.selectAll canvas (str "." class))
+  [parent-element data class svg-type]
+  (-> (.selectAll parent-element (str "." class))
       (.data data) .enter
       (.append svg-type)
       (.attr "class" class)))
@@ -83,13 +83,16 @@
                    (.attr "cx" (:x origin))
                    (.attr "cy" (:y origin))
                    (.attr "r" (fn [d] (year-to-radius d))))
-        label-backing (-> canvas (.append "rect") (.attr "class" "label-backing")
-                          (.attr "x" (:x origin)) (.attr "y" (- (:y origin) 13))
-                          (.attr "width" "500px") (.attr "height" "26px"))
-        label  (-> (enterfy-data canvas (clj->js data) "label" "text")
+        label-group (-> (.append canvas "g")
+                        (.attr "transform" (str "translate(" (:x origin) "," (:y origin) ")")))
+        label-backing (-> (enterfy-data label-group (clj->js data) "label-backing" "rect")
+                          (.attr "width" 40) (.attr "height" "20px")
+                          (.attr "x" (fn [_ i] (+ 9 (* 54 i))))
+                          (.attr "y" -8))
+        label  (-> (enterfy-data label-group (clj->js data) "label" "text")
                    (.text (fn [d] d))
-                   (.attr "x" (fn [_ i] (+ 14 (:x origin) (* 54 i))))
-                   (.attr "y" (+ 5 (:y origin))))]))
+                   (.attr "x" (fn [_ i] (+ 13 (* 54 i))))
+                   (.attr "y" 7))]))
 
 (defcomponent slate-2
   [state owner]
