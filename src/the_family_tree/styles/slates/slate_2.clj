@@ -22,4 +22,5 @@
       [:.label {:font-size "1em"
                 :fill (:heavy-blue colours)
                 :stroke (:heavy-blue colours)
-                :opacity 0.5}]]]]])
+                :opacity 0.5
+                :pointer-events "none"}]]]]])
