@@ -2,7 +2,7 @@
   (:require-macros [the-family-tree.utils.macros :refer [slate]])
   (:require [om-tools.core :refer-macros [defcomponent]]
             [om-tools.dom :as dom :include-macros true]
-            [the-family-tree.utils.data :refer [data]]
+            [the-family-tree.utils.data :refer [family-data]]
             [the-family-tree.utils.objects :refer [pointer]]
             [cljsjs.d3 :as d3]))
 
@@ -76,30 +76,33 @@
                             (update-entities node link))))))
 
 (defn scalerize
-  []
-  (let [data   (range 1860 2040 20)
-        canvas (.select js/d3 "#slate-2 #canvas")
-        ring   (-> (enterfy-data canvas (clj->js data) "ring" "circle")
+  [data]
+  (let [canvas (.select js/d3 "#slate-2 #canvas")
+        ring   (-> (enterfy-data canvas data "ring" "circle")
                    (.attr "cx" (:x origin))
                    (.attr "cy" (:y origin))
                    (.attr "r" (fn [d] (year-to-radius d))))
-        label-group (-> (.append canvas "g")
-                        (.attr "transform" (str "translate(" (:x origin) "," (:y origin) ")")))
-        label-backing (-> (enterfy-data label-group (clj->js data) "label-backing" "rect")
-                          (.attr "width" 40) (.attr "height" "20px")
-                          (.attr "x" (fn [_ i] (+ 9 (* 54 i))))
-                          (.attr "y" -8))
-        label  (-> (enterfy-data label-group (clj->js data) "label" "text")
+        mask   (-> (enterfy-data canvas (clj->js data) "mask" "rect")
+                   (.attr "width" 10) (.attr "height" 20)
+                   (.attr "x" (fn [_ i] (+ 25 (:x origin) (* 54 i))))
+                   (.attr "y" (- (:y origin) 8)))]))
+
+(defn labelize
+  [data]
+  (let [canvas (.select js/d3 "#slate-2 #canvas")
+        label  (-> (enterfy-data canvas data "label" "text")
                    (.text (fn [d] d))
-                   (.attr "x" (fn [_ i] (+ 13 (* 54 i))))
-                   (.attr "y" 7))]))
+                   (.attr "x" (fn [_ i] (+ 13 (:x origin) (* 54 i))))
+                   (.attr "y" (+ 7 (:y origin))))]))
 
 (defcomponent slate-2
   [state owner]
   (did-mount
     [_]
-    (scalerize)
-    (graphify (clj->js data)))
+    (let [scale-data (range 1860 2040 20)]
+      (scalerize (clj->js scale-data))
+      (graphify (clj->js family-data))
+      (labelize (clj->js scale-data))))
   (render-state
     [_ _]
     (println "Rendering slate-2 component with state:" state)

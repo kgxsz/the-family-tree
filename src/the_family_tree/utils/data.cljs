@@ -1,6 +1,6 @@
 (ns the-family-tree.utils.data)
 
-(def data
+(def family-data
   {:nodes [{:id 0 :birth 1859}
            {:id 1 :birth 1872}
            {:id 2 :birth 1896}

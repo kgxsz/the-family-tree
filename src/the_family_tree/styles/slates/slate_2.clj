@@ -11,14 +11,15 @@
      [:#canvas {:width "1400px"
                 :height "1000px"
                 :float "left"}
-      [:.link {:stroke (:faded-blue colours)
+      [:.link {:stroke (:faded-yellow colours)
                :stroke-width 1}]
       [:.node {:stroke-width 1
-               :fill (:hard-blue colours)}]
+               :fill (:hard-yellow colours)}]
       [:.ring {:stroke (:light-blue colours)
                :stroke-width 6
                :fill "none"}]
-      [:.label-backing {:fill (:soft-blue colours)}]
+      [:.mask {:fill (:soft-blue colours)}]
       [:.label {:font-size "1em"
-                :fill (:offset-blue colours)
-                :stroke (:offset-blue colours)}]]]]])
+                :fill (:heavy-blue colours)
+                :stroke (:heavy-blue colours)
+                :opacity 0.5}]]]]])

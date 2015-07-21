@@ -4,6 +4,7 @@
   {:soft-blue "#E5F7FD"
    :light-blue "#D7F2FC"
    :hard-blue "#2DBCF0"
+   :heavy-blue "#006699"
    :offset-blue "#76D3F5"
    :faded-blue "#ADE5F9"
    :soft-violet "#EAEAF4"
