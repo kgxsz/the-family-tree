@@ -6,7 +6,6 @@
             [the-family-tree.utils.objects :refer [pointer]]
             [cljsjs.d3 :as d3]))
 
-(def canvas-dimensions [1400 1000])
 (def origin {:x 700 :y 500})
 
 (defn year-to-radius
@@ -18,10 +17,9 @@
   (* 2.7 (- year 1849)))
 
 (def force-field (-> js/d3 .-layout .force
-                     (.charge -700)
-                     (.linkDistance 50)
-                     (.gravity 0)
-                     (.size (clj->js canvas-dimensions))))
+                     (.charge -300)
+                     (.linkDistance (fn [d] (if (= "partner" (.-relation d)) 40 80)))
+                     (.gravity 0)))
 
 (defn enterfy-data
   [parent-element data svg-type selector]
