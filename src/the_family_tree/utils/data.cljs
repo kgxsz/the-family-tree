@@ -16,7 +16,7 @@
            {:id 12  :first-name "Renée"           :last-name "Pointet"   :generation 2 :sex "female" :blood-line false :birth 1907 :death 2000}
            {:id 13  :first-name "Elisabeth"       :last-name "de Veron"  :generation 2 :sex "female" :blood-line false :birth 1909 :death 1994}
            {:id 14  :first-name "Albert"          :last-name "Bertin"    :generation 3 :sex "male"   :blood-line false :birth 1914 :death 1997}
-           {:id 15  :first-name "Marcelle"        :last-name "Rodier"    :generation 3 :sex "male"   :blood-line false :birth 1916 :death 2004}
+           {:id 15  :first-name "Marcel"          :last-name "Rodier"    :generation 3 :sex "male"   :blood-line false :birth 1916 :death 2004}
            {:id 16  :first-name "Simone"          :last-name "Patay"     :generation 3 :sex "female" :blood-line true  :birth 1917 :death 2000}
            {:id 17  :first-name "Roger"           :last-name "Dieterlé"  :generation 3 :sex "male"   :blood-line false :birth 1917 :death 1990}
            {:id 18  :first-name "André"           :last-name "Patay"     :generation 3 :sex "male"   :blood-line true  :birth 1919 :death 1995}
@@ -45,10 +45,12 @@
            {:id 41  :first-name "Claude-Henry"    :last-name "Perrin"    :generation 3 :sex "male"   :blood-line false :birth 1943}
            {:id 42  :first-name "Hubert"          :last-name "Troncy"    :generation 3 :sex "male"   :blood-line true  :birth 1945}
            {:id 43  :first-name "Brigitte"        :last-name "Patay"     :generation 4 :sex "female" :blood-line true  :birth 1947}
-           {:id 44  :first-name "Maurice"         :last-name "Bertin"    :generation 4 :sex "male"   :blood-line true  :birth 1948 :death 1949}
-           {:id 45  :first-name "Marie-Geneviéve" :last-name "Sommer"    :generation 3 :sex "female" :blood-line false :birth 1949}
-           {:id 46  :first-name "Catherine"       :last-name "Rodier"    :generation 4 :sex "female" :blood-line false :birth 1949}
-           {:id 47  :first-name "Rosamund"        :last-name "Barnes"    :generation 3 :sex "female" :blood-line false :birth 1951}
+           {:id 44  :first-name "François"        :last-name "Beaudin"   :generation 4 :sex "male"   :blood-line false :birth 1947 :death 1998}
+           {:id 45  :first-name "Maurice"         :last-name "Bertin"    :generation 4 :sex "male"   :blood-line true  :birth 1948 :death 1949}
+           {:id 46  :first-name "Marie-Geneviéve" :last-name "Sommer"    :generation 3 :sex "female" :blood-line false :birth 1949}
+           {:id 47  :first-name "Catherine"       :last-name "Rodier"    :generation 4 :sex "female" :blood-line true  :birth 1949}
+           {:id 48  :first-name "Patrick"         :last-name "Le Blanc"  :generation 4 :sex "female" :blood-line false :birth 1949 :death 2012}
+           {:id 49  :first-name "Rosamund"        :last-name "Barnes"    :generation 3 :sex "female" :blood-line false :birth 1951}
            ]
    :links [{:source 1   :target 0   :relation :partner}
            {:source 4   :target 0   :relation :child}
@@ -116,11 +118,11 @@
            {:source 43  :target 19  :relation :child}
            {:source 43  :target 40  :relation :partner}
            {:source 43  :target 40  :relation :partner}
-           {:source 44  :target 14  :relation :child}
-           {:source 44  :target 16  :relation :child}
-           {:source 45  :target 31  :relation :partner}
-           {:source 46  :target 15  :relation :child}
-           {:source 46  :target 22  :relation :child}
-           {:source 46  :target 30  :relation :partner}
-           {:source 47  :target 42  :relation :partner}
+           {:source 45  :target 14  :relation :child}
+           {:source 45  :target 16  :relation :child}
+           {:source 46  :target 31  :relation :partner}
+           {:source 47  :target 15  :relation :child}
+           {:source 47  :target 22  :relation :child}
+           {:source 47  :target 30  :relation :partner}
+           {:source 49  :target 42  :relation :partner}
            ]})
