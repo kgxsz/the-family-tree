@@ -66,6 +66,9 @@
                    (.attr "class" "node")
                    (.attr "r" 6)
                    (.call (.-drag force-field)))]
+    (-> node
+        (.append "title")
+        (.text (fn [d] (str (aget d "first-name") " " (aget d "last-name")))))
     (-> force-field
         (.nodes (.-nodes data))
         (.links (.-links data))
