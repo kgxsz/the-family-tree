@@ -51,6 +51,23 @@
            {:id 47  :first-name "Catherine"       :last-name "Rodier"    :generation 4 :sex "female" :blood-line true  :birth 1949}
            {:id 48  :first-name "Patrick"         :last-name "Le Blanc"  :generation 4 :sex "female" :blood-line false :birth 1949 :death 2012}
            {:id 49  :first-name "Rosamund"        :last-name "Barnes"    :generation 3 :sex "female" :blood-line false :birth 1951}
+           {:id 50  :first-name "Hiroshi"         :last-name "Suzukawa"  :generation 4 :sex "male"   :blood-line false :birth 1951}
+           {:id 51  :first-name "Laurence"        :last-name "Dieterlé"  :generation 4 :sex "female" :blood-line true  :birth 1951}
+           {:id 52  :first-name "Michel"          :last-name "Patay"     :generation 4 :sex "male"   :blood-line true  :birth 1951}
+           {:id 53  :first-name "Cheryl"          :last-name "Olds"      :generation 4 :sex "female" :blood-line false :birth 1951}
+           {:id 54  :first-name "Philippe"        :last-name "Rodier"    :generation 4 :sex "male"   :blood-line true  :birth 1952}
+           {:id 55  :first-name "Alain"           :last-name "Perret"    :generation 4 :sex "male"   :blood-line false :birth 1952}
+           {:id 56  :first-name "Régis"           :last-name "Dieterlé"  :generation 4 :sex "male"   :blood-line true  :birth 1953 :death 1994}
+           {:id 57  :first-name "Cécile"          :last-name "Dieterlé"  :generation 4 :sex "female" :blood-line true  :birth 1955}
+           {:id 58  :first-name "Fabienne"        :last-name "Bonnet"    :generation 4 :sex "female" :blood-line true  :birth 1957}
+           {:id 59  :first-name "Agnés"           :last-name "Dieterlé"  :generation 4 :sex "female" :blood-line true  :birth 1958}
+           {:id 60  :first-name "Marie-Delphine"  :last-name "Muzelli"   :generation 4 :sex "female" :blood-line false :birth 1958}
+           {:id 61  :first-name "Lionel"          :last-name "Pourtier"  :generation 5 :sex "male"   :blood-line false :birth 1958}
+           {:id 62  :first-name "Anne"            :last-name "Chapuis"   :generation 4 :sex "female" :blood-line false :birth 1959}
+           {:id 63  :first-name "Marielle"        :last-name "Bonnet"    :generation 4 :sex "female" :blood-line true  :birth 1959}
+           {:id 64  :first-name "Jean-Michel"     :last-name "Giraud"    :generation 4 :sex "male"   :blood-line false :birth 1960}
+           {:id 65  :first-name "Nadine"          :last-name "Nesme"     :generation 4 :sex "female" :blood-line false :birth 1961}
+           {:id 66  :first-name "Chantal"         :last-name "Bonnet"    :generation 4 :sex "female" :blood-line true  :birth 1962}
            ]
    :links [{:source 1   :target 0   :relation :partner}
            {:source 4   :target 0   :relation :child}
@@ -125,4 +142,31 @@
            {:source 47  :target 22  :relation :child}
            {:source 47  :target 30  :relation :partner}
            {:source 49  :target 42  :relation :partner}
+           {:source 51  :target 17  :relation :child}
+           {:source 51  :target 27  :relation :child}
+           {:source 51  :target 48  :relation :partner}
+           {:source 52  :target 18  :relation :child}
+           {:source 52  :target 19  :relation :child}
+           {:source 53  :target 52  :relation :partner}
+           {:source 54  :target 15  :relation :child}
+           {:source 54  :target 22  :relation :child}
+           {:source 56  :target 17  :relation :child}
+           {:source 56  :target 27  :relation :child}
+           {:source 57  :target 17  :relation :child}
+           {:source 57  :target 27  :relation :child}
+           {:source 57  :target 44  :relation :partner}
+           {:source 58  :target 24  :relation :child}
+           {:source 58  :target 25  :relation :child}
+           {:source 58  :target 55  :relation :partner}
+           {:source 59  :target 17  :relation :child}
+           {:source 59  :target 27  :relation :child}
+           {:source 59  :target 50  :relation :partner}
+           {:source 60  :target 56  :relation :partner}
+           {:source 62  :target 54  :relation :partner}
+           {:source 63  :target 24  :relation :child}
+           {:source 63  :target 25  :relation :child}
+           {:source 64  :target 63  :relation :partner}
+           {:source 65  :target 52  :relation :partner}
+           {:source 66  :target 24  :relation :child}
+           {:source 66  :target 25  :relation :child}
            ]})
