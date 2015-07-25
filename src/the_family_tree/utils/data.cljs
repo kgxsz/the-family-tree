@@ -72,17 +72,21 @@
            {:id 68  :first-name "Christophe"      :last-name "Morin"      :generation 5 :sex "male"   :blood-line false :birth 1963}
            {:id 69  :first-name "Jérôme"          :last-name "Troncy"     :generation 4 :sex "male"   :blood-line true  :birth 1965 :death 1989}
            {:id 70  :first-name "Laurence"        :last-name "Bertin"     :generation 5 :sex "female" :blood-line true  :birth 1966}
-           {:id 71  :first-name "Armelle"         :last-name "Troncy"     :generation 4 :sex "female" :blood-line true  :birth 1967}
-           {:id 72  :first-name "Isabelle"        :last-name "Chapuzet"   :generation 5 :sex "female" :blood-line false :birth 1967}
-           {:id 73  :first-name "Béatrice"        :last-name "Abadie"     :generation 4 :sex "female" :blood-line false :birth 1967}
-           {:id 74  :first-name "Frédéric"        :last-name "Bertin"     :generation 5 :sex "male"   :blood-line true  :birth 1968}
-           {:id 75  :first-name "Jean-Marc"       :last-name "Faivre"     :generation 4 :sex "male"   :blood-line false :birth 1968}
-           {:id 76  :first-name "Erwan"           :last-name "Le Mintier" :generation 5 :sex "male"   :blood-line false :birth 1968}
-           {:id 77  :first-name "Emmanuel"        :last-name "Perrin"     :generation 4 :sex "male"   :blood-line true  :birth 1968}
-           {:id 78  :first-name "Antoine"         :last-name "Troncy"     :generation 4 :sex "male"   :blood-line true  :birth 1969}
-           {:id 79  :first-name "Laurence"        :last-name "Sadoux"     :generation 4 :sex "female" :blood-line false :birth 1969}
-           {:id 80  :first-name "Alexandre"       :last-name "Perrin"     :generation 4 :sex "male"   :blood-line true  :birth 1969}
-           {:id 81  :first-name "Anne-Laurie"     :last-name "Troncy"     :generation 4 :sex "female" :blood-line true  :birth 1971}
+           {:id 71  :first-name "Franck"          :last-name "Bonin"      :generation 5 :sex "male"   :blood-line true  :birth 1966}
+           {:id 72  :first-name "Armelle"         :last-name "Troncy"     :generation 4 :sex "female" :blood-line true  :birth 1967}
+           {:id 73  :first-name "Isabelle"        :last-name "Chapuzet"   :generation 5 :sex "female" :blood-line false :birth 1967}
+           {:id 74  :first-name "Béatrice"        :last-name "Abadie"     :generation 4 :sex "female" :blood-line false :birth 1967}
+           {:id 75  :first-name "Frédéric"        :last-name "Bertin"     :generation 5 :sex "male"   :blood-line true  :birth 1968}
+           {:id 76  :first-name "Jean-Marc"       :last-name "Faivre"     :generation 4 :sex "male"   :blood-line false :birth 1968}
+           {:id 77  :first-name "Erwan"           :last-name "Le Mintier" :generation 5 :sex "male"   :blood-line false :birth 1968}
+           {:id 78  :first-name "Emmanuel"        :last-name "Perrin"     :generation 4 :sex "male"   :blood-line true  :birth 1968}
+           {:id 79  :first-name "Fabrice"         :last-name "Bonin"      :generation 5 :sex "male"   :blood-line true  :birth 1968}
+           {:id 80  :first-name "Antoine"         :last-name "Troncy"     :generation 4 :sex "male"   :blood-line true  :birth 1969}
+           {:id 81  :first-name "Laurence"        :last-name "Sadoux"     :generation 4 :sex "female" :blood-line false :birth 1969}
+           {:id 82  :first-name "Alexandre"       :last-name "Perrin"     :generation 4 :sex "male"   :blood-line true  :birth 1969}
+           {:id 83  :first-name "Françoise"       :last-name "Cottin"     :generation 5 :sex "female" :blood-line false :birth 1969}
+           {:id 84  :first-name "Nicolas"         :last-name "Bonin"      :generation 5 :sex "male"   :blood-line true  :birth 1970}
+           {:id 85  :first-name "Anne-Laurie"     :last-name "Troncy"     :generation 4 :sex "female" :blood-line true  :birth 1971}
            ]
    :links [{:source 1   :target 0   :relation :partner}
            {:source 4   :target 0   :relation :child}
@@ -190,21 +194,30 @@
            {:source 70  :target 36  :relation :child}
            {:source 70  :target 37  :relation :child}
            {:source 70  :target 62  :relation :partner}
-           {:source 71  :target 23  :relation :child}
-           {:source 71  :target 31  :relation :child}
+           {:source 71  :target 38  :relation :child}
+           {:source 71  :target 40  :relation :child}
+           {:source 72  :target 23  :relation :child}
+           {:source 72  :target 31  :relation :child}
+           {:source 75  :target 36  :relation :child}
+           {:source 75  :target 37  :relation :child}
+           {:source 75  :target 73  :relation :partner}
+           {:source 76  :target 72  :relation :partner}
+           {:source 78  :target 35  :relation :child}
+           {:source 78  :target 42  :relation :child}
+           {:source 78  :target 74  :relation :partner}
 
-           {:source 74  :target 36  :relation :child}
-           {:source 74  :target 37  :relation :child}
-           {:source 74  :target 72  :relation :partner}
-           {:source 75  :target 71  :relation :partner}
-           {:source 77  :target 35  :relation :child}
-           {:source 77  :target 42  :relation :child}
-           {:source 77  :target 73  :relation :partner}
-           {:source 78  :target 23  :relation :child}
-           {:source 78  :target 31  :relation :child}
-           {:source 79  :target 78  :relation :partner}
-           {:source 80  :target 35  :relation :child}
-           {:source 80  :target 42  :relation :child}
-           {:source 81  :target 28  :relation :child}
-           {:source 81  :target 29  :relation :child}
+           {:source 79  :target 38  :relation :child}
+           {:source 79  :target 40  :relation :child}
+           {:source 79  :target 83  :relation :partner}
+
+
+           {:source 80  :target 23  :relation :child}
+           {:source 80  :target 31  :relation :child}
+           {:source 81  :target 80  :relation :partner}
+           {:source 82  :target 35  :relation :child}
+           {:source 82  :target 42  :relation :child}
+           {:source 84  :target 38  :relation :child}
+           {:source 84  :target 40  :relation :child}
+           {:source 85  :target 28  :relation :child}
+           {:source 85  :target 29  :relation :child}
            ]})
