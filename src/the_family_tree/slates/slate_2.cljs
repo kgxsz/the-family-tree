@@ -17,8 +17,8 @@
   (* 2.7 (- year 1849)))
 
 (def force-field (-> js/d3 .-layout .force
-                     (.charge -300)
-                     (.linkDistance (fn [d] (if (= "partner" (.-relation d)) 40 80)))
+                     (.charge -400)
+                     (.linkDistance (fn [d] (if (= "partner" (.-relation d)) 30 60)))
                      (.gravity 0)))
 
 (defn enterfy-data
@@ -65,6 +65,13 @@
         node   (-> (enterfy-data canvas (.-nodes data) "circle" "node")
                    (.attr "class" "node")
                    (.attr "r" 6)
+                   (.style "fill" (fn [d] (case (aget d "generation")
+                                            1 "#2DBCF0"
+                                            2 "#2E3192"
+                                            3 "#C4161C"
+                                            4 "#8CC63F"
+                                            5 "#FAA61A"
+                                            6 "#ED0F93")))
                    (.call (.-drag force-field)))]
     (-> node
         (.append "title")

@@ -11,12 +11,11 @@
      [:#canvas {:width "1400px"
                 :height "1000px"
                 :float "left"}
-      [:.link {:stroke (:faded-yellow colours)}
+      [:.link {:stroke "#DEDEDE"}
        [:&.partner {:stroke-width 4
                     :stroke-dasharray "3 3"}]
        [:&.child {:stroke-width 2}]]
-      [:.node {:stroke-width 1
-               :fill (:hard-yellow colours)}]
+      [:.node {:stroke-width 1}]
       [:.ring {:stroke (:light-blue colours)
                :stroke-width 6
                :fill "none"}]
