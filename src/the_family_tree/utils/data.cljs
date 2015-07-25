@@ -87,6 +87,12 @@
            {:id 83  :first-name "Françoise"       :last-name "Cottin"     :generation 5 :sex "female" :blood-line false :birth 1969}
            {:id 84  :first-name "Nicolas"         :last-name "Bonin"      :generation 5 :sex "male"   :blood-line true  :birth 1970}
            {:id 85  :first-name "Anne-Laurie"     :last-name "Troncy"     :generation 4 :sex "female" :blood-line true  :birth 1971}
+           {:id 86  :first-name "Clémentine"      :last-name "Labaty"     :generation 4 :sex "female" :blood-line false :birth 1971}
+           {:id 87  :first-name "Sophie"          :last-name "Jullat"     :generation 4 :sex "female" :blood-line false :birth 1971}
+           {:id 88  :first-name "Anne"            :last-name "Bertin"     :generation 5 :sex "female" :blood-line true  :birth 1971}
+           {:id 89  :first-name "Charles-Eric"    :last-name "Bonin"      :generation 5 :sex "male"   :blood-line true  :birth 1972 :death 1972}
+           {:id 90  :first-name "Marianne"        :last-name "Goudot"     :generation 5 :sex "female" :blood-line true  :birth 1972}
+           {:id 91  :first-name "Vanessa"         :last-name "Lebon"      :generation 5 :sex "female"  :blood-line false  :birth 1973}
            ]
    :links [{:source 1   :target 0   :relation :partner}
            {:source 4   :target 0   :relation :child}
@@ -154,7 +160,6 @@
            {:source 44  :target 18  :relation :child}
            {:source 44  :target 19  :relation :child}
            {:source 44  :target 41  :relation :partner}
-           {:source 44  :target 41  :relation :partner}
            {:source 46  :target 14  :relation :child}
            {:source 46  :target 16  :relation :child}
            {:source 47  :target 32  :relation :partner}
@@ -205,12 +210,9 @@
            {:source 78  :target 35  :relation :child}
            {:source 78  :target 42  :relation :child}
            {:source 78  :target 74  :relation :partner}
-
            {:source 79  :target 38  :relation :child}
            {:source 79  :target 40  :relation :child}
            {:source 79  :target 83  :relation :partner}
-
-
            {:source 80  :target 23  :relation :child}
            {:source 80  :target 31  :relation :child}
            {:source 81  :target 80  :relation :partner}
@@ -220,4 +222,14 @@
            {:source 84  :target 40  :relation :child}
            {:source 85  :target 28  :relation :child}
            {:source 85  :target 29  :relation :child}
+           {:source 86  :target 78  :relation :partner}
+           {:source 87  :target 82  :relation :partner}
+           {:source 88  :target 36  :relation :child}
+           {:source 88  :target 37  :relation :child}
+           {:source 88  :target 68  :relation :partner}
+           {:source 89  :target 38  :relation :child}
+           {:source 89  :target 40  :relation :child}
+           {:source 90  :target 41  :relation :child}
+           {:source 90  :target 44  :relation :child}
+           {:source 91  :target 84  :relation :partner}
            ]})
