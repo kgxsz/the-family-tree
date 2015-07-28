@@ -116,13 +116,13 @@
            {:id 112 :first-name "Oliver"          :last-name "Gaillet"     :generation 5 :sex "male"   :blood-line false :birth 1981}
            {:id 113 :first-name "Eric"            :last-name "Barrière"    :generation 5 :sex "male"   :blood-line true  :birth 1982}
            {:id 114 :first-name "Alice"           :last-name "Beaudin"     :generation 5 :sex "female" :blood-line true  :birth 1982}
-
            {:id 115 :first-name "Didier"          :last-name "Troncy"      :generation 4 :sex "male"   :blood-line true  :birth 1982}
            {:id 116 :first-name "Olivier"         :last-name "Troncy"      :generation 4 :sex "male"   :blood-line true  :birth 1982}
            {:id 117 :first-name "Thibault"        :last-name "Dieterlé"    :generation 5 :sex "male"   :blood-line true  :birth 1984}
            {:id 118 :first-name "Leïla"           :last-name "Suzukawa"    :generation 5 :sex "female" :blood-line true  :birth 1984}
            {:id 119 :first-name "Anne-Sophie"     :last-name "Cappio"      :generation 5 :sex "female" :blood-line false :birth 1985}
            {:id 120 :first-name "Caroline"        :last-name "Rodier"      :generation 5 :sex "female" :blood-line true  :birth 1985}
+
            {:id 121 :first-name "Marine"          :last-name "Faivre"      :generation 5 :sex "female" :blood-line true  :birth 1986}
            {:id 122 :first-name "Johanna"         :last-name "Viosi"       :generation 5 :sex "female" :blood-line false :birth 1986}
            {:id 123 :first-name "Clément"         :last-name "Beaudin"     :generation 5 :sex "male"   :blood-line true  :birth 1986}
@@ -358,4 +358,18 @@
            {:source 114 :target 45  :relation :child}
            {:source 114 :target 58  :relation :child}
            {:source 114 :target 95  :relation :partner}
+           {:source 115 :target 32  :relation :child}
+           {:source 115 :target 47  :relation :child}
+           {:source 116 :target 43  :relation :child}
+           {:source 116 :target 50  :relation :child}
+           {:source 117 :target 57  :relation :child}
+           {:source 117 :target 61  :relation :child}
+           {:source 118 :target 51  :relation :child}
+           {:source 118 :target 60  :relation :child}
+           {:source 119 :target 79  :relation :partner}
+           {:source 120 :target 55  :relation :child}
+           {:source 120 :target 63  :relation :child}
+           {:source 120 :target 112  :relation :partner}
+           {:source 121 :target 72  :relation :child}
+           {:source 121 :target 76  :relation :child}
            ]})
