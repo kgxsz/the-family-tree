@@ -129,7 +129,6 @@
            {:id 125 :first-name "Keigo"           :last-name "Suzukawa"    :generation 5 :sex "male"   :blood-line true  :birth 1986}
            {:id 126 :first-name "Laetitia"        :last-name "Rodier"      :generation 5 :sex "female" :blood-line true  :birth 1987}
            {:id 127 :first-name "Grégoire"        :last-name "Giraud"      :generation 5 :sex "male"   :blood-line true  :birth 1987}
-
            {:id 128 :first-name "Vincent"         :last-name "Pourtier"    :generation 6 :sex "male"   :blood-line true  :birth 1988}
            {:id 129 :first-name "Kaya"            :last-name "Suzukawa"    :generation 5 :sex "female" :blood-line true  :birth 1988}
            {:id 130 :first-name "Blandine"        :last-name "Patay"       :generation 5 :sex "female" :blood-line true  :birth 1989}
@@ -140,13 +139,14 @@
            {:id 135 :first-name "Pierre"          :last-name "Pourtier"    :generation 6 :sex "male"   :blood-line true  :birth 1991}
            {:id 136 :first-name "Marine"          :last-name "Troncy"      :generation 4 :sex "female" :blood-line true  :birth 1991}
            {:id 137 :first-name "Jean"            :last-name "Pourtier"    :generation 6 :sex "male"   :blood-line true  :birth 1992}
-           {:id 138 :first-name "Valérie"         :last-name "Pourtier"    :generation 6 :sex "female" :blood-line true  :birth 1992}
-           {:id 139 :first-name "Alix"            :last-name "Perret"      :generation 5 :sex "male"   :blood-line true  :birth 1992}
-           {:id 140 :first-name "Ségolène"        :last-name "Giraud"      :generation 5 :sex "female" :blood-line true  :birth 1992}
-           {:id 141 :first-name "Armelle"         :last-name "Perret"      :generation 5 :sex "female" :blood-line true  :birth 1994}
-           {:id 142 :first-name "Charlotte"       :last-name "Faivre"      :generation 5 :sex "female" :blood-line true  :birth 1994}
-           {:id 143 :first-name "Emilie"          :last-name "Bertin"      :generation 6 :sex "female" :blood-line true  :birth 1995}
-           {:id 144 :first-name "Mathilde"        :last-name "Perrin"      :generation 5 :sex "female" :blood-line true  :birth 1996}
+
+           {:id 138 :first-name "Alix"            :last-name "Perret"      :generation 5 :sex "male"   :blood-line true  :birth 1992}
+           {:id 139 :first-name "Ségolène"        :last-name "Giraud"      :generation 5 :sex "female" :blood-line true  :birth 1992}
+           {:id 140 :first-name "Armelle"         :last-name "Perret"      :generation 5 :sex "female" :blood-line true  :birth 1994}
+           {:id 141 :first-name "Charlotte"       :last-name "Faivre"      :generation 5 :sex "female" :blood-line true  :birth 1994}
+           {:id 142 :first-name "Emilie"          :last-name "Bertin"      :generation 6 :sex "female" :blood-line true  :birth 1995}
+           {:id 143 :first-name "Mathilde"        :last-name "Perrin"      :generation 5 :sex "female" :blood-line true  :birth 1996}
+           {:id 144 :first-name "Valérie"         :last-name "Pourtier"    :generation 6 :sex "female" :blood-line true  :birth 1997}
            {:id 145 :first-name "Prune"           :last-name "Faivre"      :generation 5 :sex "female" :blood-line true  :birth 1997}
            {:id 146 :first-name "Alexandre"       :last-name "Bertin"      :generation 6 :sex "male"   :blood-line true  :birth 1998}
            {:id 147 :first-name "Romain"          :last-name "Bonin"       :generation 6 :sex "male"   :blood-line true  :birth 1999}
@@ -383,4 +383,26 @@
            {:source 126 :target 63  :relation :child}
            {:source 127 :target 64  :relation :child}
            {:source 127 :target 65  :relation :child}
+           {:source 128 :target 62  :relation :child}
+           {:source 128 :target 70  :relation :child}
+           {:source 129 :target 51  :relation :child}
+           {:source 129 :target 60  :relation :child}
+           {:source 130 :target 53  :relation :child}
+           {:source 130 :target 66  :relation :child}
+           {:source 131 :target 55  :relation :child}
+           {:source 131 :target 63  :relation :child}
+           {:source 132 :target 56  :relation :child}
+           {:source 132 :target 59  :relation :child}
+           {:source 133 :target 53  :relation :child}
+           {:source 133 :target 66  :relation :child}
+           {:source 134 :target 64  :relation :child}
+           {:source 134 :target 65  :relation :child}
+           {:source 135 :target 62  :relation :child}
+           {:source 135 :target 70  :relation :child}
+           {:source 136 :target 32  :relation :child}
+           {:source 136 :target 47  :relation :child}
+           {:source 137 :target 62  :relation :child}
+           {:source 137 :target 70  :relation :child}
+           {:source 138 :target 56  :relation :child}
+           {:source 138 :target 59  :relation :child}
            ]})
