@@ -157,7 +157,7 @@
            {:id 153 :first-name "Ambre"           :last-name "Bonin"       :generation 6 :sex "male"   :blood-line true  :birth 2004}
            {:id 154 :first-name "Sébastien"       :last-name "Troncy"      :generation 5 :sex "male"   :blood-line true  :birth 2004}
            {:id 155 :first-name "Gabrielle"       :last-name "Cheilan"     :generation 6 :sex "female" :blood-line true  :birth 2005}
-           {:id 156 :first-name "Aymeric"         :last-name "Le Mintier"  :generation 5 :sex "male"   :blood-line true  :birth 2005}
+           {:id 156 :first-name "Aymeric"         :last-name "Le Mintier"  :generation 6 :sex "male"   :blood-line true  :birth 2005}
            {:id 157 :first-name "Clémence"        :last-name "Troncy"      :generation 5 :sex "female" :blood-line true  :birth 2005}
            {:id 158 :first-name "Louna"           :last-name "Perrin"      :generation 5 :sex "male"   :blood-line true  :birth 2005}
            {:id 159 :first-name "Lucas"           :last-name "Morin"       :generation 6 :sex "male"   :blood-line true  :birth 2006}
@@ -165,11 +165,11 @@
            {:id 161 :first-name "Guillaume"       :last-name "Troncy"      :generation 5 :sex "male"   :blood-line true  :birth 2006}
            {:id 162 :first-name "Eva"             :last-name "Perrin"      :generation 5 :sex "female" :blood-line true  :birth 2006}
            {:id 163 :first-name "Milo"            :last-name "Perrin"      :generation 5 :sex "male"   :blood-line true  :birth 2006}
-           {:id 164 :first-name "Jeanne"          :last-name "Le Mintier"  :generation 5 :sex "female" :blood-line true  :birth 2007}
+           {:id 164 :first-name "Jeanne"          :last-name "Le Mintier"  :generation 6 :sex "female" :blood-line true  :birth 2007}
            {:id 165 :first-name "Robin"           :last-name "Cheilan"     :generation 6 :sex "male"   :blood-line true  :birth 2007}
            {:id 166 :first-name "Lola"            :last-name "Morin"       :generation 6 :sex "female" :blood-line true  :birth 2008}
            {:id 167 :first-name "Hanaé"           :last-name "Bonin"       :generation 6 :sex "female" :blood-line true  :birth 2009}
-           {:id 168 :first-name "Clara"           :last-name "Le Mintier"  :generation 5 :sex "female" :blood-line true  :birth 2009}
+           {:id 168 :first-name "Clara"           :last-name "Le Mintier"  :generation 6 :sex "female" :blood-line true  :birth 2009}
            {:id 169 :first-name "Charles"         :last-name "Troncy"      :generation 5 :sex "male"   :blood-line true  :birth 2009}
            {:id 170 :first-name "Balian"          :last-name "Perrin"      :generation 5 :sex "male"   :blood-line true  :birth 2009}
            {:id 171 :first-name "Simon"           :last-name "Wolff"       :generation 6 :sex "male"   :blood-line true  :birth 2010}
@@ -178,7 +178,7 @@
            {:id 174 :first-name "Augustin"        :last-name "Gaillet"     :generation 6 :sex "male"   :blood-line true  :birth 2011}
            {:id 175 :first-name "Loïse"           :last-name "Maria"       :generation 6 :sex "female" :blood-line true  :birth 2011}
            {:id 176 :first-name "Mathilde"        :last-name "Troncy"      :generation 5 :sex "female" :blood-line true  :birth 2012}
-           {:id 177 :first-name "Lenny"           :last-name "Dieterlé"    :generation 5 :sex "male"   :blood-line true  :birth 2014}
+           {:id 177 :first-name "Lenny"           :last-name "Dieterlé"    :generation 6 :sex "male"   :blood-line true  :birth 2014}
            {:id 178 :first-name "Gaspard"         :last-name "Maria"       :generation 6 :sex "male"   :blood-line true  :birth 2015}]
    :links [{:source 1   :target 0   :relation :partner}
            {:source 4   :target 0   :relation :child}
@@ -460,7 +460,7 @@
            {:source 166 :target 88  :relation :child}
            {:source 167 :target 84  :relation :child}
            {:source 167 :target 91  :relation :child}
-           {:source 168 :target 93  :relation :child}
+           {:source 168 :target 77  :relation :child}
            {:source 168 :target 93  :relation :child}
            {:source 169 :target 103 :relation :child}
            {:source 169 :target 105 :relation :child}
