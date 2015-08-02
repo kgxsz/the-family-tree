@@ -122,7 +122,6 @@
            {:id 118 :first-name "Leïla"           :last-name "Suzukawa"    :generation 5 :sex "female" :blood-line true  :birth 1984}
            {:id 119 :first-name "Anne-Sophie"     :last-name "Cappio"      :generation 5 :sex "female" :blood-line false :birth 1985}
            {:id 120 :first-name "Caroline"        :last-name "Rodier"      :generation 5 :sex "female" :blood-line true  :birth 1985}
-
            {:id 121 :first-name "Marine"          :last-name "Faivre"      :generation 5 :sex "female" :blood-line true  :birth 1986}
            {:id 122 :first-name "Johanna"         :last-name "Viosi"       :generation 5 :sex "female" :blood-line false :birth 1986}
            {:id 123 :first-name "Clément"         :last-name "Beaudin"     :generation 5 :sex "male"   :blood-line true  :birth 1986}
@@ -130,6 +129,7 @@
            {:id 125 :first-name "Keigo"           :last-name "Suzukawa"    :generation 5 :sex "male"   :blood-line true  :birth 1986}
            {:id 126 :first-name "Laetitia"        :last-name "Rodier"      :generation 5 :sex "female" :blood-line true  :birth 1987}
            {:id 127 :first-name "Grégoire"        :last-name "Giraud"      :generation 5 :sex "male"   :blood-line true  :birth 1987}
+
            {:id 128 :first-name "Vincent"         :last-name "Pourtier"    :generation 6 :sex "male"   :blood-line true  :birth 1988}
            {:id 129 :first-name "Kaya"            :last-name "Suzukawa"    :generation 5 :sex "female" :blood-line true  :birth 1988}
            {:id 130 :first-name "Blandine"        :last-name "Patay"       :generation 5 :sex "female" :blood-line true  :birth 1989}
@@ -369,7 +369,18 @@
            {:source 119 :target 79  :relation :partner}
            {:source 120 :target 55  :relation :child}
            {:source 120 :target 63  :relation :child}
-           {:source 120 :target 112  :relation :partner}
+           {:source 120 :target 112 :relation :partner}
            {:source 121 :target 72  :relation :child}
            {:source 121 :target 76  :relation :child}
+           {:source 122 :target 117 :relation :partner}
+           {:source 123 :target 45  :relation :child}
+           {:source 123 :target 58  :relation :child}
+           {:source 124 :target 43  :relation :child}
+           {:source 124 :target 50  :relation :child}
+           {:source 125 :target 51  :relation :child}
+           {:source 125 :target 60  :relation :child}
+           {:source 126 :target 55  :relation :child}
+           {:source 126 :target 63  :relation :child}
+           {:source 127 :target 64  :relation :child}
+           {:source 127 :target 65  :relation :child}
            ]})
