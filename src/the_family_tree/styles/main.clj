@@ -30,7 +30,7 @@
     [:.backdrop {:display "table-cell"
                  :vertical-align "middle"}
      [:.content {:overflow "hidden"
-                 :margin "60px auto"
+                 :margin "0 auto"
                  :width "1400px"
                  :text-align "center"}]]]])
 
