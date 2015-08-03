@@ -21,4 +21,5 @@
    :soft-green "#F3F9EB"
    :hard-green "#8CC63F"
    :faded-green "#C0E095"
-   :white "#FAFAFA"})
+   :light-gray "#F4F4F4"
+   :white "#FFF"})

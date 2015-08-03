@@ -4,8 +4,7 @@
             [garden.stylesheet :refer :all]
             [the-family-tree.styles.utils.variables :refer :all]
             [the-family-tree.styles.utils.helpers :refer :all]
-            [the-family-tree.styles.slates.slate-1 :refer [slate-1]]
-            [the-family-tree.styles.slates.slate-2 :refer [slate-2]]))
+            [the-family-tree.styles.slates.slate-1 :refer [slate-1]]))
 
 (defstyles common
   (at-font-face {:font-family "Source Sans Pro Bold"
@@ -34,8 +33,4 @@
                  :width "1400px"
                  :text-align "center"}]]]])
 
-(defstyles base
-  common
-  pile
-  slate-1
-  slate-2)
+(defstyles base common pile slate-1)

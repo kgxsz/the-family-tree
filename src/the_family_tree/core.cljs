@@ -4,14 +4,12 @@
             [om-tools.core :refer-macros [defcomponent]]
             [om-tools.dom :as dom :include-macros true]
             [the-family-tree.interactor :refer [setup-key-press-interaction]]
-            [the-family-tree.slates.slate-1 :refer [slate-1]]
-            [the-family-tree.slates.slate-2 :refer [slate-2]]))
+            [the-family-tree.slates.slate-1 :refer [slate-1]]))
 
 (enable-console-print!)
 
 (defonce state
-  (atom {:slates {:slate-1 {}
-                  :slate-2 {}}}))
+  (atom {:slates {:slate-1 {}}}))
 
 (defcomponent pile
   "This guy is the root component, it's the pile in
@@ -22,8 +20,7 @@
     (println "Rendered root component with state:" state)
     (dom/div
       {:id "pile"}
-      (om/build slate-1 (:slate-1 slates))
-      (om/build slate-2 (:slate-2 slates)))))
+      (om/build slate-1 (:slate-1 slates)))))
 
 (defn setup-root-component
   [state]
