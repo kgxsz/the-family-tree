@@ -8,6 +8,11 @@
 
 (def origin {:x 700 :y 500})
 
+(def force-field (-> js/d3 .-layout .force
+                     (.charge -400)
+                     (.linkDistance (fn [d] (if (= "partner" (.-relation d)) 30 60)))
+                     (.gravity 0)))
+
 (defn year-to-radius
   "The passage of time is represented in a radially
    increasing manner, at a rate of three pixels per year,
@@ -16,14 +21,9 @@
   [year]
   (* 2.7 (- year 1849)))
 
-(def force-field (-> js/d3 .-layout .force
-                     (.charge -400)
-                     (.linkDistance (fn [d] (if (= "partner" (.-relation d)) 30 60)))
-                     (.gravity 0)))
-
 (defn enterfy-data
   [parent-element data svg-type selector]
-  (-> (.selectAll parent-element (str "." selector))
+  (-> (.selectAll parent-element selector)
       (.data data) .enter
       (.append svg-type)))
 
@@ -31,7 +31,6 @@
   [entity relations]
   (doseq [{:keys [attr data-korks]} relations]
     (.attr entity attr (fn [d] (apply (partial aget d) data-korks)))))
-
 
 (defn update-entities
   [node link]
@@ -60,22 +59,15 @@
 (defn graphify
   [data]
   (let [canvas (.select js/d3 "#slate-1 #canvas")
-        link   (-> (enterfy-data canvas (.-links data) "line" "link")
-                   (.attr "class" (fn [d] (str "link " (.-relation d)))))
-        node   (-> (enterfy-data canvas (.-nodes data) "circle" "node")
-                   (.attr "class" "node")
+        link   (-> (enterfy-data canvas (.-links data) "line" ".link")
+                   (.attr "class" (fn [d] (apply str (interpose " " ["link" (.-relation d) (.-family d)])))))
+        node   (-> (enterfy-data canvas (.-nodes data) "circle" ".node")
+                   (.attr "class" (fn [d] (apply str (interpose " " ["node" (.-family d)]))))
                    (.attr "r" 6)
-                   (.style "fill" (fn [d] (case (aget d "generation")
-                                            1 "#2DBCF0"
-                                            2 "#2E3192"
-                                            3 "#C4161C"
-                                            4 "#8CC63F"
-                                            5 "#FAA61A"
-                                            6 "#ED0F93")))
                    (.call (.-drag force-field)))]
     (-> node
         (.append "title")
-        (.text (fn [d] (str (aget d "first-name") " " (aget d "last-name") " - " (aget d "birth")))))
+        (.text (fn [d] (.-name d))))
     (-> force-field
         (.nodes (.-nodes data))
         (.links (.-links data))
@@ -87,12 +79,12 @@
 (defn draw-scale
   [data]
   (let [canvas (.select js/d3 "#slate-1 #canvas")
-        ring   (-> (enterfy-data canvas data "circle" "ring")
+        ring   (-> (enterfy-data canvas data "circle" ".ring")
                    (.attr "class" "ring")
                    (.attr "cx" (:x origin))
                    (.attr "cy" (:y origin))
                    (.attr "r" (fn [d] (year-to-radius d))))
-        mask   (-> (enterfy-data canvas (clj->js data) "rect" "mask")
+        mask   (-> (enterfy-data canvas (clj->js data) "rect" ".mask")
                    (.attr "class" "mask")
                    (.attr "width" 10) (.attr "height" 20)
                    (.attr "x" (fn [_ i] (+ 25 (:x origin) (* 54 i))))
@@ -101,7 +93,7 @@
 (defn draw-label
   [data]
   (let [canvas (.select js/d3 "#slate-1 #canvas")
-        label  (-> (enterfy-data canvas data "text" "label")
+        label  (-> (enterfy-data canvas data "text" ".label")
                    (.attr "class" "label")
                    (.text (fn [d] d))
                    (.attr "x" (fn [_ i] (+ 13 (:x origin) (* 54 i))))
