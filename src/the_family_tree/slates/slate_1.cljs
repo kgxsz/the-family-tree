@@ -6,7 +6,7 @@
             [cljsjs.d3 :as d3]))
 
 (def origin
-  "The central point of the scale."
+  "The central point of the graph."
   {:x 500 :y 500})
 
 (def scale
@@ -39,6 +39,19 @@
   [year]
   (* 2.7 (- year 1849)))
 
+(defn enter-data
+  "Uses a selector on a parent
+   element to enter data."
+  [parent-element selector data]
+  (-> (.selectAll parent-element selector)
+      (.data data)
+      .enter))
+
+(defn attribufy
+  [entity attributes]
+  (doseq [[k v] attributes] (.attr entity k v))
+  entity)
+
 (defn constrain-node-radially
   "Takes the node's position and updates it such that it
    is constrained to a ring where the radius is defined by
@@ -53,53 +66,38 @@
       (set! (.-x node) x)
       (set! (.-y node) y))))
 
-
-;;;;;;;;;;;;; d3 helper functions ;;;;;;;;;;;;;;
-
-(defn enter-data
-  "Uses a selector on a parent
-   element to enter data."
-  [parent-element selector data]
-  (-> (.selectAll parent-element selector)
-      (.data data)
-      .enter))
-
-(defn attributize-data
-  [entity relations]
-  (doseq [{:keys [attr data]} relations]
-    (.attr entity attr (fn [d] (apply (partial aget d) data)))))
-
-(defn update-entities
-  [node link]
-  (attributize-data link [{:attr "x1" :data ["source" "x"]}
-                          {:attr "y1" :data ["source" "y"]}
-                          {:attr "x2" :data ["target" "x"]}
-                          {:attr "y2" :data ["target" "y"]}])
-  (attributize-data node [{:attr "cx" :data "x"}
-                          {:attr "cy" :data "y"}]))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defn update-positions
+  "Takes the current data, updates the positions of nodes,
+   then updates the attrbutes on the node and link SVG
+   entities to reflect the new positions."
+  [data node link]
+  (.forEach (.-nodes data) constrain-node-radially)
+  (attribufy node {"cx" (fn [d] (.-x d))
+                   "cy" (fn [d] (.-y d))})
+  (attribufy link {"x1" (fn [d] (.. d -source -x))
+                   "y1" (fn [d] (.. d -source -y))
+                   "x2" (fn [d] (.. d -target -x))
+                   "y2" (fn [d] (.. d -target -y))}))
 
 (defn draw-data
+  "Create node/link entities, apply the force field to the nodes and kick it off."
   [data]
-  (let [link   (-> (enter-data (select-graph) ".link" (.-links data))
-                   (.append "line")
-                   (.attr "class" (fn [d] (apply str (interpose " " ["link" (.-relation d) (.-family d)])))))
-        node   (-> (enter-data (select-graph) ".node" (.-nodes data))
-                   (.append "circle")
-                   (.call (.-drag force-field))
-                   (.attr "class" (fn [d] (apply str (interpose " " ["node" (.-family d)]))))
-                   (.attr "r" 6))]
+  (let [node (-> (enter-data (select-graph) ".node" (.-nodes data))
+                 (.append "circle")
+                 (.call (.-drag force-field))
+                 (attribufy {"class" (fn [d] (apply str (interpose " " ["node" (.-family d)])))
+                             "r" 5}))
+        link (-> (enter-data (select-graph) ".link" (.-links data))
+                 (.append "line")
+                 (attribufy {"class" (fn [d] (apply str (interpose " " ["link" (.-relation d) (.-family d)])))}))]
     (-> node
         (.append "title")
         (.text #(.-name %)))
     (-> force-field
         (.nodes (.-nodes data))
         (.links (.-links data))
-        .start)
-    (-> force-field
-        (.on "tick" #(do (.forEach (.-nodes data) constrain-node-radially)
-                         (update-entities node link))))))
+        .start
+        (.on "tick" #(update-positions data node link)))))
 
 ;; Should this really be a data driven draw? Shouldn't it be simpler than that?
 
