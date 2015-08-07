@@ -98,10 +98,11 @@
        (colour-by-family "Le-Mintier" :fill)
        (colour-by-family "Dieterlé" :fill)]
       [:.ring {:stroke (:light-gray colours)
-               :stroke-width 6
+               :stroke-width 5
                :fill "none"}]
       [:.mask {:fill (:white colours)}]
       [:.label {:font-size "1em"
+                :text-anchor "middle"
                 :opacity 0.5
                 :pointer-events "none"}]]
      [:#legend {:width "400px"

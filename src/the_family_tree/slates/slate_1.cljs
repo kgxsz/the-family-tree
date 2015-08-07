@@ -13,7 +13,7 @@
   "This scale is made up of 20 year intervals starting
    in 1860 and ending at 2020, this is used to draw
    the concentric rings and their labels."
-  (range 1860 2040 20))
+  (clj->js (range 1860 2040 20)))
 
 (def force-field
   "Holds a configured instance of d3's force directed graph,
@@ -67,29 +67,30 @@
       (set! (.-y node) y))))
 
 (defn update-positions
-  "Takes the current data, updates the positions of nodes,
-   then updates the attrbutes on the node and link SVG
-   entities to reflect the new positions."
+  "Takes the current data, updates the positions of
+   nodes, then updates the attrbutes on the link/node
+   SVG entities to reflect the new positions."
   [data node link]
   (.forEach (.-nodes data) constrain-node-radially)
-  (attribufy node {"cx" (fn [d] (.-x d))
-                   "cy" (fn [d] (.-y d))})
   (attribufy link {"x1" (fn [d] (.. d -source -x))
                    "y1" (fn [d] (.. d -source -y))
                    "x2" (fn [d] (.. d -target -x))
-                   "y2" (fn [d] (.. d -target -y))}))
+                   "y2" (fn [d] (.. d -target -y))})
+  (attribufy node {"cx" (fn [d] (.-x d))
+                   "cy" (fn [d] (.-y d))}))
 
 (defn draw-data
-  "Create node/link entities, apply the force field to the nodes and kick it off."
+  "Draws link/node entities, applies the force field to the nodes and kicks it off.
+   Note that the order in which the SVG elements are created is visually important."
   [data]
-  (let [node (-> (enter-data (select-graph) ".node" (.-nodes data))
+  (let [link (-> (enter-data (select-graph) ".link" (.-links data))
+                 (.append "line")
+                 (attribufy {"class" (fn [d] (apply str (interpose " " ["link" (.-relation d) (.-family d)])))}))
+        node (-> (enter-data (select-graph) ".node" (.-nodes data))
                  (.append "circle")
                  (.call (.-drag force-field))
                  (attribufy {"class" (fn [d] (apply str (interpose " " ["node" (.-family d)])))
-                             "r" 5}))
-        link (-> (enter-data (select-graph) ".link" (.-links data))
-                 (.append "line")
-                 (attribufy {"class" (fn [d] (apply str (interpose " " ["link" (.-relation d) (.-family d)])))}))]
+                             "r" 5}))]
     (-> node
         (.append "title")
         (.text #(.-name %)))
@@ -99,40 +100,41 @@
         .start
         (.on "tick" #(update-positions data node link)))))
 
-;; Should this really be a data driven draw? Shouldn't it be simpler than that?
-
 (defn draw-axes
+  "Draws the radial rings to represent years, as well as the masked
+   area of the ring where the year label will be placed."
   [data]
   (let [ring   (-> (enter-data (select-graph) ".ring" data)
                    (.append "circle")
-                   (.attr "class" "ring")
-                   (.attr "cx" (:x origin))
-                   (.attr "cy" (:y origin))
-                   (.attr "r" (fn [d] (year-to-radius d))))
+                   (attribufy {"class" "ring"
+                               "cx" (:x origin)
+                               "cy" (:y origin)
+                               "r" #(year-to-radius %)}))
         mask   (-> (enter-data (select-graph) ".mask" data)
                    (.append "rect")
-                   (.attr "class" "mask")
-                   (.attr "width" 10)
-                   (.attr "height" 20)
-                   (.attr "x" (fn [_ i] (+ 25 (:x origin) (* 54 i))))
-                   (.attr "y" (- (:y origin) 8)))]))
+                   (attribufy {"class" "mask"
+                               "width" 10
+                               "height" 20
+                               "x" #(+ (:x origin) (year-to-radius %) -5)
+                               "y" (- (:y origin) 8)}))]))
 
 (defn draw-labels
+  "Draws the year label for each concentric ring."
   [data]
   (let [label  (-> (enter-data (select-graph) ".label" data)
                    (.append "text")
                    (.text #(identity %))
-                   (.attr "class" "label")
-                   (.attr "x" (fn [_ i] (+ 13 (:x origin) (* 54 i))))
-                   (.attr "y" (+ 7 (:y origin))))]))
+                   (attribufy {"class" "label"
+                               "x" #(+ (:x origin) (year-to-radius %))
+                               "y" (+ 7 (:y origin))}))]))
 
 (defcomponent slate-1
   [state owner]
   (did-mount
     [_]
-    (draw-axes (clj->js scale))
+    (draw-axes scale)
     (draw-data (clj->js family-data))
-    (draw-labels (clj->js scale)))
+    (draw-labels scale))
   (render-state
     [_ _]
     (println "Rendering slate-1 component with state:" state)
