@@ -1,9 +1,11 @@
 (ns the-family-tree.styles.slates.slate-1
   (:require [garden.def :refer [defstyles]]
-            [the-family-tree.styles.utils.variables :refer :all]
-            [the-family-tree.styles.utils.helpers :refer :all]))
+            [the-family-tree.styles.utils.variables :refer :all]))
 
 (def family-colour
+ "Here, each family is assigned a colour,
+  much care has been made in choosing colours
+  that do not clash within family branches."
  {"Patay" (:grapefruit-red colours)
   "Maria" (:olive colours)
   "Bonin" (:medium-blue colours)
@@ -38,9 +40,9 @@
   [:#slate-1
    [:.backdrop
     [:.content
-     [:#canvas {:width "1400px"
-                :height "1000px"
-                :float "left"}
+     [:#graph {:width "1000px"
+               :height "1000px"
+               :float "left"}
       [:.link {:stroke (:sea-gray colours)
                :opacity 0.3 }
        [:&.partner {:stroke-width 5
@@ -69,8 +71,7 @@
        (colour-by-family "Perret" :stroke)
        (colour-by-family "Beaudin" :stroke)
        (colour-by-family "Le-Mintier" :stroke)
-       (colour-by-family "Dieterlé" :stroke)
-       ]
+       (colour-by-family "Dieterlé" :stroke)]
       [:.node {:fill (:sea-gray colours)}
        (colour-by-family "Patay" :fill)
        (colour-by-family "Maria" :fill)
@@ -95,12 +96,14 @@
        (colour-by-family "Perret" :fill)
        (colour-by-family "Beaudin" :fill)
        (colour-by-family "Le-Mintier" :fill)
-       (colour-by-family "Dieterlé" :fill)
-       ]
+       (colour-by-family "Dieterlé" :fill)]
       [:.ring {:stroke (:light-gray colours)
                :stroke-width 6
                :fill "none"}]
       [:.mask {:fill (:white colours)}]
       [:.label {:font-size "1em"
                 :opacity 0.5
-                :pointer-events "none"}]]]]])
+                :pointer-events "none"}]]
+     [:#legend {:width "400px"
+               :height "1000px"
+               :float "left"}]]]])
