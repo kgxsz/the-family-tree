@@ -482,14 +482,3 @@
            {:source 177 :target 122 :relation "child"   :family "Dieterlé"}
            {:source 178 :target 114 :relation "child"   :family "Maria"}
            {:source 178 :target 95  :relation "child"   :family "Maria"}]})
-
-#_(defn add-family-to-link
-  [{:keys [source target relation] :as link} nodes]
-  (let [get-attribute (fn [n a] (-> nodes (get n) a))
-        male?         (fn [n] (= "male" (get-attribute n :sex)))
-        family?       (fn [n] (get-attribute n :family))]
-    (case relation
-      "partner" (println  (assoc link :family (if (male? source)
-                                      (family? source)
-                                      (family? target))))
-      "child"   (println (assoc link :family (family? source))))))
