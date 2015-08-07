@@ -3,7 +3,6 @@
             [garden.def :refer [defstyles defrule]]
             [garden.stylesheet :refer :all]
             [the-family-tree.styles.utils.variables :refer :all]
-            [the-family-tree.styles.utils.helpers :refer :all]
             [the-family-tree.styles.slates.slate-1 :refer [slate-1]]))
 
 (defstyles common
