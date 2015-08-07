@@ -15,6 +15,34 @@
    the concentric rings and their labels."
   (clj->js (range 1860 2040 20)))
 
+(def colours
+  "These colours are used to
+   distinguish families."
+  {"Patay"      "#FF4A46"
+   "Maria"      "#9B9700"
+   "Bonin"      "#006FA6"
+   "Calatraba"  "#E20027"
+   "Barrière"   "#B79762"
+   "Wolff"      "#D25B88"
+   "Rodier"     "#953F00"
+   "Gaillet"    "#7A7BFF"
+   "Pourtier"   "#FFA0F2"
+   "Le Blanc"   "#8CC63F"
+   "Cheilan"    "#0CBD66"
+   "Perrin"     "#012C58"
+   "Faivre"     "#F4D749"
+   "Morin"      "#2DBCF0"
+   "Bonnet"     "#FAA61A"
+   "Giraud"     "#958A9F"
+   "Suzukawa"   "#008080"
+   "Troncy"     "#671190"
+   "Goudot"     "#1E6E00"
+   "Bertin"     "#885578"
+   "Perret"     "#FF2F80"
+   "Beaudin"    "#800000"
+   "Le Mintier" "#FF6832"
+   "Dieterlé"   "#D16100"})
+
 (def force-field
   "Holds a configured instance of d3's force directed graph,
    ensuring that link distances are greater for partnerships."
@@ -49,7 +77,12 @@
 
 (defn attribufy
   [entity attributes]
-  (doseq [[k v] attributes] (.attr entity k v))
+  (doseq [[k v] attributes] (.attr entity (name k) v))
+  entity)
+
+(defn stylify
+  [entity styles]
+  (doseq [[k v] styles] (.style entity (name k) v))
   entity)
 
 (defn constrain-node-radially
@@ -72,25 +105,29 @@
    SVG entities to reflect the new positions."
   [data node link]
   (.forEach (.-nodes data) constrain-node-radially)
-  (attribufy link {"x1" (fn [d] (.. d -source -x))
-                   "y1" (fn [d] (.. d -source -y))
-                   "x2" (fn [d] (.. d -target -x))
-                   "y2" (fn [d] (.. d -target -y))})
-  (attribufy node {"cx" (fn [d] (.-x d))
-                   "cy" (fn [d] (.-y d))}))
+  (attribufy link {:x1 (fn [d] (.. d -source -x))
+                   :y1 (fn [d] (.. d -source -y))
+                   :x2 (fn [d] (.. d -target -x))
+                   :y2 (fn [d] (.. d -target -y))})
+  (attribufy node {:cx (fn [d] (.-x d))
+                   :cy (fn [d] (.-y d))}))
 
 (defn draw-data
   "Draws link/node entities, applies the force field to the nodes and kicks it off.
    Note that the order in which the SVG elements are created is visually important."
-  [data]
+  [data colours]
   (let [link (-> (enter-data (select-graph) ".link" (.-links data))
                  (.append "line")
-                 (attribufy {"class" (fn [d] (apply str (interpose " " ["link" (.-relation d) (.-family d)])))}))
+                 (attribufy {:class "link"})
+                 (stylify {:stroke           #(get colours (.-family %))
+                           :stroke-width     #(case (.-relation %) "partner" 4 "child" 2)
+                           :stroke-dasharray #(when (= "partner" (.-relation %)) "3 3")}))
         node (-> (enter-data (select-graph) ".node" (.-nodes data))
                  (.append "circle")
                  (.call (.-drag force-field))
-                 (attribufy {"class" (fn [d] (apply str (interpose " " ["node" (.-family d)])))
-                             "r" 5}))]
+                 (attribufy {:class "node"
+                             :r     5})
+                 (stylify {:fill #(get colours (.-family %))}))]
     (-> node
         (.append "title")
         (.text #(.-name %)))
@@ -104,37 +141,42 @@
   "Draws the radial rings to represent years, as well as the masked
    area of the ring where the year label will be placed."
   [data]
-  (let [ring   (-> (enter-data (select-graph) ".ring" data)
-                   (.append "circle")
-                   (attribufy {"class" "ring"
-                               "cx" (:x origin)
-                               "cy" (:y origin)
-                               "r" #(year-to-radius %)}))
-        mask   (-> (enter-data (select-graph) ".mask" data)
-                   (.append "rect")
-                   (attribufy {"class" "mask"
-                               "width" 10
-                               "height" 20
-                               "x" #(+ (:x origin) (year-to-radius %) -5)
-                               "y" (- (:y origin) 8)}))]))
+  (let [ring (-> (enter-data (select-graph) ".ring" data)
+                 (.append "circle")
+                 (attribufy {:class "ring"
+                             :cx    (:x origin)
+                             :cy    (:y origin)
+                             :r     #(year-to-radius %)}))
+        mask (-> (enter-data (select-graph) ".mask" data)
+                 (.append "rect")
+                 (attribufy {:class  "mask"
+                             :width  10
+                             :height 20
+                             :x      #(+ (:x origin) (year-to-radius %) -5)
+                             :y      (- (:y origin) 8)}))]))
 
 (defn draw-labels
   "Draws the year label for each concentric ring."
   [data]
-  (let [label  (-> (enter-data (select-graph) ".label" data)
-                   (.append "text")
-                   (.text #(identity %))
-                   (attribufy {"class" "label"
-                               "x" #(+ (:x origin) (year-to-radius %))
-                               "y" (+ 7 (:y origin))}))]))
+  (let [label (-> (enter-data (select-graph) ".label" data)
+                  (.append "text")
+                  (.text #(identity %))
+                  (attribufy {:class "label"
+                              :x     #(+ (:x origin) (year-to-radius %))
+                              :y     (+ 7 (:y origin))}))]))
+
+#_(defn draw-colour-key
+  []
+  (let []))
 
 (defcomponent slate-1
   [state owner]
   (did-mount
     [_]
     (draw-axes scale)
-    (draw-data (clj->js family-data))
-    (draw-labels scale))
+    (draw-data (clj->js family-data) colours)
+    (draw-labels scale)
+    #_(draw-colour-key))
   (render-state
     [_ _]
     (println "Rendering slate-1 component with state:" state)

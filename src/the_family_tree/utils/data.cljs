@@ -14,7 +14,7 @@
            {:name "Marcelle"        :family "Desrayaud"   :generation 2 :sex "female" :blood-line false :birth 1901 :death 1966}
            {:name "Robert"          :family "Troncy"      :generation 2 :sex "male"   :blood-line true  :birth 1902 :death 1959}
            {:name "Renée"           :family "Pointet"     :generation 2 :sex "female" :blood-line false :birth 1907 :death 2000}
-           {:name "Elisabeth"       :family "de-Veron"    :generation 2 :sex "female" :blood-line false :birth 1909 :death 1994}
+           {:name "Elisabeth"       :family "de Veron"    :generation 2 :sex "female" :blood-line false :birth 1909 :death 1994}
            {:name "Albert"          :family "Bertin"      :generation 3 :sex "male"   :blood-line false :birth 1914 :death 1997}
            {:name "Marcel"          :family "Rodier"      :generation 3 :sex "male"   :blood-line false :birth 1916 :death 2004}
            {:name "Simone"          :family "Patay"       :generation 3 :sex "female" :blood-line true  :birth 1917 :death 2000}
@@ -50,7 +50,7 @@
            {:name "Maurice"         :family "Bertin"      :generation 4 :sex "male"   :blood-line true  :birth 1948 :death 1949}
            {:name "Marie-Geneviéve" :family "Sommer"      :generation 3 :sex "female" :blood-line false :birth 1949}
            {:name "Catherine"       :family "Rodier"      :generation 4 :sex "female" :blood-line true  :birth 1949}
-           {:name "Patrick"         :family "Le-Blanc"    :generation 4 :sex "female" :blood-line false :birth 1949 :death 2012}
+           {:name "Patrick"         :family "Le Blanc"    :generation 4 :sex "female" :blood-line false :birth 1949 :death 2012}
            {:name "Rosamund"        :family "Barnes"      :generation 3 :sex "female" :blood-line false :birth 1951}
            {:name "Hiroshi"         :family "Suzukawa"    :generation 4 :sex "male"   :blood-line false :birth 1951}
            {:name "Laurence"        :family "Dieterlé"    :generation 4 :sex "female" :blood-line true  :birth 1951}
@@ -78,7 +78,7 @@
            {:name "Béatrice"        :family "Abadie"      :generation 4 :sex "female" :blood-line false :birth 1967}
            {:name "Frédéric"        :family "Bertin"      :generation 5 :sex "male"   :blood-line true  :birth 1968}
            {:name "Jean-Marc"       :family "Faivre"      :generation 4 :sex "male"   :blood-line false :birth 1968}
-           {:name "Erwan"           :family "Le-Mintier"  :generation 5 :sex "male"   :blood-line false :birth 1968}
+           {:name "Erwan"           :family "Le Mintier"  :generation 5 :sex "male"   :blood-line false :birth 1968}
            {:name "Emmanuel"        :family "Perrin"      :generation 4 :sex "male"   :blood-line true  :birth 1968}
            {:name "Fabrice"         :family "Bonin"       :generation 5 :sex "male"   :blood-line true  :birth 1968}
            {:name "Antoine"         :family "Troncy"      :generation 4 :sex "male"   :blood-line true  :birth 1969}
@@ -94,14 +94,14 @@
            {:name "Marianne"        :family "Goudot"      :generation 5 :sex "female" :blood-line true  :birth 1972}
            {:name "Vanessa"         :family "Lebon"       :generation 5 :sex "female" :blood-line false :birth 1973}
            {:name "Xavier"          :family "Bertin"      :generation 5 :sex "male"   :blood-line true  :birth 1974}
-           {:name "Valentine"       :family "Le-Blanc"    :generation 5 :sex "female" :blood-line true  :birth 1974}
+           {:name "Valentine"       :family "Le Blanc"    :generation 5 :sex "female" :blood-line true  :birth 1974}
            {:name "Bruno"           :family "Cheilan"     :generation 5 :sex "male"   :blood-line false :birth 1974}
            {:name "Matthieu"        :family "Maria"       :generation 5 :sex "male"   :blood-line false :birth 1974}
            {:name "Julia"           :family "Goudot"      :generation 5 :sex "female" :blood-line true  :birth 1975}
            {:name "Michaël"         :family "Calatraba"   :generation 5 :sex "male"   :blood-line false :birth 1975}
            {:name "Christelle"      :family "Troncy"      :generation 4 :sex "female" :blood-line true  :birth 1975}
            {:name "Valérie"         :family "Barrière"    :generation 5 :sex "female" :blood-line true  :birth 1976 :death 1982}
-           {:name "Aurélie"         :family "Le-Blanc"    :generation 5 :sex "female" :blood-line true  :birth 1976}
+           {:name "Aurélie"         :family "Le Blanc"    :generation 5 :sex "female" :blood-line true  :birth 1976}
            {:name "Cyril"           :family "Troncy"      :generation 4 :sex "male"   :blood-line true  :birth 1976}
            {:name "Camilla"         :family "Maggialetti" :generation 4 :sex "female" :blood-line false :birth 1976}
            {:name "Guilhem"         :family "Troncy"      :generation 4 :sex "male"   :blood-line true  :birth 1976}
@@ -157,7 +157,7 @@
            {:name "Ambre"           :family "Bonin"       :generation 6 :sex "male"   :blood-line true  :birth 2004}
            {:name "Sébastien"       :family "Troncy"      :generation 5 :sex "male"   :blood-line true  :birth 2004}
            {:name "Gabrielle"       :family "Cheilan"     :generation 6 :sex "female" :blood-line true  :birth 2005}
-           {:name "Aymeric"         :family "Le-Mintier"  :generation 6 :sex "male"   :blood-line true  :birth 2005}
+           {:name "Aymeric"         :family "Le Mintier"  :generation 6 :sex "male"   :blood-line true  :birth 2005}
            {:name "Clémence"        :family "Troncy"      :generation 5 :sex "female" :blood-line true  :birth 2005}
            {:name "Louna"           :family "Perrin"      :generation 5 :sex "male"   :blood-line true  :birth 2005}
            {:name "Lucas"           :family "Morin"       :generation 6 :sex "male"   :blood-line true  :birth 2006}
@@ -165,11 +165,11 @@
            {:name "Guillaume"       :family "Troncy"      :generation 5 :sex "male"   :blood-line true  :birth 2006}
            {:name "Eva"             :family "Perrin"      :generation 5 :sex "female" :blood-line true  :birth 2006}
            {:name "Milo"            :family "Perrin"      :generation 5 :sex "male"   :blood-line true  :birth 2006}
-           {:name "Jeanne"          :family "Le-Mintier"  :generation 6 :sex "female" :blood-line true  :birth 2007}
+           {:name "Jeanne"          :family "Le Mintier"  :generation 6 :sex "female" :blood-line true  :birth 2007}
            {:name "Robin"           :family "Cheilan"     :generation 6 :sex "male"   :blood-line true  :birth 2007}
            {:name "Lola"            :family "Morin"       :generation 6 :sex "female" :blood-line true  :birth 2008}
            {:name "Hanaé"           :family "Bonin"       :generation 6 :sex "female" :blood-line true  :birth 2009}
-           {:name "Clara"           :family "Le-Mintier"  :generation 6 :sex "female" :blood-line true  :birth 2009}
+           {:name "Clara"           :family "Le Mintier"  :generation 6 :sex "female" :blood-line true  :birth 2009}
            {:name "Charles"         :family "Troncy"      :generation 5 :sex "male"   :blood-line true  :birth 2009}
            {:name "Balian"          :family "Perrin"      :generation 5 :sex "male"   :blood-line true  :birth 2009}
            {:name "Simon"           :family "Wolff"       :generation 6 :sex "male"   :blood-line true  :birth 2010}
@@ -255,7 +255,7 @@
            {:source 50  :target 43  :relation "partner" :family "Troncy"}
            {:source 52  :target 17  :relation "child"   :family "Dieterlé"}
            {:source 52  :target 27  :relation "child"   :family "Dieterlé"}
-           {:source 52  :target 49  :relation "partner" :family "Le-Blanc"}
+           {:source 52  :target 49  :relation "partner" :family "Le Blanc"}
            {:source 53  :target 18  :relation "child"   :family "Patay"}
            {:source 53  :target 19  :relation "child"   :family "Patay"}
            {:source 54  :target 53  :relation "partner" :family "Patay"}
@@ -320,17 +320,17 @@
            {:source 91  :target 84  :relation "partner" :family "Bonin"}
            {:source 92  :target 36  :relation "child"   :family "Bertin"}
            {:source 92  :target 37  :relation "child"   :family "Bertin"}
-           {:source 93  :target 49  :relation "child"   :family "Le-Blanc"}
-           {:source 93  :target 52  :relation "child"   :family "Le-Blanc"}
-           {:source 93  :target 77  :relation "partner" :family "Le-Mintier"}
+           {:source 93  :target 49  :relation "child"   :family "Le Blanc"}
+           {:source 93  :target 52  :relation "child"   :family "Le Blanc"}
+           {:source 93  :target 77  :relation "partner" :family "Le Mintier"}
            {:source 96  :target 41  :relation "child"   :family "Goudot"}
            {:source 96  :target 44  :relation "child"   :family "Goudot"}
            {:source 98  :target 32  :relation "child"   :family "Troncy"}
            {:source 98  :target 47  :relation "child"   :family "Troncy"}
            {:source 99  :target 30  :relation "child"   :family "Barrière"}
            {:source 99  :target 48  :relation "child"   :family "Barrière"}
-           {:source 100 :target 49  :relation "child"   :family "Le-Blanc"}
-           {:source 100 :target 52  :relation "child"   :family "Le-Blanc"}
+           {:source 100 :target 49  :relation "child"   :family "Le Blanc"}
+           {:source 100 :target 52  :relation "child"   :family "Le Blanc"}
            {:source 101 :target 32  :relation "child"   :family "Troncy"}
            {:source 101 :target 47  :relation "child"   :family "Troncy"}
            {:source 102 :target 101 :relation "partner" :family "Troncy"}
@@ -437,8 +437,8 @@
            {:source 154 :target 81  :relation "child"   :family "Troncy"}
            {:source 155 :target 94  :relation "child"   :family "Cheilan"}
            {:source 155 :target 109 :relation "child"   :family "Cheilan"}
-           {:source 156 :target 93  :relation "child"   :family "Le-Mintier"}
-           {:source 156 :target 77  :relation "child"   :family "Le-Mintier"}
+           {:source 156 :target 93  :relation "child"   :family "Le Mintier"}
+           {:source 156 :target 77  :relation "child"   :family "Le Mintier"}
            {:source 157 :target 98  :relation "child"   :family "Troncy"}
            {:source 158 :target 82  :relation "child"   :family "Perrin"}
            {:source 158 :target 87  :relation "child"   :family "Perrin"}
@@ -452,16 +452,16 @@
            {:source 162 :target 74  :relation "child"   :family "Perrin"}
            {:source 163 :target 78  :relation "child"   :family "Perrin"}
            {:source 163 :target 74  :relation "child"   :family "Perrin"}
-           {:source 164 :target 93  :relation "child"   :family "Le-Mintier"}
-           {:source 164 :target 77  :relation "child"   :family "Le-Mintier"}
+           {:source 164 :target 93  :relation "child"   :family "Le Mintier"}
+           {:source 164 :target 77  :relation "child"   :family "Le Mintier"}
            {:source 165 :target 94  :relation "child"   :family "Cheilan"}
            {:source 165 :target 109 :relation "child"   :family "Cheilan"}
            {:source 166 :target 68  :relation "child"   :family "Morin"}
            {:source 166 :target 88  :relation "child"   :family "Morin"}
            {:source 167 :target 84  :relation "child"   :family "Bonin"}
            {:source 167 :target 91  :relation "child"   :family "Bonin"}
-           {:source 168 :target 77  :relation "child"   :family "Le-Mintier"}
-           {:source 168 :target 93  :relation "child"   :family "Le-Mintier"}
+           {:source 168 :target 77  :relation "child"   :family "Le Mintier"}
+           {:source 168 :target 93  :relation "child"   :family "Le Mintier"}
            {:source 169 :target 103 :relation "child"   :family "Troncy"}
            {:source 169 :target 105 :relation "child"   :family "Troncy"}
            {:source 170 :target 82  :relation "child"   :family "Perrin"}
@@ -482,3 +482,29 @@
            {:source 177 :target 122 :relation "child"   :family "Dieterlé"}
            {:source 178 :target 114 :relation "child"   :family "Maria"}
            {:source 178 :target 95  :relation "child"   :family "Maria"}]})
+
+(def family-colours
+  [{:family "Patay"      :colour "#FF4A46"}
+   {:family "Maria"      :colour "#9B9700"}
+   {:family "Bonin"      :colour "#006FA6"}
+   {:family "Calatraba"  :colour "#E20027"}
+   {:family "Barrière"   :colour "#B79762"}
+   {:family "Wolff"      :colour "#D25B88"}
+   {:family "Rodier"     :colour "#953F00"}
+   {:family "Gaillet"    :colour "#7A7BFF"}
+   {:family "Pourtier"   :colour "#FFA0F2"}
+   {:family "Le Blanc"   :colour "#8CC63F"}
+   {:family "Cheilan"    :colour "#0CBD66"}
+   {:family "Perrin"     :colour "#012C58"}
+   {:family "Faivre"     :colour "#F4D749"}
+   {:family "Morin"      :colour "#2DBCF0"}
+   {:family "Bonnet"     :colour "#FAA61A"}
+   {:family "Giraud"     :colour "#958A9F"}
+   {:family "Suzukawa"   :colour "#008080"}
+   {:family "Troncy"     :colour "#671190"}
+   {:family "Goudot"     :colour "#1E6E00"}
+   {:family "Bertin"     :colour "#885578"}
+   {:family "Perret"     :colour "#FF2F80"}
+   {:family "Beaudin"    :colour "#800000"}
+   {:family "Le Mintier" :colour "#FF6832"}
+   {:family "Dieterlé"   :colour "#D16100"}])
