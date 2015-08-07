@@ -10,7 +10,7 @@
 
 (def force-field (-> js/d3 .-layout .force
                      (.charge -400)
-                     (.linkDistance (fn [d] (if (= "partner" (.-relation d)) 30 60)))
+                     (.linkDistance (fn [d] (if (= "partner" (.-relation d)) 60 30)))
                      (.gravity 0)))
 
 (defn year-to-radius
