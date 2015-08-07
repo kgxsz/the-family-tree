@@ -38,20 +38,6 @@
   (for [[family colour] family-colour]
     [(keyword (str "&." family)) {attribute colour}]))
 
-(defstyles link-styling
-  (into
-    [:.link {:stroke (:sea-gray colours)
-             :opacity 0.3 }
-     [:&.partner {:stroke-width 5
-                  :stroke-dasharray "3 3"}]
-     [:&.child {:stroke-width 2}]]
-    (colourize-by-family :stroke)))
-
-(defstyles node-styling
-  (into
-    [:.node {:fill (:sea-gray colours)}]
-    (colourize-by-family :fill)))
-
 (defstyles slate-1
   [:#slate-1
    [:.backdrop
@@ -59,8 +45,16 @@
      [:#graph {:width "1000px"
                :height "1000px"
                :float "left"}
-      link-styling
-      node-styling
+      (into
+        [:.link {:stroke (:sea-gray colours)
+                 :opacity 0.3 }
+         [:&.partner {:stroke-width 5
+                      :stroke-dasharray "3 3"}]
+         [:&.child {:stroke-width 2}]]
+        (colourize-by-family :stroke))
+      (into
+        [:.node {:fill (:sea-gray colours)}]
+        (colourize-by-family :fill))
       [:.ring {:stroke (:light-gray colours)
                :stroke-width 5
                :fill "none"}]
