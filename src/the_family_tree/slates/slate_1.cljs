@@ -115,7 +115,7 @@
 (defn draw-data
   "Draws link/node entities, applies the force field to the nodes and kicks it off.
    Note that the order in which the SVG elements are created is visually important."
-  [data colours]
+  [data]
   (let [link (-> (enter-data (select-graph) ".link" (.-links data))
                  (.append "line")
                  (attribufy {:class "link"})
@@ -174,7 +174,7 @@
   (did-mount
     [_]
     (draw-axes scale)
-    (draw-data (clj->js family-data) colours)
+    (draw-data (clj->js family-data))
     (draw-labels scale)
     #_(draw-colour-key))
   (render-state
