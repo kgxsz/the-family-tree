@@ -59,6 +59,13 @@
   []
   (.select js/d3 "#slate-1 #graph"))
 
+(defn select-legend
+  "Selects the SVG element upon which
+   the legend will be drawn. Note that
+   this is only valid for slate 1."
+  []
+  (.select js/d3 "#slate-1 #legend"))
+
 (defn year-to-radius
   "The passage of time is represented in a radially
    increasing manner, at a rate of 2.7 pixels per year,
@@ -140,14 +147,14 @@
 (defn draw-axes
   "Draws the radial rings to represent years, as well as the masked
    area of the ring where the year label will be placed."
-  [data]
-  (let [ring (-> (enter-data (select-graph) ".ring" data)
+  []
+  (let [ring (-> (enter-data (select-graph) ".ring" scale)
                  (.append "circle")
                  (attribufy {:class "ring"
                              :cx    (:x origin)
                              :cy    (:y origin)
                              :r     #(year-to-radius %)}))
-        mask (-> (enter-data (select-graph) ".mask" data)
+        mask (-> (enter-data (select-graph) ".mask" scale)
                  (.append "rect")
                  (attribufy {:class  "mask"
                              :width  10
@@ -157,26 +164,38 @@
 
 (defn draw-labels
   "Draws the year label for each concentric ring."
-  [data]
-  (let [label (-> (enter-data (select-graph) ".label" data)
+  []
+  (let [label (-> (enter-data (select-graph) ".label" scale)
                   (.append "text")
                   (.text #(identity %))
                   (attribufy {:class "label"
                               :x     #(+ (:x origin) (year-to-radius %))
                               :y     (+ 7 (:y origin))}))]))
 
-#_(defn draw-colour-key
+(defn draw-colour-key
   []
-  (let []))
+  (let [sample (-> (enter-data (select-legend) ".sample" (clj->js (vals colours)))
+                   (.append "circle")
+                   (attribufy {:class "sample"
+                               :cx    170
+                               :cy    (fn [_ i] (+ 200 (* 25 i)))
+                               :r     5})
+                   (stylify {:fill #(identity %)}))
+        label  (-> (enter-data (select-legend) ".label" (clj->js (keys colours)))
+                   (.append "text")
+                   (.text #(identity %))
+                   (attribufy {:class "label"
+                               :x     190
+                               :y     (fn [_ i] (+ 205 (* 25 i)))}))]))
 
 (defcomponent slate-1
   [state owner]
   (did-mount
     [_]
-    (draw-axes scale)
+    (draw-axes)
     (draw-data (clj->js family-data))
-    (draw-labels scale)
-    #_(draw-colour-key))
+    (draw-labels)
+    (draw-colour-key))
   (render-state
     [_ _]
     (println "Rendering slate-1 component with state:" state)

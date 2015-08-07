@@ -22,4 +22,8 @@
                 :pointer-events "none"}]]
      [:#legend {:width "400px"
                :height "1000px"
-               :float "left"}]]]])
+               :float "left"}
+      [:.label {:font-size "1em"
+                :text-anchor "left"
+                :opacity 0.5
+                :pointer-events "none"}]]]]])
