@@ -26,4 +26,4 @@
       [:.label {:font-size "1em"
                 :text-anchor "left"
                 :opacity 0.5
-                :pointer-events "none"}]]]]])
+                :cursor "default"}]]]]])

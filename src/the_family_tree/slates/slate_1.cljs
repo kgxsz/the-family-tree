@@ -3,6 +3,7 @@
   (:require [om-tools.core :refer-macros [defcomponent]]
             [om-tools.dom :as dom :include-macros true]
             [the-family-tree.utils.data :refer [family-data]]
+            [om.core :as om]
             [cljsjs.d3 :as d3]))
 
 (def origin
@@ -15,7 +16,7 @@
    the concentric rings and their labels."
   (clj->js (range 1860 2040 20)))
 
-(def colours
+(def hard-colours
   "These colours are used to
    distinguish families."
   {"Patay"      "#FF4A46"
@@ -42,6 +43,32 @@
    "Beaudin"    "#800000"
    "Le Mintier" "#FF6832"
    "Dieterlé"   "#D16100"})
+
+(def soft-colours
+  {"Patay"      "#FFDBDA"
+   "Maria"      "#EBEACC"
+   "Bonin"      "#CCE2ED"
+   "Calatraba"  "#F9CCD4"
+   "Barrière"   "#F1EAE0"
+   "Wolff"      "#F6DEE7"
+   "Rodier"     "#EAD9CC"
+   "Gaillet"    "#E4E5FF"
+   "Pourtier"   "#FFECFC"
+   "Le Blanc"   "#E8F4D9"
+   "Cheilan"    "#CEF2E0"
+   "Perrin"     "#CCD5DE"
+   "Faivre"     "#FDF7DB"
+   "Morin"      "#D5F2FC"
+   "Bonnet"     "#FEEDD1"
+   "Giraud"     "#EAE8EC"
+   "Suzukawa"   "#CCE6E6"
+   "Troncy"     "#E1CFE9"
+   "Goudot"     "#D2E2CC"
+   "Bertin"     "#E7DDE4"
+   "Perret"     "#FFD5E6"
+   "Beaudin"    "#E6CCCC"
+   "Le Mintier" "#FFE1D6"
+   "Dieterlé"   "#F6DFCC"})
 
 (def force-field
   "Holds a configured instance of d3's force directed graph,
@@ -122,27 +149,20 @@
 (defn draw-data
   "Draws link/node entities, applies the force field to the nodes and kicks it off.
    Note that the order in which the SVG elements are created is visually important."
+  [data node link]
+  (-> node
+      (.append "title")
+      (.text #(.-name %)))
+  (-> force-field
+      (.nodes (.-nodes data))
+      (.links (.-links data))
+      .start
+      (.on "tick" #(update-positions data node link))))
+
+(defn update-data
   [data]
-  (let [link (-> (enter-data (select-graph) ".link" (.-links data))
-                 (.append "line")
-                 (attribufy {:class "link"})
-                 (stylify {:stroke           #(get colours (.-family %))
-                           :stroke-width     #(case (.-relation %) "partner" 4 "child" 2)
-                           :stroke-dasharray #(when (= "partner" (.-relation %)) "3 3")}))
-        node (-> (enter-data (select-graph) ".node" (.-nodes data))
-                 (.append "circle")
-                 (.call (.-drag force-field))
-                 (attribufy {:class "node"
-                             :r     5})
-                 (stylify {:fill #(get colours (.-family %))}))]
-    (-> node
-        (.append "title")
-        (.text #(.-name %)))
-    (-> force-field
-        (.nodes (.-nodes data))
-        (.links (.-links data))
-        .start
-        (.on "tick" #(update-positions data node link)))))
+  (let [node (-> (enter-data (select-graph) ".node" (.-nodes data))
+                 (.attr "class" "node updated"))]))
 
 (defn draw-axes
   "Draws the radial rings to represent years, as well as the masked
@@ -173,29 +193,48 @@
                               :y     (+ 7 (:y origin))}))]))
 
 (defn draw-colour-key
-  []
-  (let [sample (-> (enter-data (select-legend) ".sample" (clj->js (vals colours)))
+  [node link]
+  (let [sample (-> (enter-data (select-legend) ".sample" (clj->js (vals hard-colours)))
                    (.append "circle")
                    (attribufy {:class "sample"
                                :cx    170
                                :cy    (fn [_ i] (+ 200 (* 25 i)))
                                :r     5})
                    (stylify {:fill #(identity %)}))
-        label  (-> (enter-data (select-legend) ".label" (clj->js (keys colours)))
+        label  (-> (enter-data (select-legend) ".label" (clj->js (keys hard-colours)))
                    (.append "text")
                    (.text #(identity %))
                    (attribufy {:class "label"
                                :x     190
-                               :y     (fn [_ i] (+ 205 (* 25 i)))}))]))
+                               :y     (fn [_ i] (+ 205 (* 25 i)))})
+                   (.on "mouseover" (fn [d]
+                                       (.style node "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
+                                       (.style link "stroke" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))))
+                   (.on "mouseleave" (fn []
+                                       (.style node "fill" #(get hard-colours (.-family %)))
+                                       (.style link "stroke" #(get hard-colours (.-family %))))))]))
 
 (defcomponent slate-1
   [state owner]
   (did-mount
     [_]
     (draw-axes)
-    (draw-data (clj->js family-data))
-    (draw-labels)
-    (draw-colour-key))
+    (let [data (clj->js family-data)
+          link (-> (enter-data (select-graph) ".link" (.-links data))
+                 (.append "line")
+                 (attribufy {:class "link"})
+                 (stylify {:stroke           #(get hard-colours (.-family %))
+                           :stroke-width     #(case (.-relation %) "partner" 4 "child" 2)
+                           :stroke-dasharray #(when (= "partner" (.-relation %)) "3 3")}))
+          node (-> (enter-data (select-graph) ".node" (.-nodes data))
+                 (.append "circle")
+                 (.call (.-drag force-field))
+                 (attribufy {:class "node"
+                             :r     5})
+                 (stylify {:fill #(get hard-colours (.-family %))}))]
+      (draw-data data node link)
+      (draw-labels)
+      (draw-colour-key node link)))
   (render-state
     [_ _]
     (println "Rendering slate-1 component with state:" state)
@@ -204,3 +243,8 @@
         {:id "graph"})
       (dom/svg
         {:id "legend"}))))
+
+;; Majorly clean up the flow of things here, make it intuitive
+;; Use groupings to avoid flashing when moving over families
+;; Use highlighting to make it obvious which family is being chosen
+;; fix up the way colours and scales are treated, make it simple
