@@ -102,7 +102,7 @@
   [year]
   (* 2.7 (- year 1849)))
 
-(defn enter-data
+(defn enterfy
   "Uses a selector on a parent element to
    create an entity and enter data on it."
   [parent-element selector data]
@@ -124,6 +124,36 @@
   (doseq [[k v] styles] (.style entity (name k) v))
   entity)
 
+(defn draw-links
+  "Draws the links that represent the relations between family members."
+  [relations]
+  (-> (enterfy (select-graph) ".link" relations)
+      (.append "line")
+      (attribufy {:class "link"})
+      (stylify {:stroke           #(get hard-colours (.-family %))
+                :stroke-width     #(case (.-type %) "partner" 4 "child" 2)
+                :stroke-dasharray #(when (= "partner" (.-type %)) "3 3")})))
+
+(defn draw-nodes
+  "Draws the nodes that represent members of the family."
+  [members]
+  (-> (enterfy (select-graph) ".node" members)
+      (.append "circle")
+      (.call (.-drag force-field))
+      (attribufy {:class "node" :r 5})
+      (stylify {:fill #(get hard-colours (.-family %))})))
+
+
+(defn draw-axes
+  "Draws the radial axes to mark years"
+  []
+  (-> (enterfy (select-graph) ".axes" scale)
+      (.append "circle")
+      (attribufy {:class "axes"
+                  :cx    (:x origin)
+                  :cy    (:y origin)
+                  :r     #(year-to-radius %)})))
+
 (defn constrain-node-radially
   "Takes the member's position and updates it such that it
    is constrained to a ring where the radius is defined by
@@ -137,36 +167,6 @@
     (when-not (zero? |v|)
       (set! (.-x member) x)
       (set! (.-y member) y))))
-
-(defn draw-link-entity
-  "Draws the links that represent the relations between family members."
-  [relations]
-  (-> (enter-data (select-graph) ".link" relations)
-      (.append "line")
-      (attribufy {:class "link"})
-      (stylify {:stroke           #(get hard-colours (.-family %))
-                :stroke-width     #(case (.-type %) "partner" 4 "child" 2)
-                :stroke-dasharray #(when (= "partner" (.-type %)) "3 3")})))
-
-(defn draw-node-entity
-  "Draws the nodes that represent members of the family."
-  [members]
-  (-> (enter-data (select-graph) ".node" members)
-      (.append "circle")
-      (.call (.-drag force-field))
-      (attribufy {:class "node" :r 5})
-      (stylify {:fill #(get hard-colours (.-family %))})))
-
-
-(defn draw-axes
-  "Draws the radial axes to mark years"
-  []
-  (-> (enter-data (select-graph) ".axes" scale)
-      (.append "circle")
-      (attribufy {:class "axes"
-                  :cx    (:x origin)
-                  :cy    (:y origin)
-                  :r     #(year-to-radius %)})))
 
 (defn exert-force
   "Assigns members to the force directed graph's nodes, and relations to
@@ -191,13 +191,15 @@
                             :cy (fn [d] (.-y d))})))))
 
 (defn setup-tooltip
+  "Sets up the tooltip text such that when you hover
+   over a node you see the name of the family member."
   [nodes]
   (-> nodes (.append "title") (.text #(str (.-name %) " " (.-family %)))))
 
 (defn draw-labels
   "Draws the year label for each concentric ring."
   []
-  (-> (enter-data (select-graph) ".label" scale)
+  (-> (enterfy (select-graph) ".label" scale)
       (.append "text")
       (.text #(identity %))
       (attribufy {:class "label"
@@ -206,23 +208,23 @@
 
 (defn draw-colour-key
   [nodes links]
-  (-> (enter-data (select-legend) ".sample" (clj->js (vals hard-colours)))
-                   (.append "circle")
-                   (attribufy {:class "sample"
-                               :cx    170
-                               :cy    (fn [_ i] (+ 200 (* 25 i)))
-                               :r     5})
-                   (stylify {:fill #(identity %)}))
-  (-> (enter-data (select-legend) ".label" (clj->js (keys hard-colours)))
-                   (.append "text")
-                   (.text #(identity %))
-                   (attribufy {:class "label" :x 190 :y (fn [_ i] (+ 205 (* 25 i)))})
-                   (.on "mouseover" (fn [d]
-                                       (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
-                                       (.style links "stroke" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))))
-                   (.on "mouseleave" (fn []
-                                       (.style nodes "fill" #(get hard-colours (.-family %)))
-                                       (.style links "stroke" #(get hard-colours (.-family %)))))))
+  (-> (enterfy (select-legend) ".sample" (clj->js (vals hard-colours)))
+      (.append "circle")
+      (attribufy {:class "sample"
+                  :cx    170
+                  :cy    (fn [_ i] (+ 200 (* 25 i)))
+                  :r     5})
+      (stylify {:fill #(identity %)}))
+  (-> (enterfy (select-legend) ".label" (clj->js (keys hard-colours)))
+      (.append "text")
+      (.text #(identity %))
+      (attribufy {:class "label" :x 190 :y (fn [_ i] (+ 205 (* 25 i)))})
+      (.on "mouseover" (fn [d]
+                         (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
+                         (.style links "stroke" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))))
+      (.on "mouseleave" (fn []
+                          (.style nodes "fill" #(get hard-colours (.-family %)))
+                          (.style links "stroke" #(get hard-colours (.-family %)))))))
 
 (defcomponent slate-1
   [state owner]
@@ -230,8 +232,8 @@
     [_]
     (let [members   (clj->js data/members)
           relations (clj->js data/relations)
-          links     (draw-link-entity relations)
-          nodes     (draw-node-entity members)]
+          links     (draw-links relations)
+          nodes     (draw-nodes members)]
       (draw-axes)
       (exert-force members relations nodes links)
       (setup-tooltip nodes)
