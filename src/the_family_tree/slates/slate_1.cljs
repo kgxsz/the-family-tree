@@ -168,29 +168,22 @@
   "Draws the radial rings to represent years, as well as the masked
    area of the ring where the year label will be placed."
   []
-  (let [ring (-> (enter-data (select-graph) ".ring" scale)
-                 (.append "circle")
-                 (attribufy {:class "ring"
-                             :cx    (:x origin)
-                             :cy    (:y origin)
-                             :r     #(year-to-radius %)}))
-        mask (-> (enter-data (select-graph) ".mask" scale)
-                 (.append "rect")
-                 (attribufy {:class  "mask"
-                             :width  10
-                             :height 20
-                             :x      #(+ (:x origin) (year-to-radius %) -5)
-                             :y      (- (:y origin) 8)}))]))
+  (-> (enter-data (select-graph) ".ring" scale)
+      (.append "circle")
+      (attribufy {:class "ring"
+                  :cx    (:x origin)
+                  :cy    (:y origin)
+                  :r     #(year-to-radius %)})))
 
 (defn draw-labels
   "Draws the year label for each concentric ring."
   []
-  (let [label (-> (enter-data (select-graph) ".label" scale)
-                  (.append "text")
-                  (.text #(identity %))
-                  (attribufy {:class "label"
-                              :x     #(+ (:x origin) (year-to-radius %))
-                              :y     (+ 7 (:y origin))}))]))
+  (-> (enter-data (select-graph) ".label" scale)
+      (.append "text")
+      (.text #(identity %))
+      (attribufy {:class "label"
+                  :x     #(+ (:x origin) (year-to-radius %))
+                  :y     (+ 7 (:y origin))})))
 
 (defn draw-colour-key
   [node link]
@@ -218,20 +211,21 @@
   [state owner]
   (did-mount
     [_]
-    (draw-axes)
     (let [data (clj->js family-data)
-          link (-> (enter-data (select-graph) ".link" (.-links data))
-                 (.append "line")
-                 (attribufy {:class "link"})
-                 (stylify {:stroke           #(get hard-colours (.-family %))
-                           :stroke-width     #(case (.-relation %) "partner" 4 "child" 2)
-                           :stroke-dasharray #(when (= "partner" (.-relation %)) "3 3")}))
+          link-entrance (enter-data (select-graph) ".link" (.-links data))
+          link (-> link-entrance (.append "line"))
           node (-> (enter-data (select-graph) ".node" (.-nodes data))
                  (.append "circle")
                  (.call (.-drag force-field))
                  (attribufy {:class "node"
                              :r     5})
                  (stylify {:fill #(get hard-colours (.-family %))}))]
+      (-> link
+          (attribufy {:class "link"})
+          (stylify {:stroke           #(get hard-colours (.-family %))
+                    :stroke-width     #(case (.-relation %) "partner" 4 "child" 2)
+                    :stroke-dasharray #(when (= "partner" (.-relation %)) "3 3")}))
+      (draw-axes)
       (draw-data data node link)
       (draw-labels)
       (draw-colour-key node link)))
@@ -244,7 +238,9 @@
       (dom/svg
         {:id "legend"}))))
 
-;; Majorly clean up the flow of things here, make it intuitive
-;; Use groupings to avoid flashing when moving over families
-;; Use highlighting to make it obvious which family is being chosen
-;; fix up the way colours and scales are treated, make it simple
+;; TODO
+;; 1) Try declaring nodes beforehand, then draw them up.
+;; 2) Tighten up the colour key, such that flashing doesn't occur, perhaps use groupings.
+;; 3) Can you highlight the key name as you hover to give it an adequate response.
+;; 4) Treat scale derived data as true data or auxiliary data?
+;; 5) Other families should work a swell.
