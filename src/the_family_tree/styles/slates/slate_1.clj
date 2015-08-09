@@ -9,10 +9,10 @@
      [:#graph {:width "1000px"
                :height "1000px"
                :float "left"}
-      [:.relation {:stroke (:sea-gray colours)
-               :opacity 0.3}]
-      [:.member {:fill (:sea-gray colours)}]
-      [:.ring {:stroke "#000"
+      [:.link {:stroke (:sea-gray colours)
+                   :opacity 0.3}]
+      [:.node {:fill (:sea-gray colours)}]
+      [:.axes {:stroke "#000"
                :stroke-width 5
                :fill "none"
                :opacity 0.05

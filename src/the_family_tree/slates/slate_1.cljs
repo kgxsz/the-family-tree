@@ -138,6 +138,36 @@
       (set! (.-x member) x)
       (set! (.-y member) y))))
 
+(defn draw-link-entity
+  "Draws the links that represent the relations between family members."
+  [relations]
+  (-> (enter-data (select-graph) ".link" relations)
+      (.append "line")
+      (attribufy {:class "link"})
+      (stylify {:stroke           #(get hard-colours (.-family %))
+                :stroke-width     #(case (.-type %) "partner" 4 "child" 2)
+                :stroke-dasharray #(when (= "partner" (.-type %)) "3 3")})))
+
+(defn draw-node-entity
+  "Draws the nodes that represent members of the family."
+  [members]
+  (-> (enter-data (select-graph) ".node" members)
+      (.append "circle")
+      (.call (.-drag force-field))
+      (attribufy {:class "node" :r 5})
+      (stylify {:fill #(get hard-colours (.-family %))})))
+
+
+(defn draw-axes
+  "Draws the radial axes to mark years"
+  []
+  (-> (enter-data (select-graph) ".axes" scale)
+      (.append "circle")
+      (attribufy {:class "axes"
+                  :cx    (:x origin)
+                  :cy    (:y origin)
+                  :r     #(year-to-radius %)})))
+
 (defn exert-force
   "Assigns members to the force directed graph's nodes, and relations to
    the force directed graph's links. Starts the simulation, which will
@@ -160,16 +190,9 @@
           (attribufy nodes {:cx (fn [d] (.-x d))
                             :cy (fn [d] (.-y d))})))))
 
-(defn draw-axes
-  "Draws the radial rings to represent years, as well as the masked
-   area of the ring where the year label will be placed."
-  []
-  (-> (enter-data (select-graph) ".ring" scale)
-      (.append "circle")
-      (attribufy {:class "ring"
-                  :cx    (:x origin)
-                  :cy    (:y origin)
-                  :r     #(year-to-radius %)})))
+(defn setup-tooltip
+  [nodes]
+  (-> nodes (.append "title") (.text #(str (.-name %) " " (.-family %)))))
 
 (defn draw-labels
   "Draws the year label for each concentric ring."
@@ -182,53 +205,36 @@
                   :y     (+ 7 (:y origin))})))
 
 (defn draw-colour-key
-  [node link]
-  (let [sample (-> (enter-data (select-legend) ".sample" (clj->js (vals hard-colours)))
+  [nodes links]
+  (-> (enter-data (select-legend) ".sample" (clj->js (vals hard-colours)))
                    (.append "circle")
                    (attribufy {:class "sample"
                                :cx    170
                                :cy    (fn [_ i] (+ 200 (* 25 i)))
                                :r     5})
                    (stylify {:fill #(identity %)}))
-        label  (-> (enter-data (select-legend) ".label" (clj->js (keys hard-colours)))
+  (-> (enter-data (select-legend) ".label" (clj->js (keys hard-colours)))
                    (.append "text")
                    (.text #(identity %))
                    (attribufy {:class "label" :x 190 :y (fn [_ i] (+ 205 (* 25 i)))})
                    (.on "mouseover" (fn [d]
-                                       (.style node "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
-                                       (.style link "stroke" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))))
+                                       (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
+                                       (.style links "stroke" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))))
                    (.on "mouseleave" (fn []
-                                       (.style node "fill" #(get hard-colours (.-family %)))
-                                       (.style link "stroke" #(get hard-colours (.-family %))))))]))
-
-(defn draw-link-entity
-  [relations]
-  (-> (enter-data (select-graph) ".relation" relations)
-      (.append "line")
-      (attribufy {:class "relation"})
-      (stylify {:stroke           #(get hard-colours (.-family %))
-                :stroke-width     #(case (.-type %) "partner" 4 "child" 2)
-                :stroke-dasharray #(when (= "partner" (.-type %)) "3 3")})))
-
-(defn draw-node-entity
-  [members]
-  (-> (enter-data (select-graph) ".member" members)
-      (.append "circle")
-      (.call (.-drag force-field))
-      (attribufy {:class "member" :r 5})
-      (stylify {:fill #(get hard-colours (.-family %))})))
+                                       (.style nodes "fill" #(get hard-colours (.-family %)))
+                                       (.style links "stroke" #(get hard-colours (.-family %)))))))
 
 (defcomponent slate-1
   [state owner]
   (did-mount
     [_]
-    (let [members (clj->js data/members)
+    (let [members   (clj->js data/members)
           relations (clj->js data/relations)
-          links (draw-link-entity relations)
-          nodes (draw-node-entity members)]
+          links     (draw-link-entity relations)
+          nodes     (draw-node-entity members)]
       (draw-axes)
       (exert-force members relations nodes links)
-      (-> nodes (.append "title") (.text #(.-name %))) ;; Create tool-tip on nodes
+      (setup-tooltip nodes)
       (draw-labels)
       (draw-colour-key nodes links)))
   (render-state
