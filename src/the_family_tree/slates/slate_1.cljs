@@ -2,7 +2,7 @@
   (:require-macros [the-family-tree.utils.macros :refer [slate]])
   (:require [om-tools.core :refer-macros [defcomponent]]
             [om-tools.dom :as dom :include-macros true]
-            [the-family-tree.utils.data :refer [family-data]]
+            [the-family-tree.utils.data :as data]
             [om.core :as om]
             [cljsjs.d3 :as d3]))
 
@@ -76,8 +76,9 @@
   (-> (.-layout js/d3)
       .force
       (.charge -400)
-      (.linkDistance #(case (.-relation %) "partner" 60 "child" 30))
-      (.gravity 0)))
+      (.linkDistance #(case (.-type %) "partner" 60 "child" 30))
+      (.gravity 0)
+      (.size (clj->js [1000 1000]))))
 
 (defn select-graph
   "Selects the SVG element upon which
@@ -102,67 +103,62 @@
   (* 2.7 (- year 1849)))
 
 (defn enter-data
-  "Uses a selector on a parent
-   element to enter data."
+  "Uses a selector on a parent element to
+   create an entity and enter data on it."
   [parent-element selector data]
   (-> (.selectAll parent-element selector)
       (.data data)
       .enter))
 
 (defn attribufy
+  "Takes an entity and a map of attributes, applies those
+   attributes to the entity. Super simple stuff."
   [entity attributes]
   (doseq [[k v] attributes] (.attr entity (name k) v))
   entity)
 
 (defn stylify
+  "Takes an entity and a map of styles, applies those
+   styles to the entity. Super simple stuff."
   [entity styles]
   (doseq [[k v] styles] (.style entity (name k) v))
   entity)
 
 (defn constrain-node-radially
-  "Takes the node's position and updates it such that it
+  "Takes the member's position and updates it such that it
    is constrained to a ring where the radius is defined by
-   the node's birth year, and centered according to origin."
-  [node _]
-  (let [vx    (- (.-x node) (:x origin))
-        vy    (- (.-y node) (:y origin))
+   the member's birth year, and centered according to origin."
+  [member _]
+  (let [vx    (- (.-x member) (:x origin))
+        vy    (- (.-y member) (:y origin))
         |v|   (.sqrt js/Math (+ (* vx vx) (* vy vy)))
-        x     (+ (:x origin) (* (year-to-radius (.-birth node)) (/ vx |v|)))
-        y     (+ (:y origin) (* (year-to-radius (.-birth node)) (/ vy |v|)))]
+        x     (+ (:x origin) (* (year-to-radius (.-birth member)) (/ vx |v|)))
+        y     (+ (:y origin) (* (year-to-radius (.-birth member)) (/ vy |v|)))]
     (when-not (zero? |v|)
-      (set! (.-x node) x)
-      (set! (.-y node) y))))
+      (set! (.-x member) x)
+      (set! (.-y member) y))))
 
-(defn update-positions
-  "Takes the current data, updates the positions of
-   nodes, then updates the attrbutes on the link/node
-   SVG entities to reflect the new positions."
-  [data node link]
-  (.forEach (.-nodes data) constrain-node-radially)
-  (attribufy link {:x1 (fn [d] (.. d -source -x))
-                   :y1 (fn [d] (.. d -source -y))
-                   :x2 (fn [d] (.. d -target -x))
-                   :y2 (fn [d] (.. d -target -y))})
-  (attribufy node {:cx (fn [d] (.-x d))
-                   :cy (fn [d] (.-y d))}))
-
-(defn draw-data
-  "Draws link/node entities, applies the force field to the nodes and kicks it off.
-   Note that the order in which the SVG elements are created is visually important."
-  [data node link]
-  (-> node
-      (.append "title")
-      (.text #(.-name %)))
+(defn exert-force
+  "Assigns members to the force directed graph's nodes, and relations to
+   the force directed graph's links. Starts the simulation, which will
+   calculate positions for each member upon each tick, and assigns those
+   values to the member's x and y attributes. Then, after each tick, the
+   member's x and y attributes are constrained radially, and the positions
+   of the node/link entities are updated accordingly."
+  [members relations nodes links]
   (-> force-field
-      (.nodes (.-nodes data))
-      (.links (.-links data))
+      (.nodes members)
+      (.links relations)
       .start
-      (.on "tick" #(update-positions data node link))))
-
-(defn update-data
-  [data]
-  (let [node (-> (enter-data (select-graph) ".node" (.-nodes data))
-                 (.attr "class" "node updated"))]))
+      (.on "tick"
+        (fn []
+          (.forEach members constrain-node-radially)
+          (attribufy links {:x1 (fn [d] (.. d -source -x))
+                            :y1 (fn [d] (.. d -source -y))
+                            :x2 (fn [d] (.. d -target -x))
+                            :y2 (fn [d] (.. d -target -y))})
+          (attribufy nodes {:cx (fn [d] (.-x d))
+                            :cy (fn [d] (.-y d))})))))
 
 (defn draw-axes
   "Draws the radial rings to represent years, as well as the masked
@@ -197,9 +193,7 @@
         label  (-> (enter-data (select-legend) ".label" (clj->js (keys hard-colours)))
                    (.append "text")
                    (.text #(identity %))
-                   (attribufy {:class "label"
-                               :x     190
-                               :y     (fn [_ i] (+ 205 (* 25 i)))})
+                   (attribufy {:class "label" :x 190 :y (fn [_ i] (+ 205 (* 25 i)))})
                    (.on "mouseover" (fn [d]
                                        (.style node "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
                                        (.style link "stroke" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))))
@@ -207,28 +201,36 @@
                                        (.style node "fill" #(get hard-colours (.-family %)))
                                        (.style link "stroke" #(get hard-colours (.-family %))))))]))
 
+(defn draw-link-entity
+  [relations]
+  (-> (enter-data (select-graph) ".relation" relations)
+      (.append "line")
+      (attribufy {:class "relation"})
+      (stylify {:stroke           #(get hard-colours (.-family %))
+                :stroke-width     #(case (.-type %) "partner" 4 "child" 2)
+                :stroke-dasharray #(when (= "partner" (.-type %)) "3 3")})))
+
+(defn draw-node-entity
+  [members]
+  (-> (enter-data (select-graph) ".member" members)
+      (.append "circle")
+      (.call (.-drag force-field))
+      (attribufy {:class "member" :r 5})
+      (stylify {:fill #(get hard-colours (.-family %))})))
+
 (defcomponent slate-1
   [state owner]
   (did-mount
     [_]
-    (let [data (clj->js family-data)
-          link-entrance (enter-data (select-graph) ".link" (.-links data))
-          link (-> link-entrance (.append "line"))
-          node (-> (enter-data (select-graph) ".node" (.-nodes data))
-                 (.append "circle")
-                 (.call (.-drag force-field))
-                 (attribufy {:class "node"
-                             :r     5})
-                 (stylify {:fill #(get hard-colours (.-family %))}))]
-      (-> link
-          (attribufy {:class "link"})
-          (stylify {:stroke           #(get hard-colours (.-family %))
-                    :stroke-width     #(case (.-relation %) "partner" 4 "child" 2)
-                    :stroke-dasharray #(when (= "partner" (.-relation %)) "3 3")}))
+    (let [members (clj->js data/members)
+          relations (clj->js data/relations)
+          links (draw-link-entity relations)
+          nodes (draw-node-entity members)]
       (draw-axes)
-      (draw-data data node link)
+      (exert-force members relations nodes links)
+      (-> nodes (.append "title") (.text #(.-name %))) ;; Create tool-tip on nodes
       (draw-labels)
-      (draw-colour-key node link)))
+      (draw-colour-key nodes links)))
   (render-state
     [_ _]
     (println "Rendering slate-1 component with state:" state)
@@ -244,3 +246,4 @@
 ;; 3) Can you highlight the key name as you hover to give it an adequate response.
 ;; 4) Treat scale derived data as true data or auxiliary data?
 ;; 5) Other families should work a swell.
+;; 5) Small fix ups with text colouring etc.
