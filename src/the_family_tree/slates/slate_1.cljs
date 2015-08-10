@@ -16,7 +16,7 @@
    the concentric rings and their labels."
   (clj->js [1860 1880 1900 1920 1940 1960 1980 2000 2020]))
 
-(def year-scale
+(def radial-scale
   (-> js/d3
       .-scale
       .linear
@@ -88,27 +88,10 @@
       (.gravity 0)
       (.size #js [1000 1000])))
 
-(defn select-graph
-  "Selects the SVG element upon which
-   the graph will be drawn. Note that
-   this is only valid for slate 1."
-  []
-  (.select js/d3 "#slate-1 #graph"))
-
-(defn select-legend
-  "Selects the SVG element upon which
-   the legend will be drawn. Note that
-   this is only valid for slate 1."
-  []
-  (.select js/d3 "#slate-1 #legend"))
-
-(defn year-to-radius
-  "The passage of time is represented in a radially
-   increasing manner, at a rate of 2.7 pixels per year,
-   starting at 1849. This function converts a given year
-   to it's radial value."
-  [year]
-  (* 2.7 (- year 1849)))
+(defn select
+  "Selects an element within slate 1."
+  [selection]
+  (.select js/d3 (str "#slate-1 " selection)))
 
 (defn enterfy
   "Uses a selector on a parent element to
@@ -135,7 +118,7 @@
 (defn draw-links
   "Draws the links that represent the relations between family members."
   [relations]
-  (-> (enterfy (select-graph) ".link" relations)
+  (-> (enterfy (select "#graph") ".link" relations)
       (.append "line")
       (attribufy {:class "link"})
       (stylify {:stroke           #(get hard-colours (.-family %))
@@ -145,7 +128,7 @@
 (defn draw-nodes
   "Draws the nodes that represent members of the family."
   [members]
-  (-> (enterfy (select-graph) ".node" members)
+  (-> (enterfy (select "#graph") ".node" members)
       (.append "circle")
       (.call (.-drag force-field))
       (attribufy {:class "node" :r 5})
@@ -155,12 +138,12 @@
 (defn draw-axes
   "Draws the radial axes to mark years"
   []
-  (-> (enterfy (select-graph) ".axes" scale)
+  (-> (enterfy (select "#graph") ".axes" scale)
       (.append "circle")
       (attribufy {:class "axes"
                   :cx    (:x origin)
                   :cy    (:y origin)
-                  :r     #(year-scale %)})))
+                  :r     #(radial-scale %)})))
 
 (defn constrain-radially
   "Takes the member's position and updates it such that it
@@ -170,8 +153,8 @@
   (let [vx  (- (.-x member) (:x origin))
         vy  (- (.-y member) (:y origin))
         |v| (.sqrt js/Math (+ (* vx vx) (* vy vy)))
-        x   (+ (:x origin) (* (year-scale (.-birth member)) (/ vx |v|)))
-        y   (+ (:y origin) (* (year-scale (.-birth member)) (/ vy |v|)))]
+        x   (+ (:x origin) (* (radial-scale (.-birth member)) (/ vx |v|)))
+        y   (+ (:y origin) (* (radial-scale (.-birth member)) (/ vy |v|)))]
     (when-not (zero? |v|)
       (set! (.-x member) x)
       (set! (.-y member) y))))
@@ -207,24 +190,24 @@
 (defn draw-labels
   "Draws the year label for each concentric ring."
   []
-  (-> (enterfy (select-graph) ".label" scale)
+  (-> (enterfy (select "#graph") ".label" scale)
       (.append "text")
       (.text #(identity %))
       (attribufy {:class "label"
-                  :x     #(+ (:x origin) (year-scale %))
+                  :x     #(+ (:x origin) (radial-scale %))
                   :y     (+ 7 (:y origin))})))
 
 (defn draw-colour-key
   ;; TODO - refactor this thing
   [nodes links]
-  (-> (enterfy (select-legend) ".sample" (clj->js (vals hard-colours)))
+  (-> (enterfy (select "#legend") ".sample" (clj->js (vals hard-colours)))
       (.append "circle")
       (attribufy {:class "sample"
                   :cx    170
                   :cy    (fn [_ i] (+ 200 (* 25 i)))
                   :r     5})
       (stylify {:fill #(identity %)}))
-  (-> (enterfy (select-legend) ".label" (clj->js (keys hard-colours)))
+  (-> (enterfy (select "#legend") ".label" (clj->js (keys hard-colours)))
       (.append "text")
       (.text #(identity %))
       (attribufy {:class "label" :x 190 :y (fn [_ i] (+ 205 (* 25 i)))})
