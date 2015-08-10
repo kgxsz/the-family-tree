@@ -109,6 +109,12 @@
   (doseq [[k v] styles] (.style entity (name k) v))
   entity)
 
+(defn translate
+  "Generates the translation string
+   used by the transform attribute."
+  [x y]
+  (str "translate(" x "," y ")"))
+
 (defn draw-links
   "Draws the links that represent the relations between family members."
   [relations]
@@ -136,11 +142,9 @@
       (.append "title")
       (.text #(str (.-name %) " " (.-family %)))))
 
-(defn translate
-  [x y]
-  (str "translate(" x "," y ")"))
-
 (defn draw-axis
+  "Draws the axis as labeled ticks extending outward from the
+   origin, with circular guides extending from each tick."
   []
   (let [ticks #js [1860 1880 1900 1920 1940 1960 1980 2000 2020]
         radial-axis (-> js/d3
@@ -245,7 +249,7 @@
 ;; 1) Try declaring nodes beforehand, then draw them up. [done]
 ;; 2) Tighten up the colour key, such that flashing doesn't occur, perhaps use groupings.
 ;; 3) Can you highlight the key name as you hover to give it an adequate response?
-;; 4) Treat scale derived data as true data or auxiliary data?
+;; 4) Treat scale derived data as true data or auxiliary data? [done]
 ;; 5) How do you deal with colour scales properly?
 ;; 6) Other families should work a swell.
 ;; 7) Small fix ups with text colouring etc.
