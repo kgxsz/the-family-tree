@@ -134,16 +134,34 @@
       (attribufy {:class "node" :r 5})
       (stylify {:fill #(get hard-colours (.-family %))})))
 
+(defn setup-tooltip
+  "Sets up the tooltip text such that when you hover
+   over a node you see the name of the family member."
+  [nodes]
+  (-> nodes
+      (.append "title")
+      (.text #(str (.-name %) " " (.-family %)))))
 
-(defn draw-axes
-  "Draws the radial axes to mark years"
+(defn draw-axis
   []
-  (-> (enterfy (select "#graph") ".axes" scale)
+  (let [radial-axis (-> js/d3 .-svg .axis
+                        (.scale radial-scale)
+                        (.tickFormat (.format js/d3 "d")))]
+    (-> (select "#graph") (.append "g") (.attr "class" "axis") (.attr "transform" "translate(500, 485)") (.call radial-axis))
+    
+    )
+  (-> (enterfy (select "#graph") ".guide" scale)
       (.append "circle")
       (attribufy {:class "axes"
                   :cx    (:x origin)
                   :cy    (:y origin)
-                  :r     #(radial-scale %)})))
+                  :r     #(radial-scale %)}))
+  #_(-> (enterfy (select "#graph") ".label" scale)
+      (.append "text")
+      (.text #(identity %))
+      (attribufy {:class "label"
+                  :x     #(+ (:x origin) (radial-scale %))
+                  :y     (+ 7 (:y origin))})))
 
 (defn constrain-radially
   "Takes the member's position and updates it such that it
@@ -181,22 +199,6 @@
           (attribufy nodes {:cx (fn [d] (.-x d))
                             :cy (fn [d] (.-y d))})))))
 
-(defn setup-tooltip
-  "Sets up the tooltip text such that when you hover
-   over a node you see the name of the family member."
-  [nodes]
-  (-> nodes (.append "title") (.text #(str (.-name %) " " (.-family %)))))
-
-(defn draw-labels
-  "Draws the year label for each concentric ring."
-  []
-  (-> (enterfy (select "#graph") ".label" scale)
-      (.append "text")
-      (.text #(identity %))
-      (attribufy {:class "label"
-                  :x     #(+ (:x origin) (radial-scale %))
-                  :y     (+ 7 (:y origin))})))
-
 (defn draw-colour-key
   ;; TODO - refactor this thing
   [nodes links]
@@ -228,10 +230,9 @@
           relations (clj->js data/relations)
           links     (draw-links relations)
           nodes     (draw-nodes members)]
-      (draw-axes)
-      (draw-labels)
-      (draw-colour-key nodes links)
       (setup-tooltip nodes)
+      (draw-axis)
+      (draw-colour-key nodes links)
       (exert-force members relations nodes links)))
   (render-state
     [_ _]

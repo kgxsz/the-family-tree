@@ -10,16 +10,15 @@
                :height "1000px"
                :float "left"}
       [:.link {:stroke (:sea-gray colours)
-                   :opacity 0.3}]
+               :opacity 0.3}]
       [:.node {:fill (:sea-gray colours)}]
+      [:.axis {:pointer-events "none"}
+       [:text {:opacity 0.7}]
+       [:path {:opacity 0}]]
       [:.axes {:stroke "#000"
                :stroke-width 5
                :fill "none"
                :opacity 0.05
-                :pointer-events "none"}]
-      [:.label {:font-size "1em"
-                :text-anchor "middle"
-                :opacity 0.6
                 :pointer-events "none"}]]
      [:#legend {:width "400px"
                :height "1000px"
