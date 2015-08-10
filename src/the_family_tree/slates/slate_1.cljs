@@ -10,12 +10,6 @@
   "The central point of the graph."
   {:x 500 :y 500})
 
-(def scale
-  "This scale is made up of 20 year intervals starting
-   in 1860 and ending at 2020, this is used to draw
-   the concentric rings and their labels."
-  (clj->js [1860 1880 1900 1920 1940 1960 1980 2000 2020]))
-
 (def radial-scale
   (-> js/d3
       .-scale
@@ -142,26 +136,30 @@
       (.append "title")
       (.text #(str (.-name %) " " (.-family %)))))
 
+(defn translate
+  [x y]
+  (str "translate(" x "," y ")"))
+
 (defn draw-axis
   []
-  (let [radial-axis (-> js/d3 .-svg .axis
+  (let [ticks #js [1860 1880 1900 1920 1940 1960 1980 2000 2020]
+        radial-axis (-> js/d3
+                        .-svg
+                        .axis
                         (.scale radial-scale)
+                        (.tickValues ticks)
                         (.tickFormat (.format js/d3 "d")))]
-    (-> (select "#graph") (.append "g") (.attr "class" "axis") (.attr "transform" "translate(500, 485)") (.call radial-axis))
-    
-    )
-  (-> (enterfy (select "#graph") ".guide" scale)
-      (.append "circle")
-      (attribufy {:class "axes"
-                  :cx    (:x origin)
-                  :cy    (:y origin)
-                  :r     #(radial-scale %)}))
-  #_(-> (enterfy (select "#graph") ".label" scale)
-      (.append "text")
-      (.text #(identity %))
-      (attribufy {:class "label"
-                  :x     #(+ (:x origin) (radial-scale %))
-                  :y     (+ 7 (:y origin))})))
+    (-> (select "#graph")
+        (.append "g")
+        (.call radial-axis)
+        (attribufy {:class     "axis"
+                    :transform (translate (:x origin) (- (:y origin) 15))}))
+    (-> (enterfy (select "#graph") ".guide" ticks)
+        (.append "circle")
+        (attribufy {:class "guide"
+                    :cx    (:x origin)
+                    :cy    (:y origin)
+                    :r     #(radial-scale %)}))))
 
 (defn constrain-radially
   "Takes the member's position and updates it such that it

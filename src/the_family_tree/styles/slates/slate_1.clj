@@ -15,14 +15,14 @@
       [:.axis {:pointer-events "none"}
        [:text {:opacity 0.7}]
        [:path {:opacity 0}]]
-      [:.axes {:stroke "#000"
-               :stroke-width 5
-               :fill "none"
-               :opacity 0.05
+      [:.guide {:stroke (:black colours)
+                :stroke-width 4
+                :fill "none"
+                :opacity 0.05
                 :pointer-events "none"}]]
      [:#legend {:width "400px"
-               :height "1000px"
-               :float "left"}
+                :height "1000px"
+                :float "left"}
       [:.label {:font-size "1em"
                 :text-anchor "left"
                 :opacity 0.5
