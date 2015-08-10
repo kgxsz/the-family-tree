@@ -14,7 +14,14 @@
   "This scale is made up of 20 year intervals starting
    in 1860 and ending at 2020, this is used to draw
    the concentric rings and their labels."
-  (clj->js (range 1860 2040 20)))
+  (clj->js [1860 1880 1900 1920 1940 1960 1980 2000 2020]))
+
+(def year-scale
+  (-> js/d3
+      .-scale
+      .linear
+      (.domain #js [1850 2020])
+      (.range #js [0 460])))
 
 (def hard-colours
   "These colours are used to
@@ -73,12 +80,13 @@
 (def force-field
   "Holds a configured instance of d3's force directed graph,
    ensuring that link distances are greater for partnerships."
-  (-> (.-layout js/d3)
+  (-> js/d3
+      .-layout
       .force
       (.charge -400)
       (.linkDistance #(case (.-type %) "partner" 60 "child" 30))
       (.gravity 0)
-      (.size (clj->js [1000 1000]))))
+      (.size #js [1000 1000])))
 
 (defn select-graph
   "Selects the SVG element upon which
@@ -152,18 +160,18 @@
       (attribufy {:class "axes"
                   :cx    (:x origin)
                   :cy    (:y origin)
-                  :r     #(year-to-radius %)})))
+                  :r     #(year-scale %)})))
 
-(defn constrain-node-radially
+(defn constrain-radially
   "Takes the member's position and updates it such that it
    is constrained to a ring where the radius is defined by
    the member's birth year, and centered according to origin."
   [member _]
-  (let [vx    (- (.-x member) (:x origin))
-        vy    (- (.-y member) (:y origin))
-        |v|   (.sqrt js/Math (+ (* vx vx) (* vy vy)))
-        x     (+ (:x origin) (* (year-to-radius (.-birth member)) (/ vx |v|)))
-        y     (+ (:y origin) (* (year-to-radius (.-birth member)) (/ vy |v|)))]
+  (let [vx  (- (.-x member) (:x origin))
+        vy  (- (.-y member) (:y origin))
+        |v| (.sqrt js/Math (+ (* vx vx) (* vy vy)))
+        x   (+ (:x origin) (* (year-scale (.-birth member)) (/ vx |v|)))
+        y   (+ (:y origin) (* (year-scale (.-birth member)) (/ vy |v|)))]
     (when-not (zero? |v|)
       (set! (.-x member) x)
       (set! (.-y member) y))))
@@ -182,7 +190,7 @@
       .start
       (.on "tick"
         (fn []
-          (.forEach members constrain-node-radially)
+          (.forEach members constrain-radially)
           (attribufy links {:x1 (fn [d] (.. d -source -x))
                             :y1 (fn [d] (.. d -source -y))
                             :x2 (fn [d] (.. d -target -x))
@@ -203,10 +211,11 @@
       (.append "text")
       (.text #(identity %))
       (attribufy {:class "label"
-                  :x     #(+ (:x origin) (year-to-radius %))
+                  :x     #(+ (:x origin) (year-scale %))
                   :y     (+ 7 (:y origin))})))
 
 (defn draw-colour-key
+  ;; TODO - refactor this thing
   [nodes links]
   (-> (enterfy (select-legend) ".sample" (clj->js (vals hard-colours)))
       (.append "circle")
@@ -219,12 +228,14 @@
       (.append "text")
       (.text #(identity %))
       (attribufy {:class "label" :x 190 :y (fn [_ i] (+ 205 (* 25 i)))})
-      (.on "mouseover" (fn [d]
-                         (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
-                         (.style links "stroke" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))))
-      (.on "mouseleave" (fn []
-                          (.style nodes "fill" #(get hard-colours (.-family %)))
-                          (.style links "stroke" #(get hard-colours (.-family %)))))))
+      (.on "mouseover"
+        (fn [d]
+          (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
+          (.style links "stroke" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))))
+      (.on "mouseleave"
+        (fn []
+          (.style nodes "fill" #(get hard-colours (.-family %)))
+          (.style links "stroke" #(get hard-colours (.-family %)))))))
 
 (defcomponent slate-1
   [state owner]
@@ -235,10 +246,10 @@
           links     (draw-links relations)
           nodes     (draw-nodes members)]
       (draw-axes)
-      (exert-force members relations nodes links)
-      (setup-tooltip nodes)
       (draw-labels)
-      (draw-colour-key nodes links)))
+      (draw-colour-key nodes links)
+      (setup-tooltip nodes)
+      (exert-force members relations nodes links)))
   (render-state
     [_ _]
     (println "Rendering slate-1 component with state:" state)
@@ -249,9 +260,10 @@
         {:id "legend"}))))
 
 ;; TODO
-;; 1) Try declaring nodes beforehand, then draw them up.
+;; 1) Try declaring nodes beforehand, then draw them up. [done]
 ;; 2) Tighten up the colour key, such that flashing doesn't occur, perhaps use groupings.
-;; 3) Can you highlight the key name as you hover to give it an adequate response.
+;; 3) Can you highlight the key name as you hover to give it an adequate response?
 ;; 4) Treat scale derived data as true data or auxiliary data?
-;; 5) Other families should work a swell.
-;; 5) Small fix ups with text colouring etc.
+;; 5) How do you deal with colour scales properly?
+;; 6) Other families should work a swell.
+;; 7) Small fix ups with text colouring etc.
