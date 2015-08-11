@@ -17,6 +17,13 @@
       (.domain #js [1850 2020])
       (.range #js [0 460])))
 
+(def colour-scale
+  (-> js/d3
+      .-scale
+      .ordinal
+      (.domain #js ["Patay" "Maria" "Bonin" "Calatraba" "Barrière" "Wolff" "Rodier" "Gaillet" "Pourtier" "Le Blanc" "Cheilan" "Perrin""Faivre" "Morin" "Bonnet" "Giraud" "Suzukawa" "Troncy" "Goudot" "Bertin" "Perret" "Beaudin""Le Mintier" "Dieterlé"])
+      ))
+
 (def hard-colours
   "These colours are used to
    distinguish families."
@@ -82,16 +89,13 @@
       (.gravity 0)
       (.size #js [1000 1000])))
 
-(defn select
-  "Selects an element within slate 1."
-  [selection]
-  (.select js/d3 (str "#slate-1 " selection)))
+(defn get-canvas [] (.select js/d3 "#slate-1 #canvas"))
 
 (defn enterfy
-  "Uses a selector on a parent element to
-   create an entity and enter data on it."
-  [parent-element selector data]
-  (-> (.selectAll parent-element selector)
+  "Selects entities and enters data on them."
+  [selector data]
+  (-> (get-canvas)
+      (.selectAll selector)
       (.data data)
       .enter))
 
@@ -118,7 +122,7 @@
 (defn draw-links
   "Draws the links that represent the relations between family members."
   [relations]
-  (-> (enterfy (select "#graph") ".link" relations)
+  (-> (enterfy ".link" relations)
       (.append "line")
       (attribufy {:class "link"})
       (stylify {:stroke           #(get hard-colours (.-family %))
@@ -128,7 +132,7 @@
 (defn draw-nodes
   "Draws the nodes that represent members of the family."
   [members]
-  (-> (enterfy (select "#graph") ".node" members)
+  (-> (enterfy ".node" members)
       (.append "circle")
       (.call (.-drag force-field))
       (attribufy {:class "node" :r 5})
@@ -153,12 +157,11 @@
                         (.scale radial-scale)
                         (.tickValues ticks)
                         (.tickFormat (.format js/d3 "d")))]
-    (-> (select "#graph")
-        (.append "g")
+    (-> (.append (get-canvas) "g")
         (.call radial-axis)
         (attribufy {:class     "axis"
                     :transform (translate (:x origin) (- (:y origin) 15))}))
-    (-> (enterfy (select "#graph") ".guide" ticks)
+    (-> (enterfy ".guide" ticks)
         (.append "circle")
         (attribufy {:class "guide"
                     :cx    (:x origin)
@@ -204,17 +207,17 @@
 (defn draw-colour-key
   ;; TODO - refactor this thing
   [nodes links]
-  (-> (enterfy (select "#legend") ".sample" (clj->js (vals hard-colours)))
+  (-> (enterfy ".sample" (clj->js (vals hard-colours)))
       (.append "circle")
       (attribufy {:class "sample"
-                  :cx    170
+                  :cx    1170
                   :cy    (fn [_ i] (+ 200 (* 25 i)))
                   :r     5})
       (stylify {:fill #(identity %)}))
-  (-> (enterfy (select "#legend") ".label" (clj->js (keys hard-colours)))
+  (-> (enterfy ".label" (clj->js (keys hard-colours)))
       (.append "text")
       (.text #(identity %))
-      (attribufy {:class "label" :x 190 :y (fn [_ i] (+ 205 (* 25 i)))})
+      (attribufy {:class "label" :x 1190 :y (fn [_ i] (+ 205 (* 25 i)))})
       (.on "mouseover"
         (fn [d]
           (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
@@ -241,9 +244,7 @@
     (println "Rendering slate-1 component with state:" state)
     (slate :slate-1
       (dom/svg
-        {:id "graph"})
-      (dom/svg
-        {:id "legend"}))))
+        {:id "canvas"}))))
 
 ;; TODO
 ;; 1) Try declaring nodes beforehand, then draw them up. [done]

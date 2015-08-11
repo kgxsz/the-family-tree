@@ -6,7 +6,7 @@
   [:#slate-1
    [:.backdrop
     [:.content
-     [:#graph {:width "1000px"
+     [:#canvas {:width "1400px"
                :height "1000px"
                :float "left"}
       [:.link {:stroke (:sea-gray colours)
@@ -19,11 +19,9 @@
                 :stroke-width 4
                 :fill "none"
                 :opacity 0.05
-                :pointer-events "none"}]]
-     [:#legend {:width "400px"
-                :height "1000px"
-                :float "left"}
+                :pointer-events "none"}]
       [:.label {:font-size "1em"
                 :text-anchor "left"
                 :opacity 0.5
-                :cursor "default"}]]]]])
+                :cursor "default"}]
+      ]]]])
