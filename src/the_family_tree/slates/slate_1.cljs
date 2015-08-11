@@ -17,66 +17,19 @@
       (.domain #js [1850 2020])
       (.range #js [0 460])))
 
-(def colour-scale
+(def hard-colour-scale
   (-> js/d3
       .-scale
       .ordinal
-      (.domain #js ["Patay" "Maria" "Bonin" "Calatraba" "Barrière" "Wolff" "Rodier" "Gaillet" "Pourtier" "Le Blanc" "Cheilan" "Perrin""Faivre" "Morin" "Bonnet" "Giraud" "Suzukawa" "Troncy" "Goudot" "Bertin" "Perret" "Beaudin""Le Mintier" "Dieterlé"])
-      ))
+      (.domain (clj->js (map :family data/colour-scheme)))
+      (.range (clj->js (map :hard-colour data/colour-scheme)))))
 
-(def hard-colours
-  "These colours are used to
-   distinguish families."
-  {"Patay"      "#FF4A46"
-   "Maria"      "#9B9700"
-   "Bonin"      "#006FA6"
-   "Calatraba"  "#E20027"
-   "Barrière"   "#B79762"
-   "Wolff"      "#D25B88"
-   "Rodier"     "#953F00"
-   "Gaillet"    "#7A7BFF"
-   "Pourtier"   "#FFA0F2"
-   "Le Blanc"   "#8CC63F"
-   "Cheilan"    "#0CBD66"
-   "Perrin"     "#012C58"
-   "Faivre"     "#F4D749"
-   "Morin"      "#2DBCF0"
-   "Bonnet"     "#FAA61A"
-   "Giraud"     "#958A9F"
-   "Suzukawa"   "#008080"
-   "Troncy"     "#671190"
-   "Goudot"     "#1E6E00"
-   "Bertin"     "#885578"
-   "Perret"     "#FF2F80"
-   "Beaudin"    "#800000"
-   "Le Mintier" "#FF6832"
-   "Dieterlé"   "#D16100"})
-
-(def soft-colours
-  {"Patay"      "#FFDBDA"
-   "Maria"      "#EBEACC"
-   "Bonin"      "#CCE2ED"
-   "Calatraba"  "#F9CCD4"
-   "Barrière"   "#F1EAE0"
-   "Wolff"      "#F6DEE7"
-   "Rodier"     "#EAD9CC"
-   "Gaillet"    "#E4E5FF"
-   "Pourtier"   "#FFECFC"
-   "Le Blanc"   "#E8F4D9"
-   "Cheilan"    "#CEF2E0"
-   "Perrin"     "#CCD5DE"
-   "Faivre"     "#FDF7DB"
-   "Morin"      "#D5F2FC"
-   "Bonnet"     "#FEEDD1"
-   "Giraud"     "#EAE8EC"
-   "Suzukawa"   "#CCE6E6"
-   "Troncy"     "#E1CFE9"
-   "Goudot"     "#D2E2CC"
-   "Bertin"     "#E7DDE4"
-   "Perret"     "#FFD5E6"
-   "Beaudin"    "#E6CCCC"
-   "Le Mintier" "#FFE1D6"
-   "Dieterlé"   "#F6DFCC"})
+(def soft-colour-scale
+  (-> js/d3
+      .-scale
+      .ordinal
+      (.domain (clj->js (map :family data/colour-scheme)))
+      (.range (clj->js (map :soft-colour data/colour-scheme)))))
 
 (def force-field
   "Holds a configured instance of d3's force directed graph,
@@ -125,7 +78,7 @@
   (-> (enterfy ".link" relations)
       (.append "line")
       (attribufy {:class "link"})
-      (stylify {:stroke           #(get hard-colours (.-family %))
+      (stylify {:stroke           #(hard-colour-scale (.-family %))
                 :stroke-width     #(case (.-type %) "partner" 4 "child" 2)
                 :stroke-dasharray #(when (= "partner" (.-type %)) "3 3")})))
 
@@ -136,7 +89,7 @@
       (.append "circle")
       (.call (.-drag force-field))
       (attribufy {:class "node" :r 5})
-      (stylify {:fill #(get hard-colours (.-family %))})))
+      (stylify {:fill #(hard-colour-scale (.-family %))})))
 
 (defn setup-tooltip
   "Sets up the tooltip text such that when you hover
@@ -205,27 +158,27 @@
                             :cy (fn [d] (.-y d))})))))
 
 (defn draw-colour-key
-  ;; TODO - refactor this thing
   [nodes links]
-  (-> (enterfy ".sample" (clj->js (vals hard-colours)))
-      (.append "circle")
-      (attribufy {:class "sample"
-                  :cx    1170
-                  :cy    (fn [_ i] (+ 200 (* 25 i)))
-                  :r     5})
-      (stylify {:fill #(identity %)}))
-  (-> (enterfy ".label" (clj->js (keys hard-colours)))
-      (.append "text")
-      (.text #(identity %))
-      (attribufy {:class "label" :x 1190 :y (fn [_ i] (+ 205 (* 25 i)))})
-      (.on "mouseover"
-        (fn [d]
-          (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))
-          (.style links "stroke" #(let [f (.-family %)] (if (= f d) (get hard-colours f) (get soft-colours f))))))
-      (.on "mouseleave"
-        (fn []
-          (.style nodes "fill" #(get hard-colours (.-family %)))
-          (.style links "stroke" #(get hard-colours (.-family %)))))))
+  (let [truncated-domain (-> hard-colour-scale .domain (.slice 0 24))]
+    (-> (enterfy ".sample" truncated-domain)
+        (.append "circle")
+        (attribufy {:class "sample"
+                    :cx    1170
+                    :cy    (fn [_ i] (+ 200 (* 25 i)))
+                    :r     5})
+        (stylify {:fill #(hard-colour-scale %)}))
+    (-> (enterfy ".label" truncated-domain)
+        (.append "text")
+        (.text #(identity %))
+        (attribufy {:class "label" :x 1190 :y (fn [_ i] (+ 205 (* 25 i)))})
+        (.on "mouseover"
+             (fn [d]
+               (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f))))
+               (.style links "stroke" #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f))))))
+        (.on "mouseleave"
+             (fn []
+               (.style nodes "fill" #(hard-colour-scale (.-family %)))
+               (.style links "stroke" #(hard-colour-scale (.-family %))))))))
 
 (defcomponent slate-1
   [state owner]
@@ -251,6 +204,7 @@
 ;; 2) Tighten up the colour key, such that flashing doesn't occur, perhaps use groupings.
 ;; 3) Can you highlight the key name as you hover to give it an adequate response?
 ;; 4) Treat scale derived data as true data or auxiliary data? [done]
-;; 5) How do you deal with colour scales properly?
-;; 6) Other families should work a swell.
-;; 7) Small fix ups with text colouring etc.
+;; 5) How do you deal with colour scales properly? [done]
+;; 6) Other families should work as well. [done]
+;; 7) Small fix ups with text colouring. [done]
+;; 8) Object key section.

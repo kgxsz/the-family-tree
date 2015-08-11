@@ -486,27 +486,57 @@
    {:source 178 :target 95  :type "child"   :family "Maria"}])
 
 (def colour-scheme
-  [{:family "Patay"      :colour "#FF4A46"}
-   {:family "Maria"      :colour "#9B9700"}
-   {:family "Bonin"      :colour "#006FA6"}
-   {:family "Calatraba"  :colour "#E20027"}
-   {:family "Barrière"   :colour "#B79762"}
-   {:family "Wolff"      :colour "#D25B88"}
-   {:family "Rodier"     :colour "#953F00"}
-   {:family "Gaillet"    :colour "#7A7BFF"}
-   {:family "Pourtier"   :colour "#FFA0F2"}
-   {:family "Le Blanc"   :colour "#8CC63F"}
-   {:family "Cheilan"    :colour "#0CBD66"}
-   {:family "Perrin"     :colour "#012C58"}
-   {:family "Faivre"     :colour "#F4D749"}
-   {:family "Morin"      :colour "#2DBCF0"}
-   {:family "Bonnet"     :colour "#FAA61A"}
-   {:family "Giraud"     :colour "#958A9F"}
-   {:family "Suzukawa"   :colour "#008080"}
-   {:family "Troncy"     :colour "#671190"}
-   {:family "Goudot"     :colour "#1E6E00"}
-   {:family "Bertin"     :colour "#885578"}
-   {:family "Perret"     :colour "#FF2F80"}
-   {:family "Beaudin"    :colour "#800000"}
-   {:family "Le Mintier" :colour "#FF6832"}
-   {:family "Dieterlé"   :colour "#D16100"}])
+  [{:family "Patay"       :hard-colour "#FF4A46" :soft-colour "#FFDBDA"}
+   {:family "Maria"       :hard-colour "#9B9700" :soft-colour "#EBEACC"}
+   {:family "Bonin"       :hard-colour "#006FA6" :soft-colour "#CCE2ED"}
+   {:family "Calatraba"   :hard-colour "#E20027" :soft-colour "#F9CCD4"}
+   {:family "Barrière"    :hard-colour "#B79762" :soft-colour "#F1EAE0"}
+   {:family "Wolff"       :hard-colour "#D25B88" :soft-colour "#F6DEE7"}
+   {:family "Rodier"      :hard-colour "#953F00" :soft-colour "#EAD9CC"}
+   {:family "Gaillet"     :hard-colour "#7A7BFF" :soft-colour "#E4E5FF"}
+   {:family "Pourtier"    :hard-colour "#FFA0F2" :soft-colour "#FFECFC"}
+   {:family "Le Blanc"    :hard-colour "#8CC63F" :soft-colour "#E8F4D9"}
+   {:family "Cheilan"     :hard-colour "#0CBD66" :soft-colour "#CEF2E0"}
+   {:family "Perrin"      :hard-colour "#012C58" :soft-colour "#CCD5DE"}
+   {:family "Faivre"      :hard-colour "#F4D749" :soft-colour "#FDF7DB"}
+   {:family "Morin"       :hard-colour "#2DBCF0" :soft-colour "#D5F2FC"}
+   {:family "Bonnet"      :hard-colour "#FAA61A" :soft-colour "#FEEDD1"}
+   {:family "Giraud"      :hard-colour "#958A9F" :soft-colour "#EAE8EC"}
+   {:family "Suzukawa"    :hard-colour "#008080" :soft-colour "#CCE6E6"}
+   {:family "Troncy"      :hard-colour "#671190" :soft-colour "#E1CFE9"}
+   {:family "Goudot"      :hard-colour "#1E6E00" :soft-colour "#D2E2CC"}
+   {:family "Bertin"      :hard-colour "#885578" :soft-colour "#E7DDE4"}
+   {:family "Perret"      :hard-colour "#FF2F80" :soft-colour "#FFD5E6"}
+   {:family "Beaudin"     :hard-colour "#800000" :soft-colour "#E6CCCC"}
+   {:family "Le Mintier"  :hard-colour "#FF6832" :soft-colour "#FFE1D6"}
+   {:family "Dieterlé"    :hard-colour "#D16100" :soft-colour "#F6DFCC"}
+   {:family "Bonhour"     :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Abadie"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Barnes"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Desrayaud"   :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Chapuzet"    :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Labaty"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Olds"        :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Lebon"       :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Antoni"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Galtier"     :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Morel"       :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Muzelli"     :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "de Veron"    :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Saillet"     :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Cottin"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Viosi"       :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Maggialetti" :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Taithe"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Russo"       :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Jullien"     :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Valli"       :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Pelletier"   :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Pointet"     :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Nesme"       :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Bourel"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Sommer"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Chapuis"     :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Jullat"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Sadoux"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}
+   {:family "Cappio"      :hard-colour "#BDC9D2" :soft-colour "#F1F3F5"}])

@@ -7,11 +7,9 @@
    [:.backdrop
     [:.content
      [:#canvas {:width "1400px"
-               :height "1000px"
-               :float "left"}
-      [:.link {:stroke (:sea-gray colours)
-               :opacity 0.3}]
-      [:.node {:fill (:sea-gray colours)}]
+                :height "1000px"
+                :float "left"}
+      [:.link {:opacity 0.3}]
       [:.axis {:pointer-events "none"}
        [:text {:opacity 0.7}]
        [:path {:opacity 0}]]
@@ -20,8 +18,7 @@
                 :fill "none"
                 :opacity 0.05
                 :pointer-events "none"}]
-      [:.label {:font-size "1em"
+      [:.label {:color "#4C4C4C"
+                :font-size "1em"
                 :text-anchor "left"
-                :opacity 0.5
-                :cursor "default"}]
-      ]]]])
+                :cursor "default"}]]]]])
