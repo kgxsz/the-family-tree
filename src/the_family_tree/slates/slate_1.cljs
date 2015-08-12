@@ -10,13 +10,14 @@
   "The central point of the graph."
   {:x 500 :y 500})
 
-
 (def families (clj->js (map :family data/colour-scheme)))
 (def blood-families (.slice families 0 24))
 (def hard-colours (clj->js (map :hard-colour data/colour-scheme)))
 (def soft-colours (clj->js (map :soft-colour data/colour-scheme)))
 
 (def radial-scale
+  "Defines the scale used to map
+   years to the circle radius."
   (-> js/d3
       .-scale
       .linear
@@ -24,6 +25,8 @@
       (.range #js [0 460])))
 
 (def key-scale
+  "Defines the scale used to position the
+   colour key elements in the legend."
   (-> js/d3
       .-scale
       .ordinal
@@ -31,6 +34,8 @@
       (.rangeRoundBands #js [200 800])))
 
 (def hard-colour-scale
+  "Defines the scale used to map
+   a family to a hard colour."
   (-> js/d3
       .-scale
       .ordinal
@@ -38,6 +43,8 @@
       (.range hard-colours)))
 
 (def soft-colour-scale
+  "Defines the scale used to map
+   a family to a soft colour."
   (-> js/d3
       .-scale
       .ordinal
@@ -186,19 +193,21 @@
                         (attribufy {:class "label" :x 27 :y 18}))
         tiles       (-> colour-keys
                         (.append "rect")
-                        (attribufy {:class "tile" :height #(.rangeBand key-scale) :width 110}))]
+                        (attribufy {:class "tile"
+                                    :width 110
+                                    :height #(.rangeBand key-scale)}))]
     (.on tiles "mouseover"
          (fn [d]
-           (.style samples "fill" #(if (= % d) (hard-colour-scale %) (soft-colour-scale %)))
-           (.style labels "opacity" #(if (= % d) 1 0.3))
-           (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f))))
-           (.style links "stroke" #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f))))))
+           (stylify samples {:fill #(if (= % d) (hard-colour-scale %) (soft-colour-scale %))})
+           (stylify labels {:opacity #(if (= % d) 1 0.3)})
+           (stylify nodes {:fill #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f)))})
+           (stylify links {:stroke #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f)))})))
     (.on tiles "mouseleave"
          (fn []
-           (.style samples "fill" #(hard-colour-scale %))
-           (.style labels "opacity" 1)
-           (.style nodes "fill" #(hard-colour-scale (.-family %)))
-           (.style links "stroke" #(hard-colour-scale (.-family %)))))))
+           (stylify samples {:fill #(hard-colour-scale %)})
+           (stylify labels {:opacity 1})
+           (stylify nodes {:fill #(hard-colour-scale (.-family %))})
+           (stylify links {:stroke #(hard-colour-scale (.-family %))})))))
 
 (defcomponent slate-1
   [state owner]
@@ -228,6 +237,6 @@
 ;; 6) Other families should work as well. [done]
 ;; 7) Small fix ups with text colouring. [done]
 ;; 8) Object key section.
-;; 9) Use a scale to position key elements?
+;; 9) Use a scale to position key elements? [done]
 ;; 10) Deploy it.
-;; 11) Clean up the way the legend and keys are built.
+;; 11) Clean up the way the legend and keys are built. [done]
