@@ -240,3 +240,4 @@
 ;; 9) Use a scale to position key elements? [done]
 ;; 10) Deploy it.
 ;; 11) Clean up the way the legend and keys are built. [done]
+;; 12) Figure out why advanced closure compile fails.
