@@ -10,6 +10,12 @@
   "The central point of the graph."
   {:x 500 :y 500})
 
+
+(def families (clj->js (map :family data/colour-scheme)))
+(def blood-families (.slice families 0 24))
+(def hard-colours (clj->js (map :hard-colour data/colour-scheme)))
+(def soft-colours (clj->js (map :soft-colour data/colour-scheme)))
+
 (def radial-scale
   (-> js/d3
       .-scale
@@ -17,19 +23,26 @@
       (.domain #js [1850 2020])
       (.range #js [0 460])))
 
+(def key-scale
+  (-> js/d3
+      .-scale
+      .ordinal
+      (.domain blood-families)
+      (.rangeRoundBands #js [200 800])))
+
 (def hard-colour-scale
   (-> js/d3
       .-scale
       .ordinal
-      (.domain (clj->js (map :family data/colour-scheme)))
-      (.range (clj->js (map :hard-colour data/colour-scheme)))))
+      (.domain families)
+      (.range hard-colours)))
 
 (def soft-colour-scale
   (-> js/d3
       .-scale
       .ordinal
-      (.domain (clj->js (map :family data/colour-scheme)))
-      (.range (clj->js (map :soft-colour data/colour-scheme)))))
+      (.domain families)
+      (.range soft-colours)))
 
 (def force-field
   "Holds a configured instance of d3's force directed graph,
@@ -92,8 +105,6 @@
       (stylify {:fill #(hard-colour-scale (.-family %))})))
 
 (defn setup-tooltip
-  "Sets up the tooltip text such that when you hover
-   over a node you see the name of the family member."
   [nodes]
   (-> nodes
       (.append "title")
@@ -157,28 +168,37 @@
           (attribufy nodes {:cx (fn [d] (.-x d))
                             :cy (fn [d] (.-y d))})))))
 
+
+
 (defn draw-colour-key
   [nodes links]
-  (let [truncated-domain (-> hard-colour-scale .domain (.slice 0 24))]
-    (-> (enterfy ".sample" truncated-domain)
-        (.append "circle")
-        (attribufy {:class "sample"
-                    :cx    1170
-                    :cy    (fn [_ i] (+ 200 (* 25 i)))
-                    :r     5})
-        (stylify {:fill #(hard-colour-scale %)}))
-    (-> (enterfy ".label" truncated-domain)
-        (.append "text")
-        (.text #(identity %))
-        (attribufy {:class "label" :x 1190 :y (fn [_ i] (+ 205 (* 25 i)))})
-        (.on "mouseover"
-             (fn [d]
-               (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f))))
-               (.style links "stroke" #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f))))))
-        (.on "mouseleave"
-             (fn []
-               (.style nodes "fill" #(hard-colour-scale (.-family %)))
-               (.style links "stroke" #(hard-colour-scale (.-family %))))))))
+  (let [colour-keys (-> (enterfy ".colour-key" blood-families)
+                        (.append "g")
+                        (attribufy {:class "colour-key"
+                                    :transform #(translate 1110 (key-scale %))}))
+        samples     (-> colour-keys
+                        (.append "circle")
+                        (attribufy {:class "sample" :cx 13 :cy 13 :r 5})
+                        (stylify {:fill #(hard-colour-scale %)}))
+        labels      (-> colour-keys
+                        (.append "text")
+                        (.text #(identity %))
+                        (attribufy {:class "label" :x 27 :y 18}))
+        tiles       (-> colour-keys
+                        (.append "rect")
+                        (attribufy {:class "tile" :height #(.rangeBand key-scale) :width 110}))]
+    (.on tiles "mouseover"
+         (fn [d]
+           (.style samples "fill" #(if (= % d) (hard-colour-scale %) (soft-colour-scale %)))
+           (.style labels "opacity" #(if (= % d) 1 0.3))
+           (.style nodes "fill" #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f))))
+           (.style links "stroke" #(let [f (.-family %)] (if (= f d) (hard-colour-scale f) (soft-colour-scale f))))))
+    (.on tiles "mouseleave"
+         (fn []
+           (.style samples "fill" #(hard-colour-scale %))
+           (.style labels "opacity" 1)
+           (.style nodes "fill" #(hard-colour-scale (.-family %)))
+           (.style links "stroke" #(hard-colour-scale (.-family %)))))))
 
 (defcomponent slate-1
   [state owner]
@@ -201,10 +221,13 @@
 
 ;; TODO
 ;; 1) Try declaring nodes beforehand, then draw them up. [done]
-;; 2) Tighten up the colour key, such that flashing doesn't occur, perhaps use groupings.
-;; 3) Can you highlight the key name as you hover to give it an adequate response?
+;; 2) Tighten up the colour key, such that flashing doesn't occur, perhaps use groupings. [done]
+;; 3) Can you highlight the key name as you hover to give it an adequate response? [done]
 ;; 4) Treat scale derived data as true data or auxiliary data? [done]
 ;; 5) How do you deal with colour scales properly? [done]
 ;; 6) Other families should work as well. [done]
 ;; 7) Small fix ups with text colouring. [done]
 ;; 8) Object key section.
+;; 9) Use a scale to position key elements?
+;; 10) Deploy it.
+;; 11) Clean up the way the legend and keys are built.

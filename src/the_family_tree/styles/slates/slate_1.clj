@@ -21,4 +21,6 @@
       [:.label {:color "#4C4C4C"
                 :font-size "1em"
                 :text-anchor "left"
-                :cursor "default"}]]]]])
+                :cursor "default"
+                :padding-right "30px"}]
+      [:.tile {:opacity 0}]]]]])
