@@ -1,2 +1,4 @@
-{"name": "the-family-tree",
- "root": "./target"}
+{
+  "name": "the-family-tree",
+  "root": "./target"
+}
