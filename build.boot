@@ -36,7 +36,7 @@
 
 (deftask build []
   (set-env! :source-paths #{"src"})
-  (comp (cljs :optimizations :simple)
+  (comp (cljs :optimizations :advanced)
         (garden :styles-var 'the-family-tree.styles.main/base)))
 
 (deftask serve []

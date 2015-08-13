@@ -147,8 +147,9 @@
   (let [vx  (- (.-x member) (:x origin))
         vy  (- (.-y member) (:y origin))
         |v| (.sqrt js/Math (+ (* vx vx) (* vy vy)))
-        x   (+ (:x origin) (* (radial-scale (.-birth member)) (/ vx |v|)))
-        y   (+ (:y origin) (* (radial-scale (.-birth member)) (/ vy |v|)))]
+        r   (radial-scale (aget member "birth"))
+        x   (+ (:x origin) (* r (/ vx |v|)))
+        y   (+ (:y origin) (* r (/ vy |v|)))]
     (when-not (zero? |v|)
       (set! (.-x member) x)
       (set! (.-y member) y))))
@@ -217,6 +218,7 @@
           relations (clj->js data/relations)
           links     (draw-links relations)
           nodes     (draw-nodes members)]
+      #_(doseq [member members] (.log js/console member))
       (setup-tooltip nodes)
       (draw-axis)
       (draw-colour-key nodes links)
