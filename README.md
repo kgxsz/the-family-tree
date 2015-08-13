@@ -20,6 +20,7 @@
 - Small fix ups with text colouring. [done]
 - Object key section.
 - Use a scale to position key elements? [done]
-- Deploy it.
+- Deploy it. [done]
 - Clean up the way the legend and keys are built. [done]
-- Figure out why advanced closure compile fails.
+- Figure out why advanced closure compile fails. [done]
+- Fix up readme.
