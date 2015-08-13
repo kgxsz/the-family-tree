@@ -2,11 +2,9 @@ language: clojure
 jdk:
 - oraclejdk8
 install:
-- wget -O boot https://github.com/boot-clj/boot/releases/download/2.0.0-rc9/boot.sh
-- chmod 755 boot
-- export BOOT_CLOJURE_VERSION=1.7.0
-- export BOOT_VERSION=2.0.0
-- ./boot -V
+  - wget -O boot https://github.com/boot-clj/boot/releases/download/2.2.0/boot.sh
+  - chmod 755 boot
+  - ./boot -V
 script: ./boot build
 deploy:
   provider: divshot
