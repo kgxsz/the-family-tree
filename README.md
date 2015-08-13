@@ -1,6 +1,10 @@
 # The Family Tree
 
-#####A set of visualisations on my family data spanning five generations.
+#####A visualisation of my family data spanning five generations - see it live [here](http://production.the-family-tree.divshot.io/).
+[![Build Status](https://travis-ci.org/kgxsz/the-family-tree.svg?branch=master)](https://travis-ci.org/kgxsz/the-family-tree)
+
+## Introduction
+This is a simple visualisation that I built around extensive family data going back five generations. I made this to get a grasp of interop with JavaScript libraries, such as d3.js through ClojureScript. I also wanted to have some fun with d3.js and some not-so-generic data.
 
 ## Local development setup
 
@@ -9,18 +13,3 @@
 - To serve those assets: `boot serve`.
 - Run `boot dev` to get a development environment going.
 - Do `boot repl --client` then `(start-repl)` to start the browser connected repl.
-
-### TODO
-- Try declaring nodes beforehand, then draw them up. [done]
-- Tighten up the colour key, such that flashing doesn't occur, perhaps use groupings. [done]
-- Can you highlight the key name as you hover to give it an adequate response? [done]
-- Treat scale derived data as true data or auxiliary data? [done]
-- How do you deal with colour scales properly? [done]
-- Other families should work as well. [done]
-- Small fix ups with text colouring. [done]
-- Object key section.
-- Use a scale to position key elements? [done]
-- Deploy it. [done]
-- Clean up the way the legend and keys are built. [done]
-- Figure out why advanced closure compile fails. [done]
-- Fix up readme.
