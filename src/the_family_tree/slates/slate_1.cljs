@@ -115,13 +115,13 @@
   [nodes]
   (.on nodes "mouseover"
     (fn [node]
-      (let [colour (-> node .-family hard-colour-scale)
+      (let [colour    (-> node .-family hard-colour-scale)
             full-name (str (.-name node) " " (.-family node))
-            width (-> full-name count (* 8))
-            tool-tip (-> (get-canvas)
-                         (.append "g")
-                         (attribufy {:class "tool-tip"
-                                     :transform (translate (.-x node) (.-y node))}))]
+            width     (-> full-name count (* 8))
+            tool-tip  (-> (get-canvas)
+                          (.append "g")
+                          (attribufy {:class "tool-tip"
+                                      :transform (translate (.-x node) (.-y node))}))]
         (-> tool-tip
             (.append "rect")
             (attribufy {:x (-> width (/ 2) -)
@@ -200,7 +200,35 @@
           (attribufy nodes {:cx (fn [d] (.-x d))
                             :cy (fn [d] (.-y d))})))))
 
-
+(defn draw-object-key
+  []
+  (let [object-keys (-> (get-canvas)
+                    (.append "g")
+                    (attribufy {:class "object-keys"
+                                :transform (translate 1095 130)}))]
+    (-> object-keys
+        (.selectAll "line")
+        (.data (clj->js [{:x1 0 :y1 0 :x2 28 :y2 0 :partner true}
+                         {:x1 0 :y1 25 :x2 28 :y2 25 :partner false}]))
+        .enter
+        (.append "line")
+        (attribufy {:x1 #(.-x1 %) :y1 #(.-y1 %) :x2 #(.-x2 %) :y2 #(.-y2 %)})
+        (stylify {:stroke-width #(if (.-partner %) 4 2)
+                  :stroke-dasharray #(when (.-partner %) "3 3")}))
+    (-> object-keys
+        (.selectAll "circle")
+        (.data (clj->js [{:x 0 :y 0} {:x 28 :y 0} {:x 0 :y 25} {:x 28 :y 25}]))
+        .enter
+        (.append "circle")
+        (attribufy {:cx #(.-x %) :cy #(.-y %) :r 5}))
+    (-> object-keys
+        (.selectAll "text")
+        (.data (clj->js [{:x 43 :y 4 :caption "partenaire"}
+                         {:x 43 :y 29 :caption "enfant-parent"}]))
+        .enter
+        (.append "text")
+        (.text #(.-caption %))
+        (attribufy {:x #(.-x %) :y #(.-y %)}))))
 
 (defn draw-colour-key
   [nodes links]
@@ -244,6 +272,7 @@
           nodes     (draw-nodes members)]
       (setup-tooltip nodes)
       (draw-axis)
+      (draw-object-key)
       (draw-colour-key nodes links)
       (exert-force members relations nodes links)))
   (render-state

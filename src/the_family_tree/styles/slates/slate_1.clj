@@ -29,4 +29,8 @@
                  :text-anchor "left"
                  :cursor "default"
                  :padding-right "30px"}]
-       [:.tile {:opacity 0}]]]]]])
+       [:.tile {:opacity 0}]]
+      [:.object-keys
+       [:line {:stroke (:dark-gray colours)
+               :opacity 0.6}]
+       [:circle {:fill (:dark-gray colours)}]]]]]])

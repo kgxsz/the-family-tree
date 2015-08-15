@@ -2,4 +2,5 @@
 
 (def colours
   {:white "#FFF"
-   :black "#000"})
+   :black "#000"
+   :dark-gray "#555"})
