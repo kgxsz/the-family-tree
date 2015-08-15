@@ -1,6 +1,6 @@
 # The Family Tree
 
-#####A visualisation of my family data spanning five generations - see it live [here](http://production.the-family-tree.divshot.io/).
+#####A visualisation of my family data spanning five generations - see it live [here](http://the-family-tree.divshot.io/).
 [![Build Status](https://travis-ci.org/kgxsz/the-family-tree.svg?branch=master)](https://travis-ci.org/kgxsz/the-family-tree)
 
 ## Introduction
