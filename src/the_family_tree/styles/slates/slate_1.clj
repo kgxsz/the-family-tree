@@ -10,6 +10,10 @@
                 :height "1000px"
                 :float "left"}
       [:.node {:r 5}]
+      [:.tool-tip {:pointer-events "none"}
+       [:rect {:stroke-width 20}]
+       [:text {:text-anchor "middle"
+               :fill (:white colours)}]]
       [:.link {:opacity 0.3}]
       [:.axis {:pointer-events "none"}
        [:text {:opacity 0.7}]
@@ -19,9 +23,10 @@
                 :fill "none"
                 :opacity 0.05
                 :pointer-events "none"}]
-      [:.label {:color "#4C4C4C"
-                :font-size "1em"
-                :text-anchor "left"
-                :cursor "default"
-                :padding-right "30px"}]
-      [:.tile {:opacity 0}]]]]])
+      [:.colour-key
+       [:.label {:color "#4C4C4C"
+                 :font-size "1em"
+                 :text-anchor "left"
+                 :cursor "default"
+                 :padding-right "30px"}]
+       [:.tile {:opacity 0}]]]]]])

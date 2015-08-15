@@ -102,10 +102,6 @@
                 :stroke-width     #(case (.-type %) "partner" 4 "child" 2)
                 :stroke-dasharray #(when (= "partner" (.-type %)) "3 3")})))
 
-
-
-
-
 (defn draw-nodes
   "Draws the nodes that represent members of the family."
   [members]
@@ -115,55 +111,35 @@
       (attribufy {:class "node"})
       (stylify {:fill #(hard-colour-scale (.-family %))})))
 
-
-
-
-
-
-
 (defn setup-tooltip
   [nodes]
   (.on nodes "mouseover"
-       (fn [node]
-         (let [colour   (-> node .-family hard-colour-scale)
-               name     (str (.-name node) " " (.-family node))
-               tool-tip (-> (get-canvas)
-                            (.append "g")
-                            (attribufy {:class "tool-tip"
-                                        :pointer-events "none"
-                                        :transform (translate (.-x node) (.-y node))}))
-               pointer  (-> tool-tip
-                            (.append "polygon")
-                            (attribufy {:points "0,-4 -8,-14 8,-14" :fill colour}))
-               backing  (-> tool-tip
-                            (.append "rect")
-                            (attribufy {:fill colour
-                                        :y -38.5
-                                        :height 15
-                                        :stroke colour
-                                        :stroke-width 20}))
-               label    (-> tool-tip
-                            (.append "text")
-                            (.text name)
-                            (attribufy {:y -25
-                                        :text-anchor "middle"
-                                        :fill "#FFF"}))
-               width    (-> name count (* 8))]
-           (-> backing (attribufy {:x (- (/ width 2)) :width width})))))
+    (fn [node]
+      (let [colour (-> node .-family hard-colour-scale)
+            full-name (str (.-name node) " " (.-family node))
+            width (-> full-name count (* 8))
+            tool-tip (-> (get-canvas)
+                         (.append "g")
+                         (attribufy {:class "tool-tip"
+                                     :transform (translate (.-x node) (.-y node))}))]
+        (-> tool-tip
+            (.append "rect")
+            (attribufy {:x (-> width (/ 2) -)
+                        :y -38.5
+                        :width width
+                        :height 15})
+            (stylify {:fill colour
+                      :stroke colour}))
+        (-> tool-tip
+            (.append "polygon")
+            (attribufy {:points "0,-4 -8,-14 8,-14"})
+            (stylify {:fill colour}))
+        (-> tool-tip
+            (.append "text")
+            (.text full-name)
+            (attribufy {:y -25})))))
   (.on nodes "mouseleave"
-       (fn [_]
-         (-> (get-canvas)
-             (.selectAll ".tool-tip")
-             .remove)))
-  (.on nodes "mouseup"
-       (fn [_]
-         (-> (get-canvas)
-             (.selectAll ".tool-tip")
-             .remove))))
-
-
-
-
+       (fn [_] (-> (get-canvas) (.select ".tool-tip") .remove))))
 
 (defn draw-axis
   "Draws the axis as labeled ticks extending outward from the
