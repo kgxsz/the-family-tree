@@ -124,49 +124,41 @@
 (defn setup-tooltip
   [nodes]
   (.on nodes "mouseover"
-    (fn [node]
-      (let [tool-tip (-> (enterfy ".tool-tip" #js [node])
-                         (.append "g")
-                         (attribufy {:class "tool-tip"
-                                     :pointer-events "none"
-                                     :transform #(translate (.-x %) (.-y %))}))
-
-            point    (-> tool-tip
-                         (.append "polygon")
-                         (attribufy {:points "0,-4 -8,-14 8,-14"
-                                     :fill #(hard-colour-scale (.-family %))}))
-            pane    (-> tool-tip
-                           (.append "rect")
-                           (attribufy {:class "label"
-                                       :fill #(hard-colour-scale (.-family %))
-                                       :stroke #(hard-colour-scale (.-family %))
-                                       :stroke-width 20
-                                       }))
-
-
-            label (-> tool-tip
-                      (.append "text")
-                      (.text #(str (.-name %) " " (.-family %)))
-                      (attribufy {:text-anchor "middle" :y -25
-                                  :fill "#FFF"}))
-
-            size  (-> label .node .getBBox .-width)]
-  (-> pane (attribufy {:x (- (/ size 2))
-                          :y -38.5
-                          :height 15
-                          :width size})))))
-
-
+       (fn [node]
+         (let [colour   (-> node .-family hard-colour-scale)
+               tool-tip (-> (get-canvas)
+                            (.append "g")
+                            (attribufy {:class "tool-tip"
+                                        :pointer-events "none"
+                                        :transform (translate (.-x node) (.-y node))}))
+               pointer  (-> tool-tip
+                            (.append "polygon")
+                            (attribufy {:points "0,-4 -8,-14 8,-14" :fill colour}))
+               backing  (-> tool-tip
+                            (.append "rect")
+                            (attribufy {:fill colour
+                                        :y -38.5
+                                        :height 15
+                                        :stroke colour
+                                        :stroke-width 20}))
+               label    (-> tool-tip
+                            (.append "text")
+                            (.text (str (.-name node) " " (.-family node)))
+                            (attribufy {:y -25
+                                        :text-anchor "middle"
+                                        :fill "#FFF"}))
+               width    (-> label .node .getBBox .-width)]
+           (-> backing (attribufy {:x (- (/ width 2)) :width width})))))
   (.on nodes "mouseleave"
-    (fn [_]
-      (-> (get-canvas)
-          (.selectAll ".tool-tip")
-          .remove)))
+       (fn [_]
+         (-> (get-canvas)
+             (.selectAll ".tool-tip")
+             .remove)))
   (.on nodes "mouseup"
-    (fn [_]
-      (-> (get-canvas)
-          (.selectAll ".tool-tip")
-          .remove))))
+       (fn [_]
+         (-> (get-canvas)
+             (.selectAll ".tool-tip")
+             .remove))))
 
 
 
