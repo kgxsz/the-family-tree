@@ -126,6 +126,7 @@
   (.on nodes "mouseover"
        (fn [node]
          (let [colour   (-> node .-family hard-colour-scale)
+               name     (str (.-name node) " " (.-family node))
                tool-tip (-> (get-canvas)
                             (.append "g")
                             (attribufy {:class "tool-tip"
@@ -143,11 +144,11 @@
                                         :stroke-width 20}))
                label    (-> tool-tip
                             (.append "text")
-                            (.text (str (.-name node) " " (.-family node)))
+                            (.text name)
                             (attribufy {:y -25
                                         :text-anchor "middle"
                                         :fill "#FFF"}))
-               width    (-> label .node .getBBox .-width)]
+               width    (-> name count (* 8))]
            (-> backing (attribufy {:x (- (/ width 2)) :width width})))))
   (.on nodes "mouseleave"
        (fn [_]
