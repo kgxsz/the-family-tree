@@ -108,7 +108,8 @@
   (-> (enterfy ".node" members)
       (.append "circle")
       (.call (.-drag force-field))
-      (attribufy {:class "node"})
+      (attribufy {:class "node"
+                  :r 5})
       (stylify {:fill #(hard-colour-scale (.-family %))})))
 
 (defn setup-tooltip

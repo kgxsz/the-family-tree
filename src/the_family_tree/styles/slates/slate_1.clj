@@ -9,7 +9,6 @@
      [:#canvas {:width "1400px"
                 :height "1000px"
                 :float "left"}
-      [:.node {:r 5}]
       [:.tool-tip {:pointer-events "none"}
        [:rect {:stroke-width 20}]
        [:text {:text-anchor "middle"
