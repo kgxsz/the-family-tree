@@ -65,12 +65,12 @@
 (defn get-canvas [] (.select js/d3 "#slate-1 #canvas"))
 
 (defn enterfy
-  "Selects entities and enters data on them."
-  [selector data]
-  (-> (get-canvas)
-      (.selectAll selector)
-      (.data data)
-      .enter))
+  ([selector data] (enterfy (get-canvas) selector data))
+  ([selection selector data]
+   (-> selection
+       (.selectAll selector)
+       (.data data)
+       .enter)))
 
 (defn attribufy
   "Takes an entity and a map of attributes, applies those
@@ -206,26 +206,17 @@
                     (.append "g")
                     (attribufy {:class "object-keys"
                                 :transform (translate 1095 130)}))]
-    (-> object-keys
-        (.selectAll "line")
-        (.data (clj->js [{:x1 0 :y1 0 :x2 28 :y2 0 :partner true}
-                         {:x1 0 :y1 25 :x2 28 :y2 25 :partner false}]))
-        .enter
+    (-> (enterfy object-keys "line" (clj->js [{:x1 0 :y1 0 :x2 28 :y2 0 :partner true}
+                                              {:x1 0 :y1 25 :x2 28 :y2 25 :partner false}]))
         (.append "line")
-        (attribufy {:x1 #(.-x1 %) :y1 #(.-y1 %) :x2 #(.-x2 %) :y2 #(.-y2 %)})
-        (stylify {:stroke-width #(if (.-partner %) 4 2)
-                  :stroke-dasharray #(when (.-partner %) "3 3")}))
-    (-> object-keys
-        (.selectAll "circle")
-        (.data (clj->js [{:x 0 :y 0} {:x 28 :y 0} {:x 0 :y 25} {:x 28 :y 25}]))
-        .enter
+        (attribufy {:x1 #(aget % "x1") :y1 #(aget % "y1") :x2 #(aget % "x2") :y2 #(aget % "y2")})
+        (stylify {:stroke-width #(if (aget % "partner") 4 2)
+                  :stroke-dasharray #(when (aget % "partner") "3 3")}))
+    (-> (enterfy object-keys "circle" (clj->js [{:x 0 :y 0} {:x 28 :y 0} {:x 0 :y 25} {:x 28 :y 25}]))
         (.append "circle")
         (attribufy {:cx #(.-x %) :cy #(.-y %) :r 5}))
-    (-> object-keys
-        (.selectAll "text")
-        (.data (clj->js [{:x 43 :y 4 :caption "partenaire"}
-                         {:x 43 :y 29 :caption "enfant-parent"}]))
-        .enter
+    (-> (enterfy object-keys "text" (clj->js [{:x 43 :y 4 :caption "partenaire"}
+                                              {:x 43 :y 29 :caption "enfant-parent"}]))
         (.append "text")
         (.text #(.-caption %))
         (attribufy {:x #(.-x %) :y #(.-y %)}))))
