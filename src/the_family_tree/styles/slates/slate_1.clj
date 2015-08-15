@@ -9,6 +9,7 @@
      [:#canvas {:width "1400px"
                 :height "1000px"
                 :float "left"}
+      [:.node {:r 5}]
       [:.link {:opacity 0.3}]
       [:.axis {:pointer-events "none"}
        [:text {:opacity 0.7}]

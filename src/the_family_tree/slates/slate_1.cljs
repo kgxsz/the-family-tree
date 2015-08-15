@@ -102,21 +102,75 @@
                 :stroke-width     #(case (.-type %) "partner" 4 "child" 2)
                 :stroke-dasharray #(when (= "partner" (.-type %)) "3 3")})))
 
+
+
+
+
 (defn draw-nodes
   "Draws the nodes that represent members of the family."
   [members]
   (-> (enterfy ".node" members)
       (.append "circle")
       (.call (.-drag force-field))
-      (attribufy {:class "node" :r 5})
+      (attribufy {:class "node"})
       (stylify {:fill #(hard-colour-scale (.-family %))})))
 
+
+
+
+
+
+
 (defn setup-tooltip
-  [nodes tool-tips]
+  [nodes]
   (.on nodes "mouseover"
-      (fn [d] (stylify tool-tips {:opacity #(if (= % d) 0 0)})))
+    (fn [node]
+      (let [tool-tip (-> (enterfy ".tool-tip" #js [node])
+                         (.append "g")
+                         (attribufy {:class "tool-tip"
+                                     :pointer-events "none"
+                                     :transform #(translate (.-x %) (.-y %))}))
+
+            point    (-> tool-tip
+                         (.append "polygon")
+                         (attribufy {:points "0,-4 -8,-14 8,-14"
+                                     :fill #(hard-colour-scale (.-family %))}))
+            pane    (-> tool-tip
+                           (.append "rect")
+                           (attribufy {:class "label"
+                                       :fill #(hard-colour-scale (.-family %))
+                                       :stroke #(hard-colour-scale (.-family %))
+                                       :stroke-width 20
+                                       }))
+
+
+            label (-> tool-tip
+                      (.append "text")
+                      (.text #(str (.-name %) " " (.-family %)))
+                      (attribufy {:text-anchor "middle" :y -25
+                                  :fill "#FFF"}))
+
+            size  (-> label .node .getBBox .-width)]
+  (-> pane (attribufy {:x (- (/ size 2))
+                          :y -38.5
+                          :height 15
+                          :width size})))))
+
+
   (.on nodes "mouseleave"
-      (fn [d] (stylify tool-tips {:opacity 0}))))
+    (fn [_]
+      (-> (get-canvas)
+          (.selectAll ".tool-tip")
+          .remove)))
+  (.on nodes "mouseup"
+    (fn [_]
+      (-> (get-canvas)
+          (.selectAll ".tool-tip")
+          .remove))))
+
+
+
+
 
 (defn draw-axis
   "Draws the axis as labeled ticks extending outward from the
@@ -162,7 +216,7 @@
    values to the member's x and y attributes. Then, after each tick, the
    member's x and y attributes are constrained radially, and the positions
    of the node/link entities are updated accordingly."
-  [members relations nodes links tool-tips]
+  [members relations nodes links]
   (-> force-field
       (.nodes members)
       (.links relations)
@@ -175,9 +229,9 @@
                             :x2 (fn [d] (.. d -target -x))
                             :y2 (fn [d] (.. d -target -y))})
           (attribufy nodes {:cx (fn [d] (.-x d))
-                            :cy (fn [d] (.-y d))})
-          (attribufy tool-tips {:x (fn [d] (.-x d))
-                                :y (fn [d] (- (.-y d) 25))})))))
+                            :cy (fn [d] (.-y d))})))))
+
+
 
 (defn draw-colour-key
   [nodes links]
@@ -211,15 +265,6 @@
         (stylify nodes {:fill #(hard-colour-scale (.-family %))})
         (stylify links {:stroke #(hard-colour-scale (.-family %))})))))
 
-(defn draw-tooltips
-  [members]
-  (-> (enterfy ".tool-tip" members)
-      (.append "rect")
-      (attribufy {:class "tool-tip" :width 100 :height 25})
-      (stylify {:fill "#FFF"
-                :opacity 0
-                :pointer-events "none"})))
-
 (defcomponent slate-1
   [state owner]
   (did-mount
@@ -227,12 +272,11 @@
     (let [members   (clj->js data/members)
           relations (clj->js data/relations)
           links     (draw-links relations)
-          nodes     (draw-nodes members)
-          axis      (draw-axis)
-          tool-tips (draw-tooltips members)]
-      (setup-tooltip nodes tool-tips)
+          nodes     (draw-nodes members)]
+      (setup-tooltip nodes)
+      (draw-axis)
       (draw-colour-key nodes links)
-      (exert-force members relations nodes links tool-tips)))
+      (exert-force members relations nodes links)))
   (render-state
     [_ _]
     (println "Rendering slate-1 component with state:" state)

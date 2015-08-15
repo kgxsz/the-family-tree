@@ -28,7 +28,6 @@
   (set-env! :source-paths #{"src"})
   (comp (http/serve :dir "target/" :httpkit true)
         (watch)
-        (speak)
         (reload :on-jsload 'the-family-tree.core/main)
         (cljs-repl)
         (cljs :optimizations :none)
