@@ -1,13 +1,11 @@
 language: clojure
+
 jdk:
-- oraclejdk8
+  - oraclejdk8
+
 install:
   - wget -O boot https://github.com/boot-clj/boot/releases/download/2.2.0/boot.sh
   - chmod 755 boot
   - ./boot -V
+  
 script: ./boot build
-deploy:
-  provider: divshot
-  api_key:
-    secure: kzjMq3SPfrvt7hMj282GTmP1dLLoOfgVR0HzAdXD3cCX40AEKEYTcf0tAZ4BF49DMpLDNcQk3rFAwddv9l6ioWhEhTbAByLb4FiD2Znpr3ch9gI94keBXYacNtxdjQu9xcPZ/zJDvqRDF0RVKtjeX1Tu9PIwXQqcVa5Dp7LxLhOUrxN3qyZC30xG1k2rMA0W8ZRIIoGkOUKS2gXR/UncPC0srYrYX3q9jeHRMKqTRpLH0x3BKYaCjsBWV7SbzJNdq39ole6VFCDqff6WM7uauokkxA/mqVd4tdBBOb+jqH3h2eiGS9HHxTn6w4WHAS7spz+1ZX4UsSUTi+IiYDBGBw47tf2W5ZLm4xS5YNT3VZl2p/7P63WG69vyU+y9Qo6cCLeSLlUaJEK0y8s+etkunCmK5hzLh93/TvhfiDyZ3Ga2ledspUQVWBQtuLJXILP+h1bw0CDAkgIb9fObQFiulS+vuoHtWsHr7JbELfulMG0YjttPMCY7KH/W+MpUdLlZ2kwivDZz7xa6PR62O0inKyG4JAvF3eEu4TZNZTWsL2zna64uSJ3LeZTZVKxwasnjVzficF0mgt9qOcumsVTlDQeOOAZ09We5QK4YVOZVU9CLlrr4yOQKqppkRnTgwSpzYCJ+X1pEgJ2Y7Rhiq+EywveejFgdFUGEuJ6JRRUNeXU=
-  skip_cleanup: true

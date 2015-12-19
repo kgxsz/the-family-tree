@@ -1,0 +1,9 @@
+{
+  "firebase": "the-family-tree",
+  "public": "./target",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
