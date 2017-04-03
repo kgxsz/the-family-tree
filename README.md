@@ -1,6 +1,6 @@
 # The Family Tree
 
-#####A visualisation of my family data spanning five generations - see it live [here](https://the-family-tree.firebaseapp.com/).
+##### A visualisation of my family data spanning five generations - see it live [here](https://the-family-tree.firebaseapp.com/).
 [![Build Status](https://travis-ci.org/kgxsz/the-family-tree.svg?branch=master)](https://travis-ci.org/kgxsz/the-family-tree)
 
 ## Local development setup
