@@ -1,7 +1,6 @@
 # The Family Tree
 
-##### A visualisation of my family data spanning five generations - see it live [here](https://the-family-tree.keigo.io/).
-[![Build Status](https://travis-ci.org/kgxsz/the-family-tree.svg?branch=master)](https://travis-ci.org/kgxsz/the-family-tree)
+##### A visualisation of my family data spanning five generations.
 
 ## Local development setup
 
